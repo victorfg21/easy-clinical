@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -15,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email', 'password',
     ];
 
     /**
@@ -27,40 +28,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
-
     /**
-    * @param string|array $roles
-    */
-    public function authorizeRoles($roles)
-    {
-        if (is_array($roles)) {
-            return $this->hasAnyRole($roles) ||
-             abort(401, 'Ação não autorizada.');
-        }
-
-        return $this->hasRole($roles) ||
-         abort(401, 'Ação não autorizada.');
-    }
-
-    /**    
-    * Check multiple roles    
-    * @param array $roles    
-    */
-    public function hasAnyRole($roles)
-    {
-        return null !== $this->roles()->whereIn('name', $roles)->first();
-    }
-
-    /**    
-    * Check one role    
-    * @param string $role    
-    */
-    public function hasRole($role)
-    {
-        return null !== $this->roles()->where('name', $role)->first();
-    }
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 }

@@ -30,9 +30,9 @@ return [
     |
     */
 
-    'logo' => '<b>Easy</b>CLINICAL',
+    'logo' => '<b>e</b>Clinical',
 
-    'logo_mini' => '<b>e</b>CLIN',
+    'logo_mini' => '<b>e</b>Cli',
 
     /*
     |--------------------------------------------------------------------------
@@ -113,6 +113,12 @@ return [
             'url'  => 'home',
             'icon' => 'home',
         ],
+        'CONFIGURAÇÔES',
+        [
+            'text' => 'Receita',
+            'url'  => 'config/receita',
+            'icon' => 'book',
+        ],
         'CADASTROS',
         [//Usuários
             'text' => 'Usuários',
@@ -127,85 +133,157 @@ return [
                     'text' => 'Editar',
                     'url'  => 'admin/usuarios',
                 ],
-            ],
-        ],
-        [//Empresários
-            'text'    => 'Empresários',
-            'icon'    => 'users',
-            'submenu' => [
-                [
-                    'text' => 'Novo',
-                    'url'  => 'admin/empresarios/novo',
-                ],
-                [
-                    'text' => 'Editar',
-                    'url'  => 'admin/empresarios',
-                ],
-            ],
-        ],
-        [//Empresas
-            'text'    => 'Empresas',
-            'icon'    => 'briefcase',
-            'submenu' => [
-                [
-                    'text' => 'Novo',
-                    'url'  => 'admin/empresas/novo',
-                ],
-                [
-                    'text' => 'Editar',
-                    'url'  => 'admin/empresas',
+                [//Permissões
+                    'text' => 'Permissões',
+                    'icon' => 'unlock',
+                    'role'    => 'superadministrator',
+                    'submenu' => [
+                        [
+                            'text' => 'Novo',
+                            'url'  => 'admin/permissao/novo',
+                        ],
+                        [
+                            'text' => 'Editar',
+                            'url'  => 'admin/permissao',
+                        ],
+                    ],
                 ],
             ],
         ],
-        [//Tipo Serviços
-            'text'    => 'Serviços',
-            'icon'    => 'wrench',
+        [//Profissional
+            'text' => 'Profissional',
+            'icon' => 'user-md',
             'role'    => 'superadministrator',
             'submenu' => [
                 [
                     'text' => 'Novo',
-                    'url'  => 'admin/servicos/novo',
+                    'url'  => 'admin/profissional/novo',
                 ],
                 [
                     'text' => 'Editar',
-                    'url'  => 'admin/servicos',
+                    'url'  => 'admin/profissional',
+                ],
+                [//Especialidade
+                    'text' => 'Especialidade',
+                    'icon' => 'graduation-cap',
+                    'role'    => 'superadministrator',
+                    'submenu' => [
+                        [
+                            'text' => 'Novo',
+                            'url'  => 'admin/especialidade/novo',
+                        ],
+                        [
+                            'text' => 'Editar',
+                            'url'  => 'admin/especialidade',
+                        ],
+                    ],
+                ],
+                [//Área de Atuação
+                    'text' => 'Área de Atuação',
+                    'icon' => 'hotel ',
+                    'role'    => 'superadministrator',
+                    'submenu' => [
+                        [
+                            'text' => 'Novo',
+                            'url'  => 'admin/area-atuacao/novo',
+                        ],
+                        [
+                            'text' => 'Editar',
+                            'url'  => 'admin/area-atuacao',
+                        ],
+                    ],
                 ],
             ],
         ],
-        [//Setores
-            'text'    => 'Setores',
-            'icon'    => 'puzzle-piece',
+        [//Paciente
+            'text' => 'Paciente',
+            'icon' => 'ambulance',
             'role'    => 'superadministrator',
             'submenu' => [
                 [
                     'text' => 'Novo',
-                    'url'  => 'admin/setores/novo',
+                    'url'  => 'admin/paciente/novo',
                 ],
                 [
                     'text' => 'Editar',
-                    'url'  => 'admin/setores',
+                    'url'  => 'admin/paciente',
                 ],
             ],
         ],
-        'OPERAÇÕES',
-        [//Atendimentos
-            'text'    => 'Histórico Atendimentos',
-            'icon'    => 'file',
+        [//Exame
+            'text' => 'Exame',
+            'icon' => 'heartbeat',
+            'role'    => 'superadministrator',
             'submenu' => [
                 [
                     'text' => 'Novo',
-                    'url'  => 'admin/atendimentos/novo',
+                    'url'  => 'admin/exame/novo',
                 ],
                 [
-                    'text' => 'Visualizar',
-                    'url'  => 'admin/atendimentos',
+                    'text' => 'Editar',
+                    'url'  => 'admin/exame',
                 ],
             ],
         ],
-        [//Relatórios
-            'text'    => 'Relatórios',
-            'icon'    => 'line-chart',
-            'url'  => 'admin/relatorios',
+        [//Medicamento
+            'text' => 'Medicamento',
+            'icon' => 'medkit',
+            'role'    => 'superadministrator',
+            'submenu' => [
+                [
+                    'text' => 'Novo',
+                    'url'  => 'admin/medicamento/novo',
+                ],
+                [
+                    'text' => 'Editar',
+                    'url'  => 'admin/medicamento',
+                ],
+            ],
+        ],
+        'OPERAÇÔES',
+        [//Atendimento
+            'text' => 'Atendimento',
+            'icon' => 'phone',
+            'role'    => 'atendente',
+            'submenu' => [
+                [
+                    'text' => 'Agendar Consulta/Retorno',
+                    'url'  => 'clinica/agenda-consulta',
+                ],
+                [
+                    'text' => 'Agendar Exame',
+                    'url'  => 'clinica/agenda-consulta',
+                ],
+            ],
+        ],
+        [//Médico
+            'text' => 'Espaço Médico',
+            'icon' => 'stethoscope',
+            'role'    => 'medico',
+            'submenu' => [
+                [
+                    'text' => 'Histórico Paciente',
+                    'url'  => 'medico/historico-paciente',
+                ],
+                [
+                    'text' => 'Solicitar Exame',
+                    'url'  => 'medico/solicitar-exame',
+                ],
+                [
+                    'text' => 'Acompanhamento Médico',
+                    'url'  => 'medico/acompanhamento-medico',
+                ],
+                [
+                    'text' => 'Emitir Receita',
+                    'url'  => 'medico/emitir-receita',
+                ],
+            ],
+        ],
+        [//Farmácia
+            'text' => 'Farmácia',
+            'icon' => 'hospital-o',
+            'role'    => 'farmaceutico',
+            'url'  => 'clinica/farmacia',
         ],
     ],
 
@@ -227,7 +305,7 @@ return [
         JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
-        App\Filters\MenuFilter::class,
+        //App\Filters\MenuFilter::class,
     ],
 
     /*

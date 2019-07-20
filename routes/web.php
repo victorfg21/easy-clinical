@@ -11,10 +11,11 @@
 |
 */
 
-Auth::routes();
-
-Route::get('/', function(){
-    return view('auth/login');
+Route::get('/', function () {
+    return view('welcome');
 });
 
-Route::get('home', ['as' => 'home', 'uses' => 'HomeController@index']);
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/tasks', 'TaskController@index'); 
