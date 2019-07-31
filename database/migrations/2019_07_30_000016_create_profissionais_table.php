@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientesTable extends Migration
+class CreateProfissionaisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateClientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('clientes', function (Blueprint $table) {
+        Schema::create('profissionais', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nome', 150);
             $table->string('rg', 30);
             $table->string('cpf', 11);
+            $table->string('conselho', 30);
+            $table->string('numero_registro', 30);
             $table->date('dt_nasc');
             $table->string('sexo', 1);
-            $table->string('email', 200);
             $table->string('celular', 11);
+            $table->string('telefone', 10);
             $table->integer('numero');
             $table->string('endereco', 150);
             $table->string('complemento', 150)->nullable();
@@ -29,9 +31,6 @@ class CreateClientesTable extends Migration
             $table->string('cidade', 150);
             $table->string('estado', 2);
             $table->string('cep', 8)->nullable();
-            $table->string('url', 300)->nullable();
-            $table->string('facebook', 300)->nullable();
-            $table->string('instagram', 300)->nullable();
             $table->unsignedInteger('foto_id')->nullable();
             $table->foreign('foto_id')->references('id')->on('fotos');
             $table->timestamps();
@@ -45,6 +44,6 @@ class CreateClientesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clientes');
+        Schema::dropIfExists('profissionais');
     }
 }

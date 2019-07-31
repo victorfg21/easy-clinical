@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
+class CreatePerfilUsuarioTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,12 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('perfil_usuario', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('description');
-            $table->timestamps();
-        });
-
-        Schema::create('role_user', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('role_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->unsignedInteger('perfil_id');
+            $table->foreign('perfil_id')->references('id')->on('perfis');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -36,8 +31,7 @@ class CreateRolesTable extends Migration
     public function down()
     {
         $tables = [
-            'roles',
-            'role_user',
+            'perfil_usuario',
         ];
 
         foreach($tables as $table) {
