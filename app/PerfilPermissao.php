@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class PerfilPermissao extends Model
 {
+    protected $table = 'perfil_permissoes';
+
     protected $fillable = [
-        'perfil_id', 'visualizar', 'criar', 'editar', 'deletar'
+        'visualizar', 'criar', 'editar', 'deletar'
     ];
 
     public function Perfil(){

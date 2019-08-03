@@ -15,8 +15,9 @@ class CreateSolicitacoesExamesLinhaTable extends Migration
     {
         Schema::create('solicitacoes_exames_linha', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('solicitacao_exame_id');
-            $table->foreign('solicitacao_exames_id')->references('id')->on('solicitacoes_exames');
+            $table->unsignedBigInteger('solicitacao_exame_id');
+            $table->foreign('solicitacao_exame_id')->references('id')->on('solicitacoes_exames');
+            $table->unsignedInteger('exame_id');
             $table->foreign('exame_id')->references('id')->on('exames');
             $table->timestamps();
         });

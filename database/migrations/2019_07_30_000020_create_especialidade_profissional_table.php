@@ -15,10 +15,10 @@ class CreateEspecialidadeProfissionalTable extends Migration
     {
         Schema::create('especialidade_profissional', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('profissional_id');
-            $table->foreign('profissional_id')->references('id')->on('profissionais');
+            $table->unsignedBigInteger('profissional_id');
+            $table->foreign('profissional_id')->references('id')->on('profissionais')->onDelete('cascade');
             $table->unsignedInteger('especialidade_id');
-            $table->foreign('especialidade_id')->references('id')->on('especialidades');
+            $table->foreign('especialidade_id')->references('id')->on('especialidades')->onDelete('cascade');
             $table->timestamps();
         });
     }

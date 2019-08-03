@@ -14,7 +14,7 @@ class CreatePaginaPerfisTable extends Migration
     public function up()
     {
         Schema::create('pagina_perfis', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->unsignedInteger('pagina_id');
             $table->foreign('pagina_id')->references('id')->on('paginas');
             $table->unsignedInteger('perfil_id');

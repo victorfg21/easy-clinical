@@ -15,7 +15,7 @@ class CreateAgendaLivreProfissionaisTable extends Migration
     {
         Schema::create('agenda_livre_profissionais', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('profissional_id');
+            $table->unsignedBigInteger('profissional_id');
             $table->foreign('profissional_id')->references('id')->on('profissionais');
             $table->date('data_livre');
             $table->time('inicio_periodo');

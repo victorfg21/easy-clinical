@@ -20,7 +20,6 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('tipo_cadastro', 10);
-            $table->unsignedInteger('cadastro_id');
             $table->rememberToken();
             $table->timestamps();
         });

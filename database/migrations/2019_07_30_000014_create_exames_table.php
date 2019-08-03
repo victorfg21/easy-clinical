@@ -14,7 +14,7 @@ class CreateExamesTable extends Migration
     public function up()
     {
         Schema::create('exames', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('nome');
             $table->unsignedInteger('exame_metodo_id');
             $table->foreign('exame_metodo_id')->references('id')->on('exame_metodos');

@@ -15,9 +15,9 @@ class CreateReservasMarcacoesConsultasTable extends Migration
     {
         Schema::create('reservas_marcacoes_consultas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('profissional_id');
+            $table->unsignedBigInteger('profissional_id');
             $table->foreign('profissional_id')->references('id')->on('profissionais');
-            $table->unsignedInteger('paciente_id');
+            $table->unsignedBigInteger('paciente_id');
             $table->foreign('paciente_id')->references('id')->on('pacientes');
             $table->date('data_consulta');
             $table->time('horario_consulta');

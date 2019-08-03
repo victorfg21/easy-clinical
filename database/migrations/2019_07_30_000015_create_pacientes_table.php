@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientesTable extends Migration
+class CreatePacientesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -29,7 +29,9 @@ class CreateClientesTable extends Migration
             $table->string('cidade', 150);
             $table->string('estado', 2);
             $table->string('cep', 8)->nullable();
-            $table->unsignedInteger('foto_id')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('foto_id')->nullable();
             $table->foreign('foto_id')->references('id')->on('fotos');
             $table->timestamps();
         });

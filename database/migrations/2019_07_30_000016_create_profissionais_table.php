@@ -18,8 +18,8 @@ class CreateProfissionaisTable extends Migration
             $table->string('nome', 150);
             $table->string('rg', 30);
             $table->string('cpf', 11);
-            $table->string('conselho', 30);
-            $table->string('numero_registro', 30);
+            $table->string('conselho', 30)->nullable();
+            $table->string('numero_registro', 30)->nullable();
             $table->date('dt_nasc');
             $table->string('sexo', 1);
             $table->string('celular', 11);
@@ -31,7 +31,9 @@ class CreateProfissionaisTable extends Migration
             $table->string('cidade', 150);
             $table->string('estado', 2);
             $table->string('cep', 8)->nullable();
-            $table->unsignedInteger('foto_id')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('foto_id')->nullable();
             $table->foreign('foto_id')->references('id')->on('fotos');
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ class CreateExameMateriaisTable extends Migration
     public function up()
     {
         Schema::create('exame_materiais', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('nome');
             $table->timestamps();
         });

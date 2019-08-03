@@ -15,13 +15,13 @@ class CreateConsultasTable extends Migration
     {
         Schema::create('consultas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('profissional_id');
+            $table->unsignedBigInteger('profissional_id');
             $table->foreign('profissional_id')->references('id')->on('profissionais');
-            $table->unsignedInteger('paciente_id');
+            $table->unsignedBigInteger('paciente_id');
             $table->foreign('paciente_id')->references('id')->on('pacientes');
-            $table->unsignedInteger('solicitacao_exame_id')->nullable();
+            $table->unsignedBigInteger('solicitacao_exame_id')->nullable();
             $table->foreign('solicitacao_exame_id')->references('id')->on('solicitacoes_exames');
-            $table->unsignedInteger('receita_id')->nullable();
+            $table->unsignedBigInteger('receita_id')->nullable();
             $table->foreign('receita_id')->references('id')->on('receitas');
             $table->date('data_consulta');
             $table->time('horario_consulta');

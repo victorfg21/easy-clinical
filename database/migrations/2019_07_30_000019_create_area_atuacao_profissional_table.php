@@ -15,10 +15,10 @@ class CreateAreaAtuacaoProfissionalTable extends Migration
     {
         Schema::create('area_atuacao_profissional', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('profissional_id');
-            $table->foreign('profissional_id')->references('id')->on('profissionais');
+            $table->unsignedBigInteger('profissional_id');
+            $table->foreign('profissional_id')->references('id')->on('profissionais')->onDelete('cascade');
             $table->unsignedInteger('area_atuacao_id');
-            $table->foreign('area_atuacao_id')->references('id')->on('areas_atuacao');
+            $table->foreign('area_atuacao_id')->references('id')->on('areas_atuacao')->onDelete('cascade');
             $table->timestamps();
         });
     }
