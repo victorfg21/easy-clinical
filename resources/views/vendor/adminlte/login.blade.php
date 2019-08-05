@@ -9,12 +9,12 @@
 @section('body_class', 'login-page')
 
 @section('body')
-    <div class="login-box">
-        <div class="login-logo">
-            <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
-        </div>
+    <div class="login-box">        
         <!-- /.login-logo -->
         <div class="login-box-body">
+            <div class="login-logo">
+                <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
+            </div>
             <p class="login-box-msg">{{ trans('adminlte::adminlte.login_message') }}</p>
             <form action="{{ url(config('adminlte.login_url', 'login')) }}" method="post">
                 {!! csrf_field() !!}
@@ -59,12 +59,6 @@
                 <a href="{{ url(config('adminlte.password_reset_url', 'password/reset')) }}"
                    class="text-center"
                 >{{ trans('adminlte::adminlte.i_forgot_my_password') }}</a>
-                <br>
-                @if (config('adminlte.register_url', 'register'))
-                    <a href="{{ url(config('adminlte.register_url', 'register')) }}"
-                       class="text-center"
-                    >{{ trans('adminlte::adminlte.register_a_new_membership') }}</a>
-                @endif
             </div>
         </div>
         <!-- /.login-box-body -->

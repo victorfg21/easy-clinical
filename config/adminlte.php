@@ -202,11 +202,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Novo',
-                    'url'  => 'admin/paciente/novo',
+                    'url'  => 'admin/pacientes/novo',
                 ],
                 [
                     'text' => 'Editar',
-                    'url'  => 'admin/paciente',
+                    'url'  => 'admin/pacientes',
                 ],
             ],
         ],

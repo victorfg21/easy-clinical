@@ -20,6 +20,7 @@ class UserTableSeeder extends Seeder
         $manager->name = 'Administrador';
         $manager->email = 'admin@mail.com';
         $manager->password = bcrypt('123@Mudar');
+        $manager->tipo_cadastro = 'A';
         $manager->save();
         //$manager->roles()->attach($role_manager);
     }

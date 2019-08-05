@@ -126,6 +126,51 @@
         </div>
         <!-- /.content-wrapper -->
 
+        <!-- Modal CRUD -->
+        <div class="modal fade" id="modal_CRUD" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btnSave" id="btnSave">Salvar</button>
+                        <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal" id="btnClose">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal CRUD -->
+        <div class="modal fade" id="modal_Large" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btnSave" id="btnSaveLarge">Salvar</button>
+                        <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal" id="btnCloseLarge">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Mensagens (Erro, Sucesso...) -->
+        <div class="modal fade" id="modalMensagens" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>    
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- ./wrapper -->
 @stop
@@ -134,4 +179,5 @@
     <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
     @stack('js')
     @yield('js')
+    <script src="{{ asset('js/funcoes.js') }}" ></script>
 @stop
