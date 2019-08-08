@@ -1,11 +1,7 @@
 @extends('adminlte::page')
 
-@section('title', 'AdminLTE')
+@section('title', 'eClinical')
 
 @section('content_header')
-    <h1>Dashboard</h1>
-@stop
-
-@section('content')
-    <p>You are logged in!</p>
+    <h1>Seja bem vindo!</h1>
 @stop

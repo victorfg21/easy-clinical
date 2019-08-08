@@ -70,12 +70,9 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
 @endif
 
-<!-- SweetAlert -->
-<script src="sweetalert2.min.js"></script>
 <!--JavaScript do Sistema-->
 <script src="{{ asset('js/cep.js') }}"></script>
 <script src="{{ asset('js/mascaraform.js') }}"></script>
-<script src="{{ asset('js/datatable-pesquisa.js') }}"></script>
 
 @yield('adminlte_js')
 

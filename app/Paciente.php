@@ -65,14 +65,14 @@ class Paciente extends Model
             foreach ($pacientes as $paciente)
             {
                 //$show =  route('admin.pacientes.editar',$paciente->id);
-                $edit =  route('admin.pacientes.atualizar',$paciente->id);
-                
+                $edit =  route('admin.pacientes.edit',$paciente->id);
+                    
                 $nestedData['id'] = $paciente->id;
                 $nestedData['nome'] = $paciente->nome;
                 $nestedData['cpf'] = $paciente->cpf;
                 $nestedData['ih'] = $paciente->ih;
-                $nestedData['editar'] = "<a href='#' title='Editar Paciente' 
-                                          onclick=\"modalBootstrap('{$edit}', 'Editar Paciente', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>";
+                $nestedData['action'] = "<a href='#' title='Editar Paciente' 
+                                          onclick=\"modalBootstrap('{$edit}', 'Editar Paciente', '#modal_Large', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>";
                 
                 $data[] = $nestedData;
             }

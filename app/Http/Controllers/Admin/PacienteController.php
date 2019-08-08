@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Paciente;
 use App\User;
-use Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class PacienteController extends Controller
 {
@@ -45,7 +46,6 @@ class PacienteController extends Controller
             'nome' => 'required|max:150',
             'rg' => 'required|max:20|unique:pacientes',
             'cpf' => 'required|unique:pacientes',
-            'ih' => 'required|unique:pacientes',
             'dt_nasc' => 'required',
             'sexo' => 'required',
             'email' => 'email|max:200',
@@ -57,27 +57,40 @@ class PacienteController extends Controller
             'cidade' => 'required|max:150',
             'estado' => 'required|max:2',
         ], $mensagensErro = [
-            'required' => 'Campo obrigatório',
+            'required' => strtoupper(':attribute') . ' Campo obrigatório',
             'max' => 'Quantidade caracteres excedido',
-            'unique' => 'O :attribute já está cadastrado!\nNão é permitido registro duplicado',
-        ]); 
+            'unique' => 'O ' . strtoupper(':attribute') . ' já está cadastrado! Não é permitido registro duplicado',
+        ]);
 
-        $dados = $req->all();
-        $dados['cep'] = str_replace(".", "", str_replace("-", "", $dados['cep']));
-        $dados['cpf'] = str_replace(".", "",str_replace("-", "", $dados['cpf']));
-        $dados['telefone'] = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados['telefone']))));
-        $dados['celular'] = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados['celular']))));
-
+        $dados = new Paciente;
+        $dados->nome = $req->input('nome');
+        $dados->rg = $req->input('rg');
+        $dados->cpf = $req->input('cpf');
+        $dados->ih = str_pad(DB::table('pacientes')->max('ih') + 1, 7, "0", STR_PAD_LEFT);
+        $dados->dt_nasc = date("Ymd", strtotime($req->input('dt_nasc')));
+        $dados->sexo = $req->input('sexo');
+        $dados->celular = $req->input('celular');
+        $dados->numero = $req->input('numero');
+        $dados->endereco = $req->input('endereco');
+        $dados->complemento = $req->input('complemento');
+        $dados->bairro = $req->input('bairro');
+        $dados->cidade = $req->input('cidade');
+        $dados->estado = $req->input('estado');
+        $dados->cep = $req->input('cep');
+        
+        $dados->cep = str_replace(".", "", str_replace("-", "", $dados->cep));
+        $dados->cpf = str_replace(".", "",str_replace("-", "", $dados->cpf));
+        $dados->celular = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->celular))));
+        
         $usuario = new User;
-        $usuario->name = $dados['nome'];
-        $usuario->email = $dados['email'];
-        $usuario->tipo_cadastro = '1';
-        $usuario->password = Hash::make($dados['ih']);
-        $idUsuario = User::create($usuario);
-
-        $dados['user_id'] = $idUsuario;
-        Paciente::create($dados);
-
+        $usuario->name = $req->input('nome');
+        $usuario->email = $req->input('email');
+        $usuario->tipo_cadastro = 'P';
+        $usuario->password = Hash::make($dados->ih);
+        $usuario->save();
+                
+        $dados->user_id = DB::table('users')->max('id');        
+        $dados->save();
         return "Cadastrado com sucesso!";
     }
 
@@ -85,15 +98,15 @@ class PacienteController extends Controller
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        $paciente = Paciente::find($id);
-        return view('admin.pacientes.show', compact('paciente'));
+        $registro = Paciente::find($id);
+        return view('admin.pacientes.show', compact('registro'));
     }
     public function edit($id)
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        $paciente = Paciente::find($id);
-        return view('admin.pacientes.edit', compact('paciente'));
+        $registro = Paciente::find($id);
+        return view('admin.pacientes.edit', compact('registro'));
     }
     public function update(Request $req, $id)
     {
@@ -105,10 +118,8 @@ class PacienteController extends Controller
                 'nome' => 'required|max:150',
                 'rg' => 'required|max:20|unique:pacientes',
                 'cpf' => 'required|unique:pacientes',
-                'ih' => 'required|unique:pacientes',
                 'dt_nasc' => 'required',
                 'sexo' => 'required',
-                'email' => 'email|max:200',
                 'celular' => 'required',
                 'cep' => 'required',
                 'endereco' => 'required|max:150',
@@ -117,19 +128,32 @@ class PacienteController extends Controller
                 'cidade' => 'required|max:150',
                 'estado' => 'required|max:2',
             ], $mensagensErro = [
-                'required' => 'Campo obrigatório',
+                'required' => strtoupper(':attribute') . ' Campo obrigatório',
                 'max' => 'Quantidade caracteres excedido',
-                'unique' => 'O :attribute já está cadastrado!\nNão é permitido registro duplicado',
+                'unique' => 'O ' . strtoupper(':attribute') . ' já está cadastrado! Não é permitido registro duplicado',
             ]); 
-    
-            $dados = $req->all();
-            $dados['cep'] = str_replace(".", "", str_replace("-", "", $dados['cep']));
-            $dados['cpf'] = str_replace(".", "",str_replace("-", "", $dados['cpf']));
-            $dados['telefone'] = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados['telefone']))));
-            $dados['celular'] = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados['celular']))));
 
-            Paciente::find($id)->update($dados);
+            $dados = new Paciente;
+            $dados->nome = $req->input('nome');
+            $dados->rg = $req->input('rg');
+            $dados->cpf = $req->input('cpf');
+            $dados->ih = $req->input('ih');
+            $dados->dt_nasc = $req->input('dt_nasc');
+            $dados->sexo = $req->input('sexo');
+            $dados->celular = $req->input('celular');
+            $dados->numero = $req->input('numero');
+            $dados->endereco = $req->input('endereco');
+            $dados->complemento = $req->input('complemento');
+            $dados->bairro = $req->input('bairro');
+            $dados->cidade = $req->input('cidade');
+            $dados->estado = $req->input('estado');
+            $dados->cep = $req->input('cep');
 
+            $dados->cep = str_replace(".", "", str_replace("-", "", $dados->cep));
+            $dados->cpf = str_replace(".", "",str_replace("-", "", $dados->cpf));
+            $dados->celular = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->celular))));
+
+            $dados->update();
             return "Alterado com sucesso!";
         }
         catch(Exception $e)

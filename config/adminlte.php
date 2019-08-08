@@ -199,16 +199,7 @@ return [
             'text' => 'Paciente',
             'icon' => 'ambulance',
             'role'    => 'superadministrator',
-            'submenu' => [
-                [
-                    'text' => 'Novo',
-                    'url'  => 'admin/pacientes/novo',
-                ],
-                [
-                    'text' => 'Editar',
-                    'url'  => 'admin/pacientes',
-                ],
-            ],
+            'url'  => 'admin/pacientes',
         ],
         [//Exame
             'text' => 'Exame',

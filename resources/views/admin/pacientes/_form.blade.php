@@ -3,6 +3,13 @@
         <h3 class="box-title">Dados Gerais</h3>
     </div>
     <div class="box-body">
+        <div class="form-group {{ $errors->has('ih') ? 'has-error' : '' }}">
+            <label for="IH" class="control-label">Identidade Hospitalar</label>
+            <input for="IH" class="form-control ih" type="text" name="ih" value="{{ isset($registro->ih) ? $registro->ih : old('ih') }}" disabled/>
+            @if($errors->has('ih'))
+                <small for="IH" class="control-label">{{ $errors->first('ih') }}</small>
+            @endif
+        </div>
         <div class="form-group {{ $errors->has('nome') ? 'has-error' : '' }}">
             <label for="Nome" class="control-label">Nome</label>
             <input for="Nome" class="form-control" type="text" name="nome" value="{{ isset($registro->nome) ? $registro->nome : old('nome') }}" />
@@ -24,13 +31,6 @@
                 <small for="CPF" class="control-label">{{ $errors->first('cpf') }}</small>
             @endif
         </div>
-        <div class="form-group {{ $errors->has('ih') ? 'has-error' : '' }}">
-            <label for="IH" class="control-label">Identidade Hospitalar</label>
-            <input for="IH" class="form-control ih" type="text" name="ih" value="{{ isset($registro->ih) ? $registro->ih : old('ih') }}" />
-            @if($errors->has('ih'))
-                <small for="IH" class="control-label">{{ $errors->first('ih') }}</small>
-            @endif
-        </div>
         <div class="form-group {{ $errors->has('dt_nasc') ? 'has-error' : '' }}">
             <label for="Nasc" class="control-label">Data de Nascimento</label>
             <input for="Nasc" class="form-control data" type="text" name="dt_nasc" value="{{ isset($registro->dt_nasc) ? date('d-m-Y', strtotime($registro->dt_nasc)) : old('dt_nasc') }}" />
@@ -40,7 +40,7 @@
         </div>
         <div class="form-group {{ $errors->has('sexo') ? 'has-error' : '' }}">
             <label for="Sexo" class="control-label">Sexo</label>
-            <select for="Sexo" class="form-control js-example-basic-single" name="sexo" >                
+            <select for="Sexo" class="form-control js-example-responsive" name="sexo" >                
                 <option value="M" {{ isset($registro->sexo) ? ($registro->sexo === 'M' ? 'selected' : '' ) : '' }}>Masculino</option>
                 <option value="F" {{ isset($registro->sexo) ? ($registro->sexo === 'F' ? 'selected' : '' ) : '' }}>Feminino</option>
             </select>
@@ -53,13 +53,6 @@
             <input for="Email" class="form-control" type="text" name="email" value="{{ isset($registro->email) ? $registro->email : old('email') }}"/>
             @if($errors->has('email'))
                 <small for="Email" class="control-label">{{ $errors->first('email') }}</small>
-            @endif
-        </div>
-        <div class="form-group {{ $errors->has('telefone') ? 'has-error' : '' }}">
-            <label for="Telefone" class="control-label">Telefone Fixo</label>
-            <input for="Telefone" class="form-control telFixo" type="text" name="telefone" value="{{ isset($registro->telefone) ? $registro->telefone : old('telefone') }}"/>
-            @if($errors->has('telefone'))
-                <small for="Telefone" class="control-label">{{ $errors->first('telefone') }}</small>
             @endif
         </div>
         <div class="form-group {{ $errors->has('celular') ? 'has-error' : '' }}">
@@ -101,7 +94,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <div class="form-group {{ $errors->has('numero') ? 'has-error' : '' }}">
                     <label for="Numero" class="control-label">Número</label>
                     <input for="Numero" class="form-control" type="text" name="numero" value="{{ isset($registro->numero) ? $registro->numero : old('numero') }}" />
@@ -110,7 +103,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group {{ $errors->has('complemento') ? 'has-error' : '' }}">
                     <label for="Complemento" class="control-label">Complemento</label>
                     <input for="Complemento" class="form-control" type="text" name="complemento" value="{{ isset($registro->complemento) ? $registro->complemento : old('complemento') }}"/>
@@ -130,7 +123,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="form-group {{ $errors->has('cidade') ? 'has-error' : '' }}">
                     <label for="Cidade" class="control-label">Cidade</label>
                     <input for="Cidade" class="form-control" type="text" name="cidade" value="{{ isset($registro->cidade) ? $registro->cidade : old('cidade') }}" />
@@ -139,11 +132,11 @@
                     @endif
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group {{ $errors->has('estado') ? 'has-error' : '' }}">
                     <label for="UF" class="control-label">UF</label>
                     <input type="text" name="hiddenEstadoSigla" value="{{ isset($registro->estado) ? $registro->estado : old('estado') }}" hidden>
-                    <select id="comboEstado" for="UF" name="estado" class="form-control js-example-basic-single"></select>
+                    <select id="comboEstado" for="UF" name="estado" class="form-control js-example-responsive"></select>
                     @if($errors->has('estado'))
                         <small for="UF" class="control-label">{{ $errors->first('estado') }}</small>
                     @endif
