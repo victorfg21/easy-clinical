@@ -43,36 +43,43 @@ class PacienteController extends Controller
 
     public function store(PacienteRequest $req)
     {
-        $dados = new Paciente;
-        $dados->nome = $req->input('nome');
-        $dados->rg = $req->input('rg');
-        $dados->cpf = $req->input('cpf');
-        $dados->ih = str_pad(DB::table('pacientes')->max('ih') + 1, 7, "0", STR_PAD_LEFT);
-        $dados->dt_nasc = date("Ymd", strtotime($req->input('dt_nasc')));
-        $dados->sexo = $req->input('sexo');
-        $dados->celular = $req->input('celular');
-        $dados->numero = $req->input('numero');
-        $dados->endereco = $req->input('endereco');
-        $dados->complemento = $req->input('complemento');
-        $dados->bairro = $req->input('bairro');
-        $dados->cidade = $req->input('cidade');
-        $dados->estado = $req->input('estado');
-        $dados->cep = $req->input('cep');
+        try {
+            DB::beginTransaction();
+            $dados = new Paciente;
+            $dados->nome = $req->input('nome');
+            $dados->rg = $req->input('rg');
+            $dados->cpf = $req->input('cpf');
+            $dados->ih = str_pad(DB::table('pacientes')->max('ih') + 1, 7, "0", STR_PAD_LEFT);
+            $dados->dt_nasc = date("Ymd", strtotime($req->input('dt_nasc')));
+            $dados->sexo = $req->input('sexo');
+            $dados->celular = $req->input('celular');
+            $dados->numero = $req->input('numero');
+            $dados->endereco = $req->input('endereco');
+            $dados->complemento = $req->input('complemento');
+            $dados->bairro = $req->input('bairro');
+            $dados->cidade = $req->input('cidade');
+            $dados->estado = $req->input('estado');
+            $dados->cep = $req->input('cep');
 
-        $dados->cep = str_replace(".", "", str_replace("-", "", $dados->cep));
-        $dados->cpf = str_replace(".", "",str_replace("-", "", $dados->cpf));
-        $dados->celular = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->celular))));
+            $dados->cep = str_replace(".", "", str_replace("-", "", $dados->cep));
+            $dados->cpf = str_replace(".", "", str_replace("-", "", $dados->cpf));
+            $dados->celular = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->celular))));
 
-        $usuario = new User;
-        $usuario->name = $req->input('nome');
-        $usuario->email = $req->input('email');
-        $usuario->tipo_cadastro = 'P';
-        $usuario->password = Hash::make($dados->ih);
-        $usuario->save();
+            $usuario = new User;
+            $usuario->name = $req->input('nome');
+            $usuario->email = $req->input('email');
+            $usuario->tipo_cadastro = 'P';
+            $usuario->password = Hash::make($dados->ih);
+            $usuario->save();
 
-        $dados->user_id = DB::table('users')->max('id');
-        $dados->save();
-        return "Cadastrado com sucesso!";
+            $dados->user_id = DB::table('users')->max('id');
+            $dados->save();
+            return "Cadastrado com sucesso!";
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            return "Ocorreu um erro ao cadastrar.";
+        }
     }
 
     public function show($id)
@@ -82,6 +89,7 @@ class PacienteController extends Controller
         $registro = Paciente::find($id);
         return view('admin.pacientes.show', compact('registro'));
     }
+
     public function edit($id)
     {
         //if (Auth::user()->authorizeRoles() == false)
@@ -89,10 +97,10 @@ class PacienteController extends Controller
         $registro = Paciente::find($id);
         return view('admin.pacientes.edit', compact('registro'));
     }
+    
     public function update(PacienteRequest $req, $id)
     {
-        try
-        {
+        try {
             //if (Auth::user()->authorizeRoles() == false)
             //    abort(403, 'Você não possui autorização para realizar essa ação.');
 
@@ -113,14 +121,12 @@ class PacienteController extends Controller
             $dados->cep = $req->input('cep');
 
             $dados->cep = str_replace(".", "", str_replace("-", "", $dados->cep));
-            $dados->cpf = str_replace(".", "",str_replace("-", "", $dados->cpf));
+            $dados->cpf = str_replace(".", "", str_replace("-", "", $dados->cpf));
             $dados->celular = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->celular))));
 
             $dados->update();
             return "Alterado com sucesso!";
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             return "Ocorreu um erro ao alterar!";
         }
     }

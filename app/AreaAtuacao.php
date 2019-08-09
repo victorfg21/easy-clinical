@@ -50,10 +50,14 @@ class AreaAtuacao extends Model
             foreach ($areasAtuacao as $areaAtuacao)
             {
                 $edit =  route('admin.areas-atuacao.edit', $areaAtuacao->id);
+                $delete =  route('admin.areas-atuacao.delete', $areaAtuacao->id);
 
                 $nestedData['nome'] = $areaAtuacao->nome;
                 $nestedData['action'] = "<a href='#' title='Editar Área de Atuação'
-                                          onclick=\"modalBootstrap('{$edit}', 'Editar Área de Atuação', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>";
+                                                onclick=\"modalBootstrap('{$edit}', 'Editar Área de Atuação', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>
+                                                &emsp;<a href='#' title='Excluir Área de Atuação'
+                                                onclick=\"modalBootstrap('{$delete}', 'Excluir Área de Atuação', '#modal_CRUD', '', 'true', 'true', 'false', 'Sim', 'Não')\"><span class='glyphicon glyphicon-trash'></span></a>";
+
 
                 $data[] = $nestedData;
             }

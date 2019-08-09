@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AreaAtuacaoRequest;
 use App\Http\Controllers\Controller;
 use App\AreaAtuacao;
+use Illuminate\Support\Facades\DB;
 
 class AreaAtuacaoController extends Controller
 {
@@ -53,6 +54,7 @@ class AreaAtuacaoController extends Controller
         $registro = AreaAtuacao::find($id);
         return view('admin.areas-atuacao.show', compact('registro'));
     }
+
     public function edit($id)
     {
         //if (Auth::user()->authorizeRoles() == false)
@@ -60,6 +62,7 @@ class AreaAtuacaoController extends Controller
         $registro = AreaAtuacao::find($id);
         return view('admin.areas-atuacao.edit', compact('registro'));
     }
+
     public function update(AreaAtuacaoRequest $req, $id)
     {
         try
@@ -76,6 +79,30 @@ class AreaAtuacaoController extends Controller
         catch(Exception $e)
         {
             return "Ocorreu um erro ao alterar!";
+        }
+    }
+
+    public function delete(Request $request, $id)
+    {
+        //if (Auth::user()->authorizeRoles() == false)
+        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        $areaAtuacao = AreaAtuacao::find($id);
+        return view ('admin.areas-atuacao.delete', compact('areaAtuacao'));
+    }
+
+    public function confirmardelete($id)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $areaAtuacao = AreaAtuacao::where('id', '=', $id)->delete();
+            DB::commit();
+            return "Removido com sucesso!";
+        }
+        catch(Exception $e)
+        {
+            DB::rollback();
+            return "Ocorreu um erro ao remover.";
         }
     }
 }

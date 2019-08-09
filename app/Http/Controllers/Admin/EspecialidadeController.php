@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\EspecialidadeRequest;
 use App\Http\Controllers\Controller;
 use App\Especialidade;
+use Illuminate\Support\Facades\DB;
 
 class EspecialidadeController extends Controller
 {
@@ -53,6 +54,7 @@ class EspecialidadeController extends Controller
         $registro = Especialidade::find($id);
         return view('admin.especialidades.show', compact('registro'));
     }
+
     public function edit($id)
     {
         //if (Auth::user()->authorizeRoles() == false)
@@ -60,6 +62,7 @@ class EspecialidadeController extends Controller
         $registro = Especialidade::find($id);
         return view('admin.especialidades.edit', compact('registro'));
     }
+
     public function update(EspecialidadeRequest $req, $id)
     {
         try
@@ -76,6 +79,30 @@ class EspecialidadeController extends Controller
         catch(Exception $e)
         {
             return "Ocorreu um erro ao alterar!";
+        }
+    }
+
+    public function delete(Request $request, $id)
+    {
+        //if (Auth::user()->authorizeRoles() == false)
+        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        $especialidade = Especialidade::find($id);
+        return view ('admin.especialidades.delete', compact('especialidade'));
+    }
+
+    public function confirmardelete($id)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $especialidade = Especialidade::where('id', '=', $id)->delete();
+            DB::commit();
+            return "Removido com sucesso!";
+        }
+        catch(Exception $e)
+        {
+            DB::rollback();
+            return "Ocorreu um erro ao remover.";
         }
     }
 }

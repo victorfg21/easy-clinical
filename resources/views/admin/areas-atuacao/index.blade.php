@@ -18,7 +18,7 @@
                 <thead>
                     <tr>
                         <th class="col-xs-6">Descrição</th>
-                        <th class="col-xs-1">Editar</th>
+                        <th class="col-xs-1"></th>
                     </tr>
                 </thead>
                 <tbody>

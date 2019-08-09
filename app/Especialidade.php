@@ -50,11 +50,13 @@ class Especialidade extends Model
             foreach ($especialidades as $especialidade)
             {
                 $edit =  route('admin.especialidades.edit', $especialidade->id);
+                $delete =  route('admin.especialidades.delete', $especialidade->id);
 
                 $nestedData['nome'] = $especialidade->nome;
                 $nestedData['action'] = "<a href='#' title='Editar Especialidades'
-                                          onclick=\"modalBootstrap('{$edit}', 'Editar Especialidades', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>";
-
+                                        onclick=\"modalBootstrap('{$edit}', 'Editar Especialidades', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>
+                                        &emsp;<a href='#' title='Excluir Especialidades'
+                                        onclick=\"modalBootstrap('{$delete}', 'Excluir Especialidades', '#modal_CRUD', '', 'true', 'true', 'false', 'Sim', 'Não')\"><span class='glyphicon glyphicon-trash'></span></a>";
                 $data[] = $nestedData;
             }
         }

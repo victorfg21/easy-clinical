@@ -47,6 +47,7 @@ Route::get('admin/especialidades/edit/{id}', ['as' => 'admin.especialidades.edit
 Route::put('admin/especialidades/update/{id}', ['as' => 'admin.especialidades.update', 'uses' => 'Admin\EspecialidadeController@update']);
 Route::get('admin/especialidades/listarespecialidades', ['as' => 'admin.especialidades.listarespecialidades', 'uses' => 'Admin\EspecialidadeController@listarespecialidades']);
 Route::get('admin/especialidades/delete/{id}', ['as' => 'admin.especialidades.delete', 'uses' => 'Admin\EspecialidadeController@delete']);
+Route::post('admin/especialidades/confirmardelete/{id}', ['as' => 'admin.especialidades.confirmardelete', 'uses' => 'Admin\EspecialidadeController@confirmardelete']);
 
 //Area Atuações
 Route::get('admin/areas-atuacao', ['as' => 'admin.areas-atuacao', 'uses' => 'Admin\AreaAtuacaoController@index']);
@@ -56,3 +57,4 @@ Route::get('admin/areas-atuacao/edit/{id}', ['as' => 'admin.areas-atuacao.edit',
 Route::put('admin/areas-atuacao/update/{id}', ['as' => 'admin.areas-atuacao.update', 'uses' => 'Admin\AreaAtuacaoController@update']);
 Route::get('admin/areas-atuacao/listarareasatuacao', ['as' => 'admin.areas-atuacao.listarareasatuacao', 'uses' => 'Admin\AreaAtuacaoController@listarareasatuacao']);
 Route::get('admin/areas-atuacao/delete/{id}', ['as' => 'admin.areas-atuacao.delete', 'uses' => 'Admin\AreaAtuacaoController@delete']);
+Route::post('admin/areas-atuacao/confirmardelete/{id}', ['as' => 'admin.areas-atuacao.confirmardelete', 'uses' => 'Admin\AreaAtuacaoController@confirmardelete']);
