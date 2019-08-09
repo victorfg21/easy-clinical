@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'EasyClinical',
+    'title' => 'eClinical',
 
     'title_prefix' => '',
 
@@ -151,47 +151,27 @@ return [
             ],
         ],
         [//Profissional
-            'text' => 'Profissional',
+            'text' => 'Cadastro de Profissional',
             'icon' => 'user-md',
             'role'    => 'superadministrator',
             'submenu' => [
-                [
-                    'text' => 'Novo',
-                    'url'  => 'admin/profissional/novo',
-                ],
-                [
-                    'text' => 'Editar',
-                    'url'  => 'admin/profissional',
+                [//Profissional
+                    'text' => 'Profissional',
+                    'icon' => 'user-md',
+                    'role'    => 'superadministrator',
+                    'url'  => 'admin/profissionais',
                 ],
                 [//Especialidade
                     'text' => 'Especialidade',
                     'icon' => 'graduation-cap',
                     'role'    => 'superadministrator',
-                    'submenu' => [
-                        [
-                            'text' => 'Novo',
-                            'url'  => 'admin/especialidade/novo',
-                        ],
-                        [
-                            'text' => 'Editar',
-                            'url'  => 'admin/especialidade',
-                        ],
-                    ],
+                    'url'  => 'admin/especialidades',
                 ],
                 [//Área de Atuação
                     'text' => 'Área de Atuação',
                     'icon' => 'hotel ',
                     'role'    => 'superadministrator',
-                    'submenu' => [
-                        [
-                            'text' => 'Novo',
-                            'url'  => 'admin/area-atuacao/novo',
-                        ],
-                        [
-                            'text' => 'Editar',
-                            'url'  => 'admin/area-atuacao',
-                        ],
-                    ],
+                    'url'  => 'admin/areas-atuacao',
                 ],
             ],
         ],
@@ -220,16 +200,7 @@ return [
             'text' => 'Medicamento',
             'icon' => 'medkit',
             'role'    => 'superadministrator',
-            'submenu' => [
-                [
-                    'text' => 'Novo',
-                    'url'  => 'admin/medicamento/novo',
-                ],
-                [
-                    'text' => 'Editar',
-                    'url'  => 'admin/medicamento',
-                ],
-            ],
+            'url'  => 'admin/medicamentos',
         ],
         'OPERAÇÔES',
         [//Atendimento
@@ -269,12 +240,6 @@ return [
                     'url'  => 'medico/emitir-receita',
                 ],
             ],
-        ],
-        [//Farmácia
-            'text' => 'Farmácia',
-            'icon' => 'hospital-o',
-            'role'    => 'farmaceutico',
-            'url'  => 'clinica/farmacia',
         ],
     ],
 

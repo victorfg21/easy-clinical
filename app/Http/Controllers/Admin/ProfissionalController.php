@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\PacienteRequest;
+use App\Http\Requests\ProfissionalRequest;
 use App\Http\Controllers\Controller;
-use App\Paciente;
+use App\Profissional;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
-class PacienteController extends Controller
+class ProfissionalController extends Controller
 {
     //construtor
     public function __construct()
@@ -22,32 +22,32 @@ class PacienteController extends Controller
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        $pacientes = Paciente::orderBy('nome')->get();
-        return view('admin.pacientes.index', compact('pacientes'));
+        $profissionais = Profissional::orderBy('nome')->get();
+        return view('admin.profissionais.index', compact('profissionais'));
     }
     //Método que lista todos os usuarios no DataTable da Tela
-    public function listarpacientes(Request $request)
+    public function listarprofissionais(Request $request)
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        $pacientes = new Paciente;
-        return $pacientes->ListarPacientes($request);
+        $profissionais = new Profissional;
+        return $profissionais->ListarProfissionais($request);
     }
 
     public function create()
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        return view('admin.pacientes.create');
+        return view('admin.profissionais.create');
     }
 
-    public function store(PacienteRequest $req)
+    public function store(ProfissionalRequest $req)
     {
-        $dados = new Paciente;
+        $dados = new Profissional;
         $dados->nome = $req->input('nome');
         $dados->rg = $req->input('rg');
         $dados->cpf = $req->input('cpf');
-        $dados->ih = str_pad(DB::table('pacientes')->max('ih') + 1, 7, "0", STR_PAD_LEFT);
+        $dados->ih = str_pad(DB::table('profissionais')->max('ih') + 1, 7, "0", STR_PAD_LEFT);
         $dados->dt_nasc = date("Ymd", strtotime($req->input('dt_nasc')));
         $dados->sexo = $req->input('sexo');
         $dados->celular = $req->input('celular');
@@ -79,24 +79,24 @@ class PacienteController extends Controller
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        $registro = Paciente::find($id);
-        return view('admin.pacientes.show', compact('registro'));
+        $registro = Profissional::find($id);
+        return view('admin.profissionais.show', compact('registro'));
     }
     public function edit($id)
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        $registro = Paciente::find($id);
-        return view('admin.pacientes.edit', compact('registro'));
+        $registro = Profissional::find($id);
+        return view('admin.profissionais.edit', compact('registro'));
     }
-    public function update(PacienteRequest $req, $id)
+    public function update(ProfissionalRequest $req, $id)
     {
         try
         {
             //if (Auth::user()->authorizeRoles() == false)
             //    abort(403, 'Você não possui autorização para realizar essa ação.');
 
-            $dados = Paciente::find($id);
+            $dados = Profissional::find($id);
             $dados->nome = $req->input('nome');
             $dados->rg = $req->input('rg');
             $dados->cpf = $req->input('cpf');

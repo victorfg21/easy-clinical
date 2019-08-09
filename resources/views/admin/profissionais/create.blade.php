@@ -1,6 +1,6 @@
 <form id="frmPaciente">
     {{ csrf_field() }}
-    @include('admin.pacientes._form')
+    @include('admin.profissionais._form')
     <!-- DIV ERROS -->
     <div class="alert alert-danger print-error-msg" style="display:none">
         <ul></ul>
@@ -18,7 +18,7 @@
         $("#btnCloseLarge   ").css("pointer-events", "none");
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.pacientes.store') }}",
+            url: "{{ route('admin.profissionais.store') }}",
             data: form,
             success: function (data) {
 
@@ -30,7 +30,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblPacientes").DataTable().ajax.reload();
+                    $("#tblProfissionais").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
                 else {
@@ -58,7 +58,7 @@
         });
     });
     $('#modal_Large').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblPacientes").DataTable().ajax.reload();
+        $("#tblProfissionais").DataTable().ajax.reload();
     });
     function associate_errors(errors, $form)
     {

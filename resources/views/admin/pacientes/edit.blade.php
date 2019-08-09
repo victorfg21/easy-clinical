@@ -1,11 +1,11 @@
 <form id="frmPaciente">
     {{ csrf_field() }}
     <input type="hidden" name="_method" value="put"/>
+    @include('admin.pacientes._form')
     <!-- DIV ERROS -->
     <div class="alert alert-danger print-error-msg" style="display:none">
         <ul></ul>
     </div>
-    @include('admin.pacientes._form')    
 </form>
 
 <script src="{{ asset('js/cep.js') }}"></script>
@@ -23,12 +23,15 @@
             url: "{{ route('admin.pacientes.update', $registro->id) }}",
             data: form,
             success: function (data) {
- 
+
                 if (data == "Alterado com sucesso!") {
-                    $("#modalMensagens .modal-body").html(data);
-                    $("#modalMensagens .modal-title").html("Sucesso");
-                    $('#modalMensagens').modal('toggle');
-                    $('#modalMensagens').modal('show');
+                    Swal.fire({
+                        position: 'center',
+                        type: 'success',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                     $("#tblPacientes").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
@@ -46,6 +49,14 @@
             associate_errors(response['responseJSON']['errors'], $("#frmPaciente"));
             $("#btnSaveLarge").css("pointer-events", "");
             $("#btnCloseLarge").css("pointer-events", "");
+
+            Swal.fire({
+                position: 'center',
+                type: 'error',
+                title: "Erro ao atualizar paciente",
+                showConfirmButton: false,
+                timer: 1500
+            })
         });
     });
 
@@ -58,7 +69,7 @@
         $form.find('.form-group').removeClass('has-error').find('.help-text').text('');
         $('.print-error-msg').css('display','none');
         $(".print-error-msg").find("ul").html('');
-        
+
         $.each(errors, function (value, index) {
             $('.print-error-msg').css('display','block');
             var $group = $form.find('#' + value + '-group');

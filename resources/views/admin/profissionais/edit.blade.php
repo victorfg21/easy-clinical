@@ -1,6 +1,7 @@
 <form id="frmPaciente">
     {{ csrf_field() }}
-    @include('admin.pacientes._form')
+    <input type="hidden" name="_method" value="put"/>
+    @include('admin.profissionais._form')
     <!-- DIV ERROS -->
     <div class="alert alert-danger print-error-msg" style="display:none">
         <ul></ul>
@@ -14,23 +15,24 @@
     $("#btnSaveLarge").unbind("click").click(function (e) {
         e.preventDefault();
         var form = $("#frmPaciente").serialize();
+        console.log(form);
         $("#btnSaveLarge").css("pointer-events", "none");
         $("#btnCloseLarge   ").css("pointer-events", "none");
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.pacientes.store') }}",
+            url: "{{ route('admin.profissionais.update', $registro->id) }}",
             data: form,
             success: function (data) {
 
-                if (data == "Cadastrado com sucesso!") {
-                   Swal.fire({
-                        position: 'center ',
+                if (data == "Alterado com sucesso!") {
+                    Swal.fire({
+                        position: 'center',
                         type: 'success',
                         title: data,
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblPacientes").DataTable().ajax.reload();
+                    $("#tblProfissionais").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
                 else {
@@ -51,15 +53,17 @@
             Swal.fire({
                 position: 'center',
                 type: 'error',
-                title: "Erro ao cadastrar paciente",
+                title: "Erro ao atualizar paciente",
                 showConfirmButton: false,
                 timer: 1500
             })
         });
     });
+
     $('#modal_Large').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblPacientes").DataTable().ajax.reload();
+        $("#tblProfissionais").DataTable().ajax.reload();
     });
+
     function associate_errors(errors, $form)
     {
         $form.find('.form-group').removeClass('has-error').find('.help-text').text('');
