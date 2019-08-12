@@ -1,7 +1,6 @@
-<form id="frmPaciente">
+<form id="frmFabricante">
     {{ csrf_field() }}
-    <input type="hidden" name="_method" value="put"/>
-    @include('admin.pacientes._form')
+    @include('admin.fabricantes._form')
     <!-- DIV ERROS -->
     <div class="alert alert-danger print-error-msg" style="display:none">
         <ul></ul>
@@ -12,28 +11,27 @@
 <script src="{{ asset('js/mascaraform.js') }}"></script>
 
 <script>
-    $("#btnSaveLarge").unbind("click").click(function (e) {
+    $("#btnSave").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmPaciente").serialize();
-        console.log(form);
-        $("#btnSaveLarge").css("pointer-events", "none");
-        $("#btnCloseLarge").css("pointer-events", "none");
+        var form = $("#frmFabricante").serialize();
+        $("#btnSave").css("pointer-events", "none");
+        $("#btnClose").css("pointer-events", "none");
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.pacientes.update', $registro->id) }}",
+            url: "{{ route('admin.fabricantes.store') }}",
             data: form,
             success: function (data) {
 
-                if (data == "Alterado com sucesso!") {
-                    Swal.fire({
-                        position: 'center',
+                if (data == "Cadastrado com sucesso!") {
+                   Swal.fire({
+                        position: 'center ',
                         type: 'success',
                         title: data,
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblPacientes").DataTable().ajax.reload();
-                    $("#modal_Large").modal("hide");
+                    $("#tblFabricantes").DataTable().ajax.reload();
+                    $("#modal_CRUD").modal("hide");
                 }
                 else {
                     $("#modalMensagens .modal-body").html(data);
@@ -41,29 +39,27 @@
                     $('#modalMensagens').modal('toggle');
                     $('#modalMensagens').modal('show');
                 }
-                $("#btnSaveLarge").css("pointer-events", "");
-                $("#btnCloseLarge").css("pointer-events", "");
+                $("#btnSave").css("pointer-events", "");
+                $("#btnClose").css("pointer-events", "");
             }
         }).fail(function (response){
             console.log(response);
-            associate_errors(response['responseJSON']['errors'], $("#frmPaciente"));
-            $("#btnSaveLarge").css("pointer-events", "");
-            $("#btnCloseLarge").css("pointer-events", "");
+            associate_errors(response['responseJSON']['errors'], $("#frmFabricante"));
+            $("#btnSave").css("pointer-events", "");
+            $("#btnClose").css("pointer-events", "");
 
             Swal.fire({
                 position: 'center',
                 type: 'error',
-                title: "Erro ao atualizar paciente",
+                title: "Erro ao cadastrar fabricante",
                 showConfirmButton: false,
                 timer: 1500
             })
         });
     });
-
-    $('#modal_Large').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblPacientes").DataTable().ajax.reload();
+    $('#modal_CRUD').unbind("hide.bs.modal").on('hide.bs.modal', function () {
+        $("#tblFabricantes").DataTable().ajax.reload();
     });
-
     function associate_errors(errors, $form)
     {
         $form.find('.form-group').removeClass('has-error').find('.help-text').text('');

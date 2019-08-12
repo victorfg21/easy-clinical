@@ -1,4 +1,4 @@
-<form id="frmPaciente">
+<form id="frmProfissional">
     {{ csrf_field() }}
     <input type="hidden" name="_method" value="put"/>
     @include('admin.profissionais._form')
@@ -14,10 +14,10 @@
 <script>
     $("#btnSaveLarge").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmPaciente").serialize();
+        var form = $("#frmProfissional").serialize();
         console.log(form);
         $("#btnSaveLarge").css("pointer-events", "none");
-        $("#btnCloseLarge   ").css("pointer-events", "none");
+        $("#btnCloseLarge").css("pointer-events", "none");
         $.ajax({
             type: "POST",
             url: "{{ route('admin.profissionais.update', $registro->id) }}",
@@ -46,17 +46,9 @@
             }
         }).fail(function (response){
             console.log(response);
-            associate_errors(response['responseJSON']['errors'], $("#frmPaciente"));
+            associate_errors(response['responseJSON']['errors'], $("#frmProfissional"));
             $("#btnSaveLarge").css("pointer-events", "");
             $("#btnCloseLarge").css("pointer-events", "");
-
-            Swal.fire({
-                position: 'center',
-                type: 'error',
-                title: "Erro ao atualizar paciente",
-                showConfirmButton: false,
-                timer: 1500
-            })
         });
     });
 

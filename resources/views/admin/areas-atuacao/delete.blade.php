@@ -13,7 +13,7 @@
             <label for="nome" class="col-sm-2 control-label">Descrição</label>
 
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="nmempresa" value="{{ $areaAtuacao->nome }}" disabled="disabled">
+                <input type="text" class="form-control" name="nome" value="{{ $areaAtuacao->nome }}" disabled="disabled">
             </div>
         </div>
 

@@ -1,19 +1,26 @@
-<form id="frmEspecialidade" class="form-horizontal">
+<form id="frmMedicamento" class="form-horizontal">
     {{ csrf_field() }}
 
     <div class="box-body">
 
-        <input type="hidden" value="{{ $especialidade->id }}" name="id">
+        <input type="hidden" value="{{ $medicamento->id }}" name="id">
 
         <div class="alert alert-danger" role="alert">
-            Deseja REALMENTE excluir essa Especialidade?
+            Deseja REALMENTE excluir essa medicamento?
         </div>
 
         <div class="form-group">
-            <label for="nome" class="col-sm-2 control-label">Descrição</label>
-
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="nome" value="{{ $especialidade->nome }}" disabled="disabled">
+            <div class="row">
+                <label for="nome" class="col-sm-3 control-label">Nome Genérico</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="nome_generico" value="{{ $medicamento->nome_generico }}" disabled="disabled">
+                </div>
+            </div>
+            <div class="row">
+                <label for="nome" class="col-sm-3 control-label">Nome Fábrica</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="nome_fabrica" value="{{ $medicamento->nome_fabrica }}" disabled="disabled">
+                </div>
             </div>
         </div>
 
@@ -23,12 +30,12 @@
 <script>
     $("#btnSave").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmEspecialidade").serialize();
+        var form = $("#frmMedicamento").serialize();
         $("#btnSave").css("pointer-events", "none");
         $("#btnClose").css("pointer-events", "none");
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.especialidades.confirmardelete', $especialidade->id) }}",
+            url: "{{ route('admin.medicamentos.confirmardelete', $medicamento->id) }}",
             data: form,
             success: function (data) {
 
@@ -40,14 +47,14 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblEspecialidades").DataTable().ajax.reload();
+                    $("#tblMedicamentos").DataTable().ajax.reload();
                     $("#modal_CRUD").modal("hide");
                 }
                 else {
                     Swal.fire({
                         position: 'center',
                         type: 'error',
-                        title: "Erro ao remover especialidade",
+                        title: "Erro ao remover medicamento",
                         showConfirmButton: false,
                         timer: 1500
                     })
@@ -62,6 +69,6 @@
         });
     });
     $('#modal_CRUD').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblEspecialidades").DataTable().ajax.reload();
+        $("#tblMedicamentos").DataTable().ajax.reload();
     });
 </script>

@@ -1,4 +1,4 @@
-<form id="frmPaciente">
+<form id="frmProfissional">
     {{ csrf_field() }}
     @include('admin.profissionais._form')
     <!-- DIV ERROS -->
@@ -13,9 +13,9 @@
 <script>
     $("#btnSaveLarge").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmPaciente").serialize();
+        var form = $("#frmProfissional").serialize();
         $("#btnSaveLarge").css("pointer-events", "none");
-        $("#btnCloseLarge   ").css("pointer-events", "none");
+        $("#btnCloseLarge").css("pointer-events", "none");
         $.ajax({
             type: "POST",
             url: "{{ route('admin.profissionais.store') }}",
@@ -44,14 +44,14 @@
             }
         }).fail(function (response){
             console.log(response);
-            associate_errors(response['responseJSON']['errors'], $("#frmPaciente"));
+            associate_errors(response['responseJSON']['errors'], $("#frmProfissional"));
             $("#btnSaveLarge").css("pointer-events", "");
             $("#btnCloseLarge").css("pointer-events", "");
 
             Swal.fire({
                 position: 'center',
                 type: 'error',
-                title: "Erro ao cadastrar paciente",
+                title: "Erro ao cadastrar profissional",
                 showConfirmButton: false,
                 timer: 1500
             })

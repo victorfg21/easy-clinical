@@ -15,7 +15,7 @@
         e.preventDefault();
         var form = $("#frmPaciente").serialize();
         $("#btnSaveLarge").css("pointer-events", "none");
-        $("#btnCloseLarge   ").css("pointer-events", "none");
+        $("#btnCloseLarge").css("pointer-events", "none");
         $.ajax({
             type: "POST",
             url: "{{ route('admin.pacientes.store') }}",

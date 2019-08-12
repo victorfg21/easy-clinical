@@ -21,11 +21,11 @@ class PacienteRequest extends FormRequest
     {
         return [
             'nome' => 'required|max:150',
-            'rg' => 'required|max:20|unique:pacientes',
-            'cpf' => 'required|unique:pacientes',
+            'rg' => 'required|max:20|unique:pacientes,'.$this->get('id').',id',
+            'cpf' => 'required|unique:pacientes,'.$this->get('id').',id',
             'dt_nasc' => 'required',
             'sexo' => 'required',
-            'email' => 'email|max:200',
+            'email' => 'email|max:200|unique:users,'.$this->get('user_id').',id',
             'celular' => 'required',
             'cep' => 'required',
             'endereco' => 'required|max:150',
@@ -35,7 +35,7 @@ class PacienteRequest extends FormRequest
             'estado' => 'required|max:2',
         ];
     }
-    
+
     public function messages()
     {
         return [

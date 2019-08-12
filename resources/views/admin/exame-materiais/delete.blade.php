@@ -1,19 +1,19 @@
-<form id="frmEspecialidade" class="form-horizontal">
+<form id="frmExameMaterial" class="form-horizontal">
     {{ csrf_field() }}
 
     <div class="box-body">
 
-        <input type="hidden" value="{{ $especialidade->id }}" name="id">
+        <input type="hidden" value="{{ $exameMaterial->id }}" name="id">
 
         <div class="alert alert-danger" role="alert">
-            Deseja REALMENTE excluir essa Especialidade?
+            Deseja REALMENTE excluir essa Área de Atuação?
         </div>
 
         <div class="form-group">
             <label for="nome" class="col-sm-2 control-label">Descrição</label>
 
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="nome" value="{{ $especialidade->nome }}" disabled="disabled">
+                <input type="text" class="form-control" name="nome" value="{{ $exameMaterial->nome }}" disabled="disabled">
             </div>
         </div>
 
@@ -23,12 +23,12 @@
 <script>
     $("#btnSave").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmEspecialidade").serialize();
+        var form = $("#frmExameMaterial").serialize();
         $("#btnSave").css("pointer-events", "none");
         $("#btnClose").css("pointer-events", "none");
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.especialidades.confirmardelete', $especialidade->id) }}",
+            url: "{{ route('admin.exame-materiais.confirmardelete', $exameMaterial->id) }}",
             data: form,
             success: function (data) {
 
@@ -40,17 +40,10 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblEspecialidades").DataTable().ajax.reload();
+                    $("#tblExameMateriais").DataTable().ajax.reload();
                     $("#modal_CRUD").modal("hide");
                 }
                 else {
-                    Swal.fire({
-                        position: 'center',
-                        type: 'error',
-                        title: "Erro ao remover especialidade",
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
                     $("#modalMensagens .modal-body").html(data);
                     $("#modalMensagens .modal-title").html("Erros");
                     $('#modalMensagens').modal('toggle');
@@ -62,6 +55,6 @@
         });
     });
     $('#modal_CRUD').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblEspecialidades").DataTable().ajax.reload();
+        $("#tblExameMateriais").DataTable().ajax.reload();
     });
 </script>

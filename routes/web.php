@@ -58,3 +58,43 @@ Route::put('admin/areas-atuacao/update/{id}', ['as' => 'admin.areas-atuacao.upda
 Route::get('admin/areas-atuacao/listarareasatuacao', ['as' => 'admin.areas-atuacao.listarareasatuacao', 'uses' => 'Admin\AreaAtuacaoController@listarareasatuacao']);
 Route::get('admin/areas-atuacao/delete/{id}', ['as' => 'admin.areas-atuacao.delete', 'uses' => 'Admin\AreaAtuacaoController@delete']);
 Route::post('admin/areas-atuacao/confirmardelete/{id}', ['as' => 'admin.areas-atuacao.confirmardelete', 'uses' => 'Admin\AreaAtuacaoController@confirmardelete']);
+
+//Exame Materiais
+Route::get('admin/exame-materiais', ['as' => 'admin.exame-materiais', 'uses' => 'Admin\ExameMaterialController@index']);
+Route::get('admin/exame-materiais/create', ['as' => 'admin.exame-materiais.create', 'uses' => 'Admin\ExameMaterialController@create']);
+Route::post('admin/exame-materiais/store', ['as' => 'admin.exame-materiais.store', 'uses' => 'Admin\ExameMaterialController@store']);
+Route::get('admin/aexame-materiais/edit/{id}', ['as' => 'admin.exame-materiais.edit', 'uses' => 'Admin\ExameMaterialController@edit']);
+Route::put('admin/exame-materiais/update/{id}', ['as' => 'admin.exame-materiais.update', 'uses' => 'Admin\ExameMaterialController@update']);
+Route::get('admin/exame-materiais/listarexamemateriais', ['as' => 'admin.exame-materiais.listarexamemateriais', 'uses' => 'Admin\ExameMaterialController@listarexamemateriais']);
+Route::get('admin/exame-materiais/delete/{id}', ['as' => 'admin.exame-materiais.delete', 'uses' => 'Admin\ExameMaterialController@delete']);
+Route::post('admin/exame-materiais/confirmardelete/{id}', ['as' => 'admin.exame-materiais.confirmardelete', 'uses' => 'Admin\ExameMaterialController@confirmardelete']);
+
+//Exame Metodos
+Route::get('admin/exame-metodos', ['as' => 'admin.exame-metodos', 'uses' => 'Admin\ExameMetodoController@index']);
+Route::get('admin/exame-metodos/create', ['as' => 'admin.exame-metodos.create', 'uses' => 'Admin\ExameMetodoController@create']);
+Route::post('admin/exame-metodos/store', ['as' => 'admin.exame-metodos.store', 'uses' => 'Admin\ExameMetodoController@store']);
+Route::get('admin/aexame-metodos/edit/{id}', ['as' => 'admin.exame-metodos.edit', 'uses' => 'Admin\ExameMetodoController@edit']);
+Route::put('admin/exame-metodos/update/{id}', ['as' => 'admin.exame-metodos.update', 'uses' => 'Admin\ExameMetodoController@update']);
+Route::get('admin/exame-metodos/listarexamemetodos', ['as' => 'admin.exame-metodos.listarexamemetodos', 'uses' => 'Admin\ExameMetodoController@listarexamemetodos']);
+Route::get('admin/exame-metodos/delete/{id}', ['as' => 'admin.exame-metodos.delete', 'uses' => 'Admin\ExameMetodoController@delete']);
+Route::post('admin/exame-metodos/confirmardelete/{id}', ['as' => 'admin.exame-metodos.confirmardelete', 'uses' => 'Admin\ExameMetodoController@confirmardelete']);
+
+//Fabricantes
+Route::get('admin/fabricantes', ['as' => 'admin.fabricantes', 'uses' => 'Admin\FabricanteController@index']);
+Route::get('admin/fabricantes/create', ['as' => 'admin.fabricantes.create', 'uses' => 'Admin\FabricanteController@create']);
+Route::post('admin/fabricantes/store', ['as' => 'admin.fabricantes.store', 'uses' => 'Admin\FabricanteController@store']);
+Route::get('admin/fabricantes/edit/{id}', ['as' => 'admin.fabricantes.edit', 'uses' => 'Admin\FabricanteController@edit']);
+Route::put('admin/fabricantes/update/{id}', ['as' => 'admin.fabricantes.update', 'uses' => 'Admin\FabricanteController@update']);
+Route::get('admin/fabricantes/listarfabricantes', ['as' => 'admin.fabricantes.listarfabricantes', 'uses' => 'Admin\FabricanteController@listarfabricantes']);
+Route::get('admin/fabricantes/delete/{id}', ['as' => 'admin.fabricantes.delete', 'uses' => 'Admin\FabricanteController@delete']);
+Route::post('admin/fabricantes/confirmardelete/{id}', ['as' => 'admin.fabricantes.confirmardelete', 'uses' => 'Admin\FabricanteController@confirmardelete']);
+
+//Medicamentos
+Route::get('admin/medicamentos', ['as' => 'admin.medicamentos', 'uses' => 'Admin\MedicamentoController@index']);
+Route::get('admin/medicamentos/create', ['as' => 'admin.medicamentos.create', 'uses' => 'Admin\MedicamentoController@create']);
+Route::post('admin/medicamentos/store', ['as' => 'admin.medicamentos.store', 'uses' => 'Admin\MedicamentoController@store']);
+Route::get('admin/medicamentos/edit/{id}', ['as' => 'admin.medicamentos.edit', 'uses' => 'Admin\MedicamentoController@edit']);
+Route::put('admin/medicamentos/update/{id}', ['as' => 'admin.medicamentos.update', 'uses' => 'Admin\MedicamentoController@update']);
+Route::get('admin/medicamentos/listarmedicamentos', ['as' => 'admin.medicamentos.listarmedicamentos', 'uses' => 'Admin\MedicamentoController@listarmedicamentos']);
+Route::get('admin/medicamentos/delete/{id}', ['as' => 'admin.medicamentos.delete', 'uses' => 'Admin\MedicamentoController@delete']);
+Route::post('admin/medicamentos/confirmardelete/{id}', ['as' => 'admin.medicamentos.confirmardelete', 'uses' => 'Admin\MedicamentoController@confirmardelete']);

@@ -1,5 +1,5 @@
 <div class="box box-solid box-primary">
-    <div class="box-header with-border"> 
+    <div class="box-header with-border">
         <h3 class="box-title">Dados Gerais</h3>
     </div>
     <div class="box-body">
@@ -40,7 +40,7 @@
         </div>
         <div class="form-group {{ $errors->has('sexo') ? 'has-error' : '' }}">
             <label for="Sexo" class="control-label">Sexo</label>
-            <select for="Sexo" class="form-control js-example-responsive" name="sexo" >                
+            <select for="Sexo" class="form-control js-example-responsive" name="sexo" >
                 <option value="M" {{ isset($registro->sexo) ? ($registro->sexo === 'M' ? 'selected' : '' ) : '' }}>Masculino</option>
                 <option value="F" {{ isset($registro->sexo) ? ($registro->sexo === 'F' ? 'selected' : '' ) : '' }}>Feminino</option>
             </select>
@@ -50,7 +50,7 @@
         </div>
         <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
             <label for="Email" class="control-label">Email</label>
-            <input for="Email" class="form-control" type="text" name="email" value="{{ isset($registro->email) ? $registro->email : old('email') }}"/>
+            <input for="Email" class="form-control" type="text" name="email" value="{{ isset($user->email) ? $user->email : old('email') }}"/>
             @if($errors->has('email'))
                 <small for="Email" class="control-label">{{ $errors->first('email') }}</small>
             @endif
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <div class="box-header with-border"> 
+    <div class="box-header with-border">
         <h3 class="box-title">Endereço</h3>
     </div>
     <div class="box-body">

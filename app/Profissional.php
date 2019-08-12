@@ -70,13 +70,12 @@ class Profissional extends Model
                                  ->get();
             foreach ($profissionais as $profissional)
             {
-                //$show =  route('admin.pacientes.editar',$paciente->id);
-                $edit =  route('admin.pacientes.edit',$profissional->id);
+                $edit =  route('admin.profissionais.edit',$profissional->id);
 
                 $nestedData['id'] = $profissional->id;
                 $nestedData['nome'] = $profissional->nome;
-                $nestedData['cpf'] = $profissional->cpf;
-                $nestedData['ih'] = $profissional->ih;
+                $nestedData['numero_registro'] = $profissional->numero_registro;
+                $nestedData['conselho'] = $profissional->conselho;
                 $nestedData['action'] = "<a href='#' title='Editar Profissional'
                                           onclick=\"modalBootstrap('{$edit}', 'Editar Profissional', '#modal_Large', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>";
 

@@ -68,7 +68,8 @@ class PacienteController extends Controller
             $usuario = new User;
             $usuario->name = $req->input('nome');
             $usuario->email = $req->input('email');
-            $usuario->tipo_cadastro = 'P';
+            //Paciente = 2
+            $usuario->tipo_cadastro = '2';
             $usuario->password = Hash::make($dados->ih);
             $usuario->save();
 
@@ -95,9 +96,14 @@ class PacienteController extends Controller
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
         $registro = Paciente::find($id);
-        return view('admin.pacientes.edit', compact('registro'));
+        $user = User::find($registro->user_id);
+
+        return view('admin.pacientes.edit', [
+            'registro' => $registro,
+            'user' => $user,
+        ]);
     }
-    
+
     public function update(PacienteRequest $req, $id)
     {
         try {

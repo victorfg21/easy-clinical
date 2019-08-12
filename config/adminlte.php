@@ -187,12 +187,19 @@ return [
             'role'    => 'superadministrator',
             'submenu' => [
                 [
-                    'text' => 'Novo',
-                    'url'  => 'admin/exame/novo',
+                    'text' => 'Exame',
+                    'url'  => 'admin/exames',
+                    'icon' => 'heartbeat',
                 ],
                 [
-                    'text' => 'Editar',
-                    'url'  => 'admin/exame',
+                    'text' => 'Materiais',
+                    'url'  => 'admin/exame-materiais    ',
+                    'icon' => 'clone',
+                ],
+                [
+                    'text' => 'Métodos',
+                    'url'  => 'admin/exame-metodos',
+                    'icon' => 'sticky-note-o',
                 ],
             ],
         ],
@@ -200,7 +207,18 @@ return [
             'text' => 'Medicamento',
             'icon' => 'medkit',
             'role'    => 'superadministrator',
-            'url'  => 'admin/medicamentos',
+            'submenu' => [
+                [
+                    'text' => 'Medicamento',
+                    'url'  => 'admin/medicamentos',
+                    'icon' => 'medkit',
+                ],
+                [
+                    'text' => 'Fabricantes',
+                    'url'  => 'admin/fabricantes    ',
+                    'icon' => 'industry',
+                ],
+            ],
         ],
         'OPERAÇÔES',
         [//Atendimento

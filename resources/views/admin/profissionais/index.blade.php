@@ -27,12 +27,12 @@
                 </tbody>
             </table>
             <a href="#" class="btn btn-info"
-                onclick="modalBootstrap('{{ route('admin.profissionais.create') }}', 'Adicionar Paciente', '#modal_Large', '', 'true', 'true', 'true', 'Salvar', 'Fechar')"><i class="fa fa-plus fa-lg"></i></a>
+                onclick="modalBootstrap('{{ route('admin.profissionais.create') }}', 'Adicionar Profissional', '#modal_Large', '', 'true', 'true', 'true', 'Salvar', 'Fechar')"><i class="fa fa-plus fa-lg"></i></a>
         </div>
     </div>
 </div>
 
-@stop'
+@stop
 
 @section('js')
 
@@ -56,8 +56,8 @@ var tblProfissionais = $('#tblProfissionais').DataTable({
               "type": "get"
          },
         "columns": [
-              { "data": "conselho", "width": "10%" },
               { "data": "nome", "width": "40%" },
+              { "data": "conselho", "width": "10%" },
               { "data": "numero_registro", "width": "20%" },
               {"render": function (data, type, full, meta) {
                         return full.action;
@@ -65,9 +65,13 @@ var tblProfissionais = $('#tblProfissionais').DataTable({
         ],
         columnDefs: [
             { responsivePriority: 1, targets: 0 },
-            { responsivePriority: 2, targets: -1 },
-            { responsivePriority: 3, targets: -2 },
-            { responsivePriority: 4, targets: -3 },
+            { responsivePriority: 2, targets: 1 },
+            { responsivePriority: 3, targets: 2 },
+            { responsivePriority: 4, targets: 3 },
+            {
+                "targets": [3],
+                "orderable": false
+            }
         ]
   });
 </script>
