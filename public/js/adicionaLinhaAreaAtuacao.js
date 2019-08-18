@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $('#btnSetItemArea').on('click', function (e) {
         // Captura a referência da tabela com id “minhaTabela”
-        var table = $('#linhasAreaAtuacao')[0];
+        var table = $('#tblAreasAtuacao')[0];
         // Captura a quantidade de linhas já existentes na tabela
         var numOfRows = table.tBodies[0].rows.length;
         var numOfRowsHead = table.tHead.rows.length;
@@ -64,7 +64,7 @@ $(document).ready(function () {
 
     $(document).on('click', '.btnDelLinhaArea', function (e) {
         // Captura a referência da tabela com id “minhaTabela”
-        var table = $('#linhasAreaAtuacao')[0];
+        var table = $('#tblAreasAtuacao')[0];
         //Id da linha que será removida
         var idLinha = e.currentTarget.parentElement.parentElement.sectionRowIndex;
         // Número de linhas

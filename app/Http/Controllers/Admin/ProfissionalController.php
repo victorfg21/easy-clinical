@@ -108,9 +108,25 @@ class ProfissionalController extends Controller
         $registro = Profissional::find($id);
         $user = User::find($registro->user_id);
 
+        $especialidades_profissional = DB::table('especialidade_profissional')->where('profissional_id', $id)
+                                            ->join('especialidades', 'especialidade_profissional.especialidade_id', '=', 'especialidades.id')
+                                            ->select('especialidades.id', 'especialidades.nome')
+                                            ->get();
+        $areas_atuacao_profissional = DB::table('area_atuacao_profissional')->where('profissional_id', $id)
+                                            ->join('areas_atuacao', 'area_atuacao_profissional.area_atuacao_id', '=', 'areas_atuacao.id')
+                                            ->select('areas_atuacao.id', 'areas_atuacao.nome')
+                                            ->get();
+
+        $especialidade_list = Especialidade::orderBy('nome')->get();
+        $areaAtuacao_list = AreaAtuacao::orderBy('nome')->get();
+
         return view('admin.profissionais.edit', [
             'registro' => $registro,
             'user' => $user,
+            'especialidades_profissional' => $especialidades_profissional,
+            'areas_atuacao_profissional' => $areas_atuacao_profissional,
+            'especialidade_list' => $especialidade_list,
+            'areaAtuacao_list' => $areaAtuacao_list,
         ]);
     }
     public function update(ProfissionalRequest $req, $id)
@@ -141,6 +157,23 @@ class ProfissionalController extends Controller
             $dados->cpf = str_replace(".", "", str_replace("-", "", $dados->cpf));
             $dados->celular = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->celular))));
             $dados->telefone = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->telefone))));
+
+            $especialidades = json_decode($req->input('especialidades'));
+            $areasAtuacao = json_decode($req->input('areasAtuacao'));
+            
+            foreach ($especialidades as $especialidade) {
+                $exists = $dados->Especialidades->contains($especialidade->id);
+
+                if (!$exists)
+                    $dados->Especialidades()->attach($especialidade->id);
+            }
+
+            foreach ($areasAtuacao as $areaAtuacao) {
+                $exists = $dados->AreasAtuacao->contains($areaAtuacao->id);
+
+                if (!$exists)
+                    $dados->AreasAtuacao()->attach($areaAtuacao->id);
+            }
 
             $dados->update();
             DB::commit();

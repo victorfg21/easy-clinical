@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -15,6 +16,8 @@ class User extends Authenticatable
      *
      * @var array
      */
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'name', 'email', 'password', 'tipo_cadastro'
     ];
@@ -39,5 +42,62 @@ class User extends Authenticatable
 
     public function Perfil(){
         return $this->hasOne(\App\Perfil::class);
+    }
+
+    //Listar os usuários no DataTable da página Index
+    public function ListarUsuarios(Request $request)
+    {
+        $columns = array(
+            0 => 'name',
+            1 => 'email',
+        );
+
+        $totalData = $this->count();
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {
+            $users = $this;
+            $totalFiltered = $this;
+        }
+        else {
+            $search = $request->input('search.value');
+            $users =  $this->where('name','LIKE',"%{$search}%")
+                                 ->orWhere('email','LIKE',"%{$search}%");
+            $totalFiltered = $this->where('nome','LIKE',"%{$search}%")
+                                  ->orWhere('email','LIKE',"%{$search}%");
+        }
+        $data = array();
+        if(!empty($users))
+        {
+            $users = $users->offset($start)
+                                 ->limit($limit)
+                                 ->orderBy($order,$dir)
+                                 ->get();
+            foreach ($users as $user)
+            {
+                $edit =  route('admin.usuarios.edit', $user->id);
+
+                $nestedData['name'] = $user->name;
+                $nestedData['email'] = $user->email;
+                $nestedData['action'] = "<a href='#' title='Editar Usuários'
+                                        onclick=\"modalBootstrap('{$edit}', 'Editar Usuários', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>
+                                        &emsp;";
+                $data[] = $nestedData;
+            }
+        }
+
+        $json_data = array(
+                    "draw"            => intval($request->input('draw')),
+                    "recordsTotal"    => intval($totalData),
+                    "recordsFiltered" => intval($totalFiltered->count()),
+                    "style"           => '',
+                    "data"            => $data
+                    );
+
+        return json_encode($json_data);
     }
 }

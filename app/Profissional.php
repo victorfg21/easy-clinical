@@ -17,19 +17,19 @@ class Profissional extends Model
     ];
 
     public function User(){
-        return $this->hasOne(\App\User::class, 'id', 'user_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     public function Foto(){
-        return $this->hasOne(\App\Foto::class, 'id', 'foto_id');
+        return $this->hasOne(Foto::class, 'id', 'foto_id');
     }
 
     public function AreasAtuacao(){
-        return $this->hasMany(AreaAtuacao::class);
+        return $this->belongsToMany(AreaAtuacao::class);
     }
 
     public function Especialidades(){
-        return $this->hasMany(\App\Especialidade::class);
+        return $this->belongsToMany(Especialidade::class);
     }
 
     //Listar os profissionais no DataTable da página Index

@@ -8,7 +8,6 @@ $(document).ready(function () {
     $('<option selected="selected">').val('').text('').appendTo(selectbox);
     for (var i = 0; i < vetSiglas.length; i++) {
         if (siglaCadastro == vetSiglas[i].toUpperCase()) {
-            console.log(siglaCadastro);
             $('<option selected="selected">').val(vetSiglas[i].toUpperCase()).text(vetEstados[i]).appendTo(selectbox);
         } else {
             $('<option>').val(vetSiglas[i].toUpperCase()).text(vetEstados[i]).appendTo(selectbox);
@@ -24,7 +23,7 @@ $("#cep").click(function () {
             $('input[name="cep"]').val("");
             swal({
                     type: 'error',
-                    title: 'Ops!', 
+                    title: 'Ops!',
                     text: 'CEP não localizado!',
                     confirmButtonText: 'Ok'
                 });
@@ -33,6 +32,6 @@ $("#cep").click(function () {
             $('input[name="cidade"]').val(data.localidade);
             $('input[name="bairro"]').val(data.bairro);
             $('input[name="endereco"]').val(data.logradouro);
-        }        
+        }
     });
 });

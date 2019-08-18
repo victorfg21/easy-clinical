@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $('#btnSetItem').on('click', function (e) {
         // Captura a referência da tabela com id “minhaTabela”
-        var table = $('#linhasEspecialidade')[0];
+        var table = $('#tblEspecialidades')[0];
         // Captura a quantidade de linhas já existentes na tabela
         var numOfRows = table.tBodies[0].rows.length;
         var numOfRowsHead = table.tHead.rows.length;
@@ -10,7 +10,6 @@ $(document).ready(function () {
 
         var idEspecialidade = $('select[name="especialidade"] option:selected').val();
         var especialidade = $('select[name="especialidade"] option:selected').text();
-        console.log(especialidade);
         if (especialidade !== null && especialidade !== '') {
             //Verifica se a lista ja possui o item adicionado
             for (var i = 0; i < numOfRows; i++) {
@@ -65,7 +64,7 @@ $(document).ready(function () {
 
     $(document).on('click', '.btnDelLinha', function (e) {
         // Captura a referência da tabela com id “minhaTabela”
-        var table = $('#linhasEspecialidade')[0];
+        var table = $('#tblEspecialidades')[0];
         //Id da linha que será removida
         var idLinha = e.currentTarget.parentElement.parentElement.sectionRowIndex;
         // Número de linhas

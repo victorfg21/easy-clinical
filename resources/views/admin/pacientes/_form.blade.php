@@ -5,7 +5,7 @@
     <div class="box-body">
         <div class="form-group {{ $errors->has('ih') ? 'has-error' : '' }}">
             <label for="IH" class="control-label">Identidade Hospitalar</label>
-            <input for="IH" class="form-control ih" type="text" name="ih" value="{{ isset($registro->ih) ? $registro->ih : old('ih') }}" disabled/>
+            <input for="IH" class="form-control ih" type="text" name="ih" value="{{ isset($registro->ih) ? $registro->ih : old('ih') }}" readonly/>
             @if($errors->has('ih'))
                 <small for="IH" class="control-label">{{ $errors->first('ih') }}</small>
             @endif
@@ -15,6 +15,13 @@
             <input for="Nome" class="form-control" type="text" name="nome" value="{{ isset($registro->nome) ? $registro->nome : old('nome') }}" />
             @if($errors->has('nome'))
                 <small for="Nome" class="control-label">{{ $errors->first('nome') }}</small>
+            @endif
+        </div>
+        <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
+            <label for="Email" class="control-label">Email</label>
+            <input for="Email" class="form-control" type="email" name="email" value="{{ isset($user->email) ? $user->email : old('email') }}" {{ isset($user->email) ? 'readonly' : ''}}/>
+            @if($errors->has('email'))
+                <small for="Email" class="control-label">{{ $errors->first('email') }}</small>
             @endif
         </div>
         <div class="form-group {{ $errors->has('rg') ? 'has-error' : '' }}">
@@ -46,13 +53,6 @@
             </select>
             @if($errors->has('sexo'))
                 <small for="Sexo" class="control-label">{{ $errors->first('sexo') }}</small>
-            @endif
-        </div>
-        <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-            <label for="Email" class="control-label">Email</label>
-            <input for="Email" class="form-control" type="text" name="email" value="{{ isset($user->email) ? $user->email : old('email') }}"/>
-            @if($errors->has('email'))
-                <small for="Email" class="control-label">{{ $errors->first('email') }}</small>
             @endif
         </div>
         <div class="form-group {{ $errors->has('celular') ? 'has-error' : '' }}">

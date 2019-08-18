@@ -10,6 +10,13 @@
                 <small for="Nome" class="control-label">{{ $errors->first('nome') }}</small>
             @endif
         </div>
+        <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
+            <label for="Email" class="control-label">Email</label>
+            <input for="Email" class="form-control" type="email" name="email" value="{{ isset($user->email) ? $user->email : old('email') }}" {{ isset($user->email) ? 'readonly' : ''}}/>
+            @if($errors->has('email'))
+                <small for="Email" class="control-label">{{ $errors->first('email') }}</small>
+            @endif
+        </div>
         <div class="form-group {{ $errors->has('rg') ? 'has-error' : '' }}">
             <label for="RG" class="control-label">RG</label>
             <input for="RG" class="form-control" type="text" name="rg" value="{{ isset($registro->rg) ? $registro->rg :  old('rg') }}" />
@@ -53,13 +60,6 @@
             </select>
             @if($errors->has('sexo'))
                 <small for="Sexo" class="control-label">{{ $errors->first('sexo') }}</small>
-            @endif
-        </div>
-        <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-            <label for="Email" class="control-label">Email</label>
-            <input for="Email" class="form-control" type="text" name="email" value="{{ isset($user->email) ? $user->email : old('email') }}"/>
-            @if($errors->has('email'))
-                <small for="Email" class="control-label">{{ $errors->first('email') }}</small>
             @endif
         </div>
         <div class="form-group {{ $errors->has('celular') ? 'has-error' : '' }}">
@@ -168,28 +168,26 @@
         <div class="tab-pane fade" id="espec">
             <div class="box-body">
                 <div class="col-md-12">
-                    @if(!isset($registro->id))
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="Especialidade" class="control-label">Especialidade</label>
-                                    <select for="Especialidade" class="form-control js-example-responsive" name="especialidade">
-                                        @foreach ($especialidade_list as $especialidade)
-                                                <option value="{{ $especialidade->id }}">{{ $especialidade->nome }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <a class="btn btn-primary btn-md" id="btnSetItem">Adicionar</a>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="Especialidade" class="control-label">Especialidade</label>
+                                <select for="Especialidade" class="form-control js-example-responsive" name="especialidade">
+                                    @foreach ($especialidade_list as $especialidade)
+                                            <option value="{{ $especialidade->id }}">{{ $especialidade->nome }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-                    @endif
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <a class="btn btn-primary btn-md" id="btnSetItem">Adicionar</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row panel panel-default">
                         <div class="table-responsive">
-                            <table class="table table-hover table-striped table-bordered" id="linhasEspecialidade">
+                            <table class="table table-hover table-striped table-bordered" id="tblEspecialidades">
                                 <thead>
                                     <tr>
                                         <th class="col-xs-1">ID</th>
@@ -198,6 +196,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if(isset($especialidades_profissional))
+                                        @foreach ($especialidades_profissional as $especialidade)
+                                            <tr>
+                                                <td class="col-xs-1">{{ $especialidade->id }}</td>
+                                                <td class="col-xs-10">{{ $especialidade->nome }}</td>
+                                                <td class="col-xs-1"><a class="btnDelLinha"><i class="fa fa-trash fa-lg"></i></a></td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -208,28 +215,26 @@
         <div class="tab-pane fade" id="area">
             <div class="box-body">
                 <div class="col-md-12">
-                    @if(!isset($registro->id))
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="AreaAtuacao" class="control-label">Área de Atuação</label>
-                                    <select for="AreaAtuacao" class="form-control js-example-responsive" name="areaAtuacao">
-                                        @foreach ($areaAtuacao_list as $areaAtuacao)
-                                                <option value="{{ $areaAtuacao->id }}">{{ $areaAtuacao->nome }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <a class="btn btn-primary btn-md" id="btnSetItemArea">Adicionar</a>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="AreaAtuacao" class="control-label">Área de Atuação</label>
+                                <select for="AreaAtuacao" class="form-control js-example-responsive" name="areaAtuacao">
+                                    @foreach ($areaAtuacao_list as $areaAtuacao)
+                                            <option value="{{ $areaAtuacao->id }}">{{ $areaAtuacao->nome }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-                    @endif
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <a class="btn btn-primary btn-md" id="btnSetItemArea">Adicionar</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row panel panel-default">
                         <div class="table-responsive">
-                            <table class="table table-hover table-striped table-bordered" id="linhasAreaAtuacao">
+                            <table class="table table-hover table-striped table-bordered" id="tblAreasAtuacao">
                                 <thead>
                                     <tr>
                                         <th class="col-xs-1">ID</th>
@@ -238,6 +243,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if(isset($especialidades_profissional))
+                                        @foreach ($areas_atuacao_profissional as $areaAtuacao)
+                                            <tr>
+                                                <td class="col-xs-1">{{ $areaAtuacao->id }}</td>
+                                                <td class="col-xs-10">{{ $areaAtuacao->nome }}</td>
+                                                <td class="col-xs-1"><a class="btnDelLinhaArea"><i class="fa fa-trash fa-lg"></i></a></td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

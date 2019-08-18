@@ -15,7 +15,35 @@
     $("#btnSaveLarge").unbind("click").click(function (e) {
         e.preventDefault();
         var form = $("#frmProfissional").serialize();
-        console.log(form);
+        var especialidades = [];
+        var areasAtuacao = [];
+        var id = "";
+        var nome = "";
+
+        $("#tblEspecialidades tbody tr").each(function () {
+            id = $(this).find("td:nth-child(1)").text();
+            nome = $(this).find("td:nth-child(2)").text();
+
+            especialidades.push({
+                "id": id,
+                "nome": nome
+            });
+        });
+        especialidades = JSON.stringify(especialidades);
+
+        $("#tblAreasAtuacao tbody tr").each(function () {
+            id = $(this).find("td:nth-child(1)").text();
+            nome = $(this).find("td:nth-child(2)").text();
+
+            areasAtuacao.push({
+                "id": id,
+                "nome": nome
+            });
+        });
+        areasAtuacao = JSON.stringify(areasAtuacao);
+
+        form = form + "&especialidades=" + especialidades + "&areasAtuacao=" + areasAtuacao;
+
         $("#btnSaveLarge").css("pointer-events", "none");
         $("#btnCloseLarge").css("pointer-events", "none");
         $.ajax({

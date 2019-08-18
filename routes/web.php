@@ -19,7 +19,25 @@ Route::get('/', function(){
 
 Route::get('home', ['as' => 'home', 'uses' => 'HomeController@index']);
 
-Route::get('/tasks', 'TaskController@index');
+//Route::get('/tasks', 'TaskController@index');
+
+//Usuários
+Route::get('admin/usuarios', ['as' => 'admin.usuarios', 'uses' => 'Admin\UsuarioController@index']);
+Route::get('admin/usuarios/create', ['as' => 'admin.usuarios.create', 'uses' => 'Admin\UsuarioController@create']);
+Route::post('admin/usuarios/store', ['as' => 'admin.usuarios.store', 'uses' => 'Admin\UsuarioController@store']);
+Route::get('admin/usuarios/edit/{id}', ['as' => 'admin.usuarios.edit', 'uses' => 'Admin\UsuarioController@edit']);
+Route::put('admin/usuarios/update/{id}', ['as' => 'admin.usuarios.update', 'uses' => 'Admin\UsuarioController@update']);
+Route::get('admin/usuarios/listarusuarios', ['as' => 'admin.usuarios.listarusuarios', 'uses' => 'Admin\UsuarioController@listarusuarios']);
+
+//Medicamentos
+Route::get('admin/medicamentos', ['as' => 'admin.medicamentos', 'uses' => 'Admin\MedicamentoController@index']);
+Route::get('admin/medicamentos/create', ['as' => 'admin.medicamentos.create', 'uses' => 'Admin\MedicamentoController@create']);
+Route::post('admin/medicamentos/store', ['as' => 'admin.medicamentos.store', 'uses' => 'Admin\MedicamentoController@store']);
+Route::get('admin/medicamentos/edit/{id}', ['as' => 'admin.medicamentos.edit', 'uses' => 'Admin\MedicamentoController@edit']);
+Route::put('admin/medicamentos/update/{id}', ['as' => 'admin.medicamentos.update', 'uses' => 'Admin\MedicamentoController@update']);
+Route::get('admin/medicamentos/listarmedicamentos', ['as' => 'admin.medicamentos.listarmedicamentos', 'uses' => 'Admin\MedicamentoController@listarmedicamentos']);
+Route::get('admin/medicamentos/delete/{id}', ['as' => 'admin.medicamentos.delete', 'uses' => 'Admin\MedicamentoController@delete']);
+Route::post('admin/medicamentos/confirmardelete/{id}', ['as' => 'admin.medicamentos.confirmardelete', 'uses' => 'Admin\MedicamentoController@confirmardelete']);
 
 //Pacientes
 Route::get('admin/pacientes', ['as' => 'admin.pacientes', 'uses' => 'Admin\PacienteController@index']);
@@ -28,7 +46,6 @@ Route::post('admin/pacientes/store', ['as' => 'admin.pacientes.store', 'uses' =>
 Route::get('admin/pacientes/edit/{id}', ['as' => 'admin.pacientes.edit', 'uses' => 'Admin\PacienteController@edit']);
 Route::put('admin/pacientes/update/{id}', ['as' => 'admin.pacientes.update', 'uses' => 'Admin\PacienteController@update']);
 Route::get('admin/pacientes/listarpacientes', ['as' => 'admin.pacientes.listarpacientes', 'uses' => 'Admin\PacienteController@listarpacientes']);
-//Route::get('admin/pacientes/deletar/{id}', ['as' => 'admin.pacientes.deletar', 'uses' => 'Admin\PacienteController@delete']);
 
 //Profissionais
 Route::get('admin/profissionais', ['as' => 'admin.profissionais', 'uses' => 'Admin\ProfissionalController@index']);
@@ -37,7 +54,6 @@ Route::post('admin/profissionais/store', ['as' => 'admin.profissionais.store', '
 Route::get('admin/profissionais/edit/{id}', ['as' => 'admin.profissionais.edit', 'uses' => 'Admin\ProfissionalController@edit']);
 Route::put('admin/profissionais/update/{id}', ['as' => 'admin.profissionais.update', 'uses' => 'Admin\ProfissionalController@update']);
 Route::get('admin/profissionais/listarpacientes', ['as' => 'admin.profissionais.listarprofissionais', 'uses' => 'Admin\ProfissionalController@listarprofissionais']);
-//Route::get('admin/profissionais/deletar/{id}', ['as' => 'admin.profissionais.deletar', 'uses' => 'Admin\ProfissionalController@delete']);
 
 //Especialidades
 Route::get('admin/especialidades', ['as' => 'admin.especialidades', 'uses' => 'Admin\EspecialidadeController@index']);

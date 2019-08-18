@@ -126,32 +126,20 @@ return [
             'role'    => 'superadministrator',
             'submenu' => [
                 [
-                    'text' => 'Novo',
-                    'url'  => 'admin/usuarios/novo',
-                ],
-                [
-                    'text' => 'Editar',
+                    'text' => 'Usuario',
+                    'icon' => 'user-circle',
                     'url'  => 'admin/usuarios',
                 ],
                 [//Permissões
-                    'text' => 'Permissões',
+                    'text' => 'Perfil',
                     'icon' => 'unlock',
                     'role'    => 'superadministrator',
-                    'submenu' => [
-                        [
-                            'text' => 'Novo',
-                            'url'  => 'admin/permissao/novo',
-                        ],
-                        [
-                            'text' => 'Editar',
-                            'url'  => 'admin/permissao',
-                        ],
-                    ],
+                    'url'  => 'admin/usuarios',
                 ],
             ],
         ],
         [//Profissional
-            'text' => 'Cadastro de Profissional',
+            'text' => 'Profissionais',
             'icon' => 'user-md',
             'role'    => 'superadministrator',
             'submenu' => [
@@ -182,7 +170,7 @@ return [
             'url'  => 'admin/pacientes',
         ],
         [//Exame
-            'text' => 'Exame',
+            'text' => 'Exames',
             'icon' => 'heartbeat',
             'role'    => 'superadministrator',
             'submenu' => [
@@ -192,19 +180,19 @@ return [
                     'icon' => 'heartbeat',
                 ],
                 [
-                    'text' => 'Materiais',
+                    'text' => 'Material',
                     'url'  => 'admin/exame-materiais    ',
                     'icon' => 'clone',
                 ],
                 [
-                    'text' => 'Métodos',
+                    'text' => 'Método',
                     'url'  => 'admin/exame-metodos',
                     'icon' => 'sticky-note-o',
                 ],
             ],
         ],
         [//Medicamento
-            'text' => 'Medicamento',
+            'text' => 'Medicamentos',
             'icon' => 'medkit',
             'role'    => 'superadministrator',
             'submenu' => [
@@ -214,7 +202,7 @@ return [
                     'icon' => 'medkit',
                 ],
                 [
-                    'text' => 'Fabricantes',
+                    'text' => 'Fabricante',
                     'url'  => 'admin/fabricantes    ',
                     'icon' => 'industry',
                 ],
