@@ -68,7 +68,7 @@ class UsuarioController extends Controller
         return view('admin.usuarios.edit', compact('registro'));
     }
 
-    public function update(Request $req, $id)
+    public function update(UserRequest $req, $id)
     {
         try {
             //if (Auth::user()->authorizeRoles() == false)
@@ -80,7 +80,7 @@ class UsuarioController extends Controller
             if ($dados->password != $req->input('password'))
                 $dados->password = Hash::make($req->input('password'));
             $dados->tipo_cadastro = '3';
-            dd($dados);
+            
             $dados->update();
             return "Alterado com sucesso!";
         } catch (Exception $e) {

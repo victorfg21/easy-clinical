@@ -1,7 +1,10 @@
 <?php
 namespace App\Http\Requests;
+
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Auth;
 
 class UserRequest extends FormRequest
 {
@@ -23,8 +26,8 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'password' => ['required_without:id'],
-            'email' => ['required', 'string', 'max:255', 'unique:users,email,'.$this->get('id').',id' ]
+            'password' => 'required_without:id',
+            'email' => Rule::unique('users')->ignore(Auth::id())//'unique:users,email,'. Auth::id() .',id',
         ];
     }
 
@@ -39,5 +42,17 @@ class UserRequest extends FormRequest
             'email.max' => 'Email deve conter até :max caracteres',
             'email.unique' => 'Email já está sendo utilizado',
         ];
+    }
+
+    public function validate($data)
+    {
+        $erros = "";
+        $v = Validator::make($data, $this->rules(), $this->messages());
+        if ($v->passes()) {
+            return $erros;
+        } else {
+            $erros = $v->errors()->all();
+            return $erros;
+        }
     }
 }
