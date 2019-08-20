@@ -114,3 +114,12 @@ Route::put('admin/medicamentos/update/{id}', ['as' => 'admin.medicamentos.update
 Route::get('admin/medicamentos/listarmedicamentos', ['as' => 'admin.medicamentos.listarmedicamentos', 'uses' => 'Admin\MedicamentoController@listarmedicamentos']);
 Route::get('admin/medicamentos/delete/{id}', ['as' => 'admin.medicamentos.delete', 'uses' => 'Admin\MedicamentoController@delete']);
 Route::post('admin/medicamentos/confirmardelete/{id}', ['as' => 'admin.medicamentos.confirmardelete', 'uses' => 'Admin\MedicamentoController@confirmardelete']);
+
+//Agendas
+Route::get('admin/agendas', ['as' => 'admin.agendas', 'uses' => 'Admin\AgendaController@index']);
+Route::get('admin/agendas/create', ['as' => 'admin.agendas.create', 'uses' => 'Admin\AgendaController@create']);
+Route::post('admin/agendas/store', ['as' => 'admin.agendas.store', 'uses' => 'Admin\AgendaController@store']);
+Route::get('admin/agendas/edit/{id}', ['as' => 'admin.agendas.edit', 'uses' => 'Admin\AgendaController@edit']);
+Route::get('admin/agendas/show/{id}', ['as' => 'admin.agendas.show', 'uses' => 'Admin\AgendaController@show']);
+Route::put('admin/agendas/update/{id}', ['as' => 'admin.agendas.update', 'uses' => 'Admin\AgendaController@update']);
+Route::get('admin/agendas/listaragendas', ['as' => 'admin.agendas.listaragendas', 'uses' => 'Admin\AgendaController@listaragendas']);

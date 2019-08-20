@@ -24,13 +24,14 @@ class CreateAgendasTable extends Migration
             $table->boolean('sexta')->nullable();
             $table->boolean('sabado')->nullable();
             $table->boolean('domingo')->nullable();
-            $table->time('inicio_periodo');
-            $table->time('fim_periodo');
+            $table->date('inicio_periodo');
+            $table->date('fim_periodo');
             $table->time('tempo_consulta');
             $table->time('inicio_horario_1');
             $table->time('fim_horario_1');
             $table->time('inicio_horario_2')->nullable();
             $table->time('fim_horario_2')->nullable();
+            $table->boolean('ativo');
             $table->timestamps();
         });
     }

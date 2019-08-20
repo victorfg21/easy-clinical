@@ -149,17 +149,23 @@ return [
                     'role'    => 'superadministrator',
                     'url'  => 'admin/profissionais',
                 ],
+                [//Área de Atuação
+                    'text' => 'Área de Atuação',
+                    'icon' => 'hotel ',
+                    'role'    => 'superadministrator',
+                    'url'  => 'admin/areas-atuacao',
+                ],
                 [//Especialidade
                     'text' => 'Especialidade',
                     'icon' => 'graduation-cap',
                     'role'    => 'superadministrator',
                     'url'  => 'admin/especialidades',
                 ],
-                [//Área de Atuação
-                    'text' => 'Área de Atuação',
-                    'icon' => 'hotel ',
+                [//Agenda
+                    'text' => 'Agenda',
+                    'icon' => 'calendar-check-o',
                     'role'    => 'superadministrator',
-                    'url'  => 'admin/areas-atuacao',
+                    'url'  => 'admin/agendas',
                 ],
             ],
         ],
