@@ -27,31 +27,31 @@
             </select>
         </div>
         <div class="form-group col-md-2">
-            <input type="checkbox" name="segunda" value="{{ isset($registro->segunda) ? $registro->segunda : '' }}" />
+            <input type="checkbox" id="segunda" name="segunda[]" value="{{ isset($registro->segunda) ? $registro->segunda : "false" }}" />
             <label for="segunda" class="control-label">Segunda</label>
         </div>
         <div class="form-group col-md-2">
-            <input type="checkbox" name="terca" value="{{ isset($registro->terca) ? $registro->terca : '' }}" />
+            <input type="checkbox" id="terca" name="terca[]" value="{{ isset($registro->terca) ? $registro->terca : "false" }}" />
             <label for="terca" class="control-label">Terça</label>
         </div>
         <div class="form-group col-md-2">
-            <input for="quarta" type="checkbox" name="quarta" value="{{ isset($registro->quarta) ? $registro->quarta : '' }}" />
+            <input type="checkbox" id="quarta" name="quarta[]" value="{{ isset($registro->quarta) ? $registro->quarta : "false" }}" />
             <label for="quarta" class="control-label">Quarta</label>
         </div>
         <div class="form-group col-md-2">
-            <input for="quinta" type="checkbox" name="quinta" value="{{ isset($registro->quinta) ? $registro->quinta : '' }}" />
+            <input type="checkbox" id="quinta" name="quinta[]" value="{{ isset($registro->quinta) ? $registro->quinta : "false" }}" />
             <label for="quinta" class="control-label">Quinta</label>
         </div>
         <div class="form-group col-md-2">
-            <input for="sexta" type="checkbox" name="sexta" value="{{ isset($registro->sexta) ? $registro->sexta : '' }}" />
+            <input type="checkbox" id="sexta" name="sexta[]" value="{{ isset($registro->sexta) ? $registro->sexta : "false" }}" />
             <label for="sexta" class="control-label">Sexta</label>
         </div>
         <div class="form-group col-md-2">
-            <input for="sabado" type="checkbox" name="sabado" value="{{ isset($registro->sabado) ? $registro->sabado : '' }}" />
+            <input type="checkbox" id="sabado" name="sabado[]" value="{{ isset($registro->sabado) ? $registro->sabado : "false" }}" />
             <label for="sabado" class="control-label">Sábado</label>
         </div>
         <div class="form-group col-md-2">
-            <input for="domingo" type="checkbox" name="domingo" value="{{ isset($registro->domingo) ? $registro->domingo : '' }}" />
+            <input type="checkbox" id="domingo" name="domingo[]" value="{{ isset($registro->domingo) ? $registro->domingo : "false" }}" />
             <label for="domingo" class="control-label">Domingo</label>
         </div>
         <div class="row">

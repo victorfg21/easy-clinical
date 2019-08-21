@@ -48,38 +48,30 @@ class AgendaController extends Controller
     {
         try {
             DB::beginTransaction();
-            /*$dados = new Agenda;
-            $dados->nome = $req->input('nome');
-            $dados->rg = $req->input('rg');
-            $dados->cpf = $req->input('cpf');
-            $dados->ih = str_pad(DB::table('agendas')->max('ih') + 1, 7, "0", STR_PAD_LEFT);
-            $dados->dt_nasc = date("Ymd", strtotime($req->input('dt_nasc')));
-            $dados->sexo = $req->input('sexo');
-            $dados->celular = $req->input('celular');
-            $dados->numero = $req->input('numero');
-            $dados->endereco = $req->input('endereco');
-            $dados->complemento = $req->input('complemento');
+
+            dd($req);
+            $dados = new Agenda;
+
+            $profissional = Profissional::find($req->input('profissional_id'));
+            $dados->Profissional()->save($profissional);
+
+            $dados->inicio_periodo = $req->input('inicio_periodo');
+            $dados->fim_periodo = $req->input('fim_periodo');
+            $dados->tempo_consulta = $req->input('tempo_consulta');
+            $dados->inicio_horario_1 = $req->input('inicio_horario_1');
+            $dados->fim_horario_1 = $req->input('fim_horario_1');
+            $dados->inicio_horario_2 = $req->input('inicio_horario_2');
+            $dados->fim_horario_2 = $req->input('fim_horario_2');
             $dados->bairro = $req->input('bairro');
             $dados->cidade = $req->input('cidade');
             $dados->estado = $req->input('estado');
             $dados->cep = $req->input('cep');
 
-            $dados->cep = str_replace(".", "", str_replace("-", "", $dados->cep));
-            $dados->cpf = str_replace(".", "", str_replace("-", "", $dados->cpf));
-            $dados->celular = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->celular))));
-
-            $usuario = new User;
-            $usuario->name = $req->input('nome');
-            $usuario->email = $req->input('email');
-            //Paciente = 2
-            $usuario->tipo_cadastro = '2';
-            $usuario->password = Hash::make($dados->ih);
-            $usuario->save();
-
-            $dados->user_id = DB::table('users')->max('id');
             $dados->save();
-            */return "Cadastrado com sucesso!";
             DB::commit();
+
+            return "Cadastrado com sucesso!";
+
         } catch (Exception $e) {
             DB::rollback();
             return "Ocorreu um erro ao cadastrar.";
