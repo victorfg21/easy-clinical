@@ -26,69 +26,73 @@
                 @endif
             </select>
         </div>
-        <div class="form-group col-md-2">
-            <input type="checkbox" id="segunda" name="segunda[]" value="{{ isset($registro->segunda) ? $registro->segunda : "false" }}" />
-            <label for="segunda" class="control-label">Segunda</label>
-        </div>
-        <div class="form-group col-md-2">
-            <input type="checkbox" id="terca" name="terca[]" value="{{ isset($registro->terca) ? $registro->terca : "false" }}" />
-            <label for="terca" class="control-label">Terça</label>
-        </div>
-        <div class="form-group col-md-2">
-            <input type="checkbox" id="quarta" name="quarta[]" value="{{ isset($registro->quarta) ? $registro->quarta : "false" }}" />
-            <label for="quarta" class="control-label">Quarta</label>
-        </div>
-        <div class="form-group col-md-2">
-            <input type="checkbox" id="quinta" name="quinta[]" value="{{ isset($registro->quinta) ? $registro->quinta : "false" }}" />
-            <label for="quinta" class="control-label">Quinta</label>
-        </div>
-        <div class="form-group col-md-2">
-            <input type="checkbox" id="sexta" name="sexta[]" value="{{ isset($registro->sexta) ? $registro->sexta : "false" }}" />
-            <label for="sexta" class="control-label">Sexta</label>
-        </div>
-        <div class="form-group col-md-2">
-            <input type="checkbox" id="sabado" name="sabado[]" value="{{ isset($registro->sabado) ? $registro->sabado : "false" }}" />
-            <label for="sabado" class="control-label">Sábado</label>
-        </div>
-        <div class="form-group col-md-2">
-            <input type="checkbox" id="domingo" name="domingo[]" value="{{ isset($registro->domingo) ? $registro->domingo : "false" }}" />
-            <label for="domingo" class="control-label">Domingo</label>
+        <div class="row">
+            <div class="form-group col-md-2">
+                <input type="checkbox" id="segunda" name="segunda" {{ isset($registro->segunda) ? ($registro->segunda ? 'checked="checked"' : "") : "" }} />
+                <label for="segunda" class="control-label">Segunda</label>
+            </div>
+            <div class="form-group col-md-2">
+                <input type="checkbox" id="terca" name="terca" {{ isset($registro->terca) ? ($registro->terca ? 'checked="checked"' : "") : "" }} />
+                <label for="terca" class="control-label">Terça</label>
+            </div>
+            <div class="form-group col-md-2">
+                <input type="checkbox" id="quarta" name="quarta" {{ isset($registro->quarta) ? ($registro->quarta ? 'checked="checked"' : "") : "" }} />
+                <label for="quarta" class="control-label">Quarta</label>
+            </div>
+            <div class="form-group col-md-2">
+                <input type="checkbox" id="quinta" name="quinta" {{ isset($registro->quinta) ? ($registro->quinta ? 'checked="checked"' : "") : "" }} />
+                <label for="quinta" class="control-label">Quinta</label>
+            </div>
+            <div class="form-group col-md-2">
+                <input type="checkbox" id="sexta" name="sexta" {{ isset($registro->sexta) ? ($registro->sexta ? 'checked="checked"' : "") : "" }} />
+                <label for="sexta" class="control-label">Sexta</label>
+            </div>
+            <div class="form-group col-md-2">
+                <input type="checkbox" id="sabado" name="sabado" {{ isset($registro->sabado) ? ($registro->sabado ? 'checked="checked"' : "") : "" }} />
+                <label for="sabado" class="control-label">Sábado</label>
+            </div>
+            <div class="form-group col-md-2">
+                <input type="checkbox" id="domingo" name="domingo" {{ isset($registro->domingo) ? ($registro->domingo ? 'checked="checked"' : "") : "" }} />
+                <label for="domingo" class="control-label">Domingo</label>
+            </div>
         </div>
         <div class="row">
             <label class="control-label col-md-12">Período</label>
             <div class="form-group col-md-3">
                 <label for="inicio_periodo" class="control-label">Início</label>
-                <input for="inicio_periodo" class="form-control" type="date" name="inicio_periodo" value="{{ isset($registro->inicio_periodo) ? $registro->inicio_periodo : '' }}" />
+                <input for="inicio_periodo" class="form-control" type="date" name="inicio_periodo" value="{{ isset($registro->inicio_periodo) ? date("Y-m-d", strtotime($registro->inicio_periodo)) : '' }}" />
             </div>
             <div class="form-group col-md-3">
                 <label for="fim_periodo" class="control-label">Fim</label>
-                <input for="fim_periodo" class="form-control" type="date" name="fim_periodo" value="{{ isset($registro->fim_periodo) ? $registro->fim_periodo : '' }}" />
+                <input for="fim_periodo" class="form-control" type="date" name="fim_periodo" value="{{ isset($registro->fim_periodo) ? date("Y-m-d", strtotime($registro->fim_periodo)) : '' }}" />
             </div>
         </div>
-        <div class="form-group col-md-3">
-            <label for="tempo_consulta" class="control-label">Tempo da Consulta</label>
-            <input for="tempo_consulta" class="form-control" type="time" name="tempo_consulta" value="{{ isset($registro->tempo_consulta) ? $registro->tempo_consulta : '' }}" />
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="tempo_consulta" class="control-label">Tempo da Consulta</label>
+                <input for="tempo_consulta" class="form-control" type="time" name="tempo_consulta" value="{{ isset($registro->tempo_consulta) ? date("H:i", strtotime($registro->tempo_consulta)) : '' }}" />
+            </div>
         </div>
         <div class="row">
             <label class="control-label col-md-12">1º Horário</label>
             <div class="form-group col-md-2">
                 <label for="inicio_horario_1" class="control-label">Início</label>
-                <input for="inicio_horario_1" class="form-control" type="time" name="inicio_horario_1" value="{{ isset($registro->inicio_horario_1) ? $registro->inicio_horario_1 : '' }}" />
+                <input for="inicio_horario_1" class="form-control" type="time" name="inicio_horario_1" value="{{ isset($registro->inicio_horario_1) ? date("H:i", strtotime($registro->inicio_horario_1)) : '' }}" />
             </div>
             <div class="form-group col-md-2">
                 <label for="fim_horario_1" class="control-label">Fim</label>
-                <input for="fim_horario_1" class="form-control" type="time" name="fim_horario_1" value="{{ isset($registro->fim_horario_1) ? $registro->fim_horario_1 : '' }}" />
+                <input for="fim_horario_1" class="form-control" type="time" name="fim_horario_1" value="{{ isset($registro->fim_horario_1) ? date("H:i", strtotime($registro->fim_horario_1)) : '' }}" />
             </div>
         </div>
         <div class="row">
             <label class="control-label col-md-12">2º Horário</label>
             <div class="form-group col-md-2">
                 <label for="inicio_horario_2" class="control-label">Início</label>
-                <input for="inicio_horario_2" class="form-control" type="time" name="inicio_horario_2" value="{{ isset($registro->inicio_horario_2) ? $registro->inicio_horario_2 : '' }}" />
+                <input for="inicio_horario_2" class="form-control" type="time" name="inicio_horario_2" value="{{ isset($registro->inicio_horario_2) ? date("H:i", strtotime($registro->inicio_horario_2)) : '' }}" />
             </div>
             <div class="form-group col-md-2">
                 <label for="fim_horario_2" class="control-label">Domingo</label>
-                <input for="fim_horario_2" class="form-control" type="time" name="fim_horario_2" value="{{ isset($registro->fim_horario_2) ? $registro->fim_horario_2 : '' }}" />
+                <input for="fim_horario_2" class="form-control" type="time" name="fim_horario_2" value="{{ isset($registro->fim_horario_2) ? date("H:i", strtotime($registro->fim_horario_2)) : '' }}" />
             </div>
         </div>
     </div>

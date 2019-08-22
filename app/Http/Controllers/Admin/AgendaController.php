@@ -49,23 +49,22 @@ class AgendaController extends Controller
         try {
             DB::beginTransaction();
 
-            dd($req);
             $dados = new Agenda;
-
-            $profissional = Profissional::find($req->input('profissional_id'));
-            $dados->Profissional()->save($profissional);
-
-            $dados->inicio_periodo = $req->input('inicio_periodo');
-            $dados->fim_periodo = $req->input('fim_periodo');
+            $dados->profissional_id = $req->input('profissional_id');
+            $dados->segunda = ($req->input('segunda') == 'on') ? true : false;
+            $dados->terca = ($req->input('terca') == 'on') ? true : false;
+            $dados->quarta = ($req->input('quarta') == 'on') ? true : false;
+            $dados->quinta = ($req->input('quinta') == 'on') ? true : false;
+            $dados->sexta = ($req->input('sexta') == 'on') ? true : false;
+            $dados->sabado = ($req->input('sabado') == 'on') ? true : false;
+            $dados->domingo = ($req->input('domingo') == 'on') ? true : false;
+            $dados->inicio_periodo = date('Y-m-d H:i:s', strtotime($req->input('inicio_periodo')));
+            $dados->fim_periodo = date('Y-m-d H:i:s', strtotime($req->input('fim_periodo')));
             $dados->tempo_consulta = $req->input('tempo_consulta');
             $dados->inicio_horario_1 = $req->input('inicio_horario_1');
             $dados->fim_horario_1 = $req->input('fim_horario_1');
             $dados->inicio_horario_2 = $req->input('inicio_horario_2');
             $dados->fim_horario_2 = $req->input('fim_horario_2');
-            $dados->bairro = $req->input('bairro');
-            $dados->cidade = $req->input('cidade');
-            $dados->estado = $req->input('estado');
-            $dados->cep = $req->input('cep');
 
             $dados->save();
             DB::commit();
@@ -91,44 +90,41 @@ class AgendaController extends Controller
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
         $registro = Agenda::find($id);
-        $user = User::find($registro->user_id);
-
+        $profissional_list = Profissional::orderBy('nome')->get();
         return view('admin.agendas.edit', [
             'registro' => $registro,
-            'user' => $user,
+            'profissional_list' => $profissional_list
         ]);
     }
 
     public function update(AgendaRequest $req, $id)
     {
         try {
-            //if (Auth::user()->authorizeRoles() == false)
-            //    abort(403, 'Você não possui autorização para realizar essa ação.');
+            DB::beginTransaction();
 
-            /*$dados = Agenda::find($id);
-            $dados->nome = $req->input('nome');
-            $dados->rg = $req->input('rg');
-            $dados->cpf = $req->input('cpf');
-            $dados->ih = $req->input('ih');
-            $dados->dt_nasc = $req->input('dt_nasc');
-            $dados->sexo = $req->input('sexo');
-            $dados->celular = $req->input('celular');
-            $dados->numero = $req->input('numero');
-            $dados->endereco = $req->input('endereco');
-            $dados->complemento = $req->input('complemento');
-            $dados->bairro = $req->input('bairro');
-            $dados->cidade = $req->input('cidade');
-            $dados->estado = $req->input('estado');
-            $dados->cep = $req->input('cep');
+            $dados = Agenda::find($id);
+            $dados->profissional_id = $req->input('profissional_id');
+            $dados->segunda = ($req->input('segunda') == 'on') ? true : false;
+            $dados->terca = ($req->input('terca') == 'on') ? true : false;
+            $dados->quarta = ($req->input('quarta') == 'on') ? true : false;
+            $dados->quinta = ($req->input('quinta') == 'on') ? true : false;
+            $dados->sexta = ($req->input('sexta') == 'on') ? true : false;
+            $dados->sabado = ($req->input('sabado') == 'on') ? true : false;
+            $dados->domingo = ($req->input('domingo') == 'on') ? true : false;
+            $dados->inicio_periodo = date('Y-m-d H:i:s', strtotime($req->input('inicio_periodo')));
+            $dados->fim_periodo = date('Y-m-d H:i:s', strtotime($req->input('fim_periodo')));
+            $dados->tempo_consulta = $req->input('tempo_consulta');
+            $dados->inicio_horario_1 = $req->input('inicio_horario_1');
+            $dados->fim_horario_1 = $req->input('fim_horario_1');
+            $dados->inicio_horario_2 = $req->input('inicio_horario_2');
+            $dados->fim_horario_2 = $req->input('fim_horario_2');
 
-            $dados->cep = str_replace(".", "", str_replace("-", "", $dados->cep));
-            $dados->cpf = str_replace(".", "", str_replace("-", "", $dados->cpf));
-            $dados->celular = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->celular))));
-
-            $dados->update();*/
+            $dados->update();
+            DB::commit();
             return "Alterado com sucesso!";
         } catch (Exception $e) {
-            return "Ocorreu um erro ao alterar!";
+            DB::rollback();
+            return "Ocorreu um erro ao alterar.";
         }
     }
 }

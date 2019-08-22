@@ -5,14 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class Agenda extends Model
+class AgendaLivreProfissional extends Model
 {
-    protected $table = 'agendas';
+    protected $table = 'agenda_livre_profissionais';
 
     protected $fillable = [
-        'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'domingo',
-        'inicio_periodo', 'fim_periodo', 'tempo_consulta', 'inicio_horario_1', 'fim_horario_1',
-        'inicio_horario_2', 'fim_horario_2', 'ativo'
+        'data_livre', 'inicio_periodo', 'fim_periodo', 'motivo'
     ];
 
     public function Profissional(){
@@ -20,12 +18,11 @@ class Agenda extends Model
     }
 
     //Listar os pacientes no DataTable da página Index
-    public function ListarAgendas(Request $request)
+    public function ListarAgendaLivreProfissionais(Request $request)
     {
         $columns = array(
             0 => 'nome',
-            1 => 'inicio_periodo',
-            2 => 'fim_periodo'
+            1 => 'data_livre'
         );
 
         $totalData = $this->count();
@@ -36,40 +33,39 @@ class Agenda extends Model
 
         if(empty($request->input('search.value')))
         {
-            $agendas = $this;
+            $agendaLivreProfissionais = $this;
             $totalFiltered = $this;
         }
         else {
             $search = $request->input('search.value');
-            $agendas =  $this->select('profissionais.nome', 'agendas.*')
-                                ->join('profissionais', 'agendas.profissional_id', '=', 'profissionais.id')
+            $agendaLivreProfissionais =  $this->select('profissionais.nome', 'agenda_livre_profissionais.*')
+                                ->join('profissionais', 'agenda_livre_profissionais.profissional_id', '=', 'profissionais.id')
                                 ->where('profissionais.nome','LIKE',"%{$search}%")
                                 ->whereDate('inicio_periodo', '>=', "{$search}")
                                 ->whereDate('fim_periodo', '<=', "{$search}");
-            $totalFiltered = $this->join('profissionais', 'agendas.profissional_id', '=', 'profissionais.id')
+            $totalFiltered = $this->join('profissionais', 'agenda_livre_profissionais.profissional_id', '=', 'profissionais.id')
                                     ->where('profissionais.nome','LIKE',"%{$search}%")
                                     ->whereDate('inicio_periodo', '>=', "{$search}")
                                     ->whereDate('fim_periodo', '<=', "{$search}");
         }
         $data = array();
-        if(!empty($agendas))
+        if(!empty($agendaLivreProfissionais))
         {
-            $agendas = $agendas->offset($start)
+            $agendaLivreProfissionais = $agendaLivreProfissionais->offset($start)
                                  ->limit($limit)
                                  //->orderBy($order,$dir)
                                  ->get();
-            foreach ($agendas as $agenda)
+            foreach ($agendaLivreProfissionais as $agendaLivre)
             {
-                //$show =  route('admin.agendas.editar',$agenda->id);
-                $edit = route('admin.agendas.edit',$agenda->id);
+                //$show =  route('admin.agendaLivreProfissionais.editar',$agendaLivre->id);
+                $edit = route('admin.agenda-livre-profissionais.edit', $agendaLivre->id);
 
-                $nestedData['id'] = $agenda->id;
-                $nestedData['nome'] = $agenda->Profissional->nome;
-                $nestedData['inicio_periodo'] = date('d/m/Y', strtotime($agenda->inicio_periodo));
-                $nestedData['fim_periodo'] = date('d/m/Y', strtotime($agenda->fim_periodo));
+                $nestedData['id'] = $agendaLivre->id;
+                $nestedData['nome'] = $agendaLivre->Profissional->nome;
+                $nestedData['data_livre'] = date('d/m/Y', strtotime($agendaLivre->data_livre));
 
-                $nestedData['action'] = "<a href='#' title='Editar Agenda'
-                                          onclick=\"modalBootstrap('{$edit}', 'Editar Agenda', '#modal_Large', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>";
+                $nestedData['action'] = "<a href='#' title='Editar Agenda Livre'
+                                          onclick=\"modalBootstrap('{$edit}', 'Editar Livre', '#modal_Large', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>";
 
                 $data[] = $nestedData;
             }

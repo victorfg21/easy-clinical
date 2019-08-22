@@ -123,3 +123,12 @@ Route::get('admin/agendas/edit/{id}', ['as' => 'admin.agendas.edit', 'uses' => '
 Route::get('admin/agendas/show/{id}', ['as' => 'admin.agendas.show', 'uses' => 'Admin\AgendaController@show']);
 Route::put('admin/agendas/update/{id}', ['as' => 'admin.agendas.update', 'uses' => 'Admin\AgendaController@update']);
 Route::get('admin/agendas/listaragendas', ['as' => 'admin.agendas.listaragendas', 'uses' => 'Admin\AgendaController@listaragendas']);
+
+//Agenda Livre Profissionais
+Route::get('admin/agenda-livre-profissionais', ['as' => 'admin.agenda-livre-profissionais', 'uses' => 'Admin\AgendaLivreProfissionalController@index']);
+Route::get('admin/agenda-livre-profissionais/create', ['as' => 'admin.agenda-livre-profissionais.create', 'uses' => 'Admin\AgendaLivreProfissionalController@create']);
+Route::post('admin/agenda-livre-profissionais/store', ['as' => 'admin.agenda-livre-profissionais.store', 'uses' => 'Admin\AgendaLivreProfissionalController@store']);
+Route::get('admin/agenda-livre-profissionais/edit/{id}', ['as' => 'admin.agenda-livre-profissionais.edit', 'uses' => 'Admin\AgendaLivreProfissionalController@edit']);
+Route::get('admin/agenda-livre-profissionais/show/{id}', ['as' => 'admin.agenda-livre-profissionais.show', 'uses' => 'Admin\AgendaLivreProfissionalController@show']);
+Route::put('admin/agenda-livre-profissionais/update/{id}', ['as' => 'admin.agenda-livre-profissionais.update', 'uses' => 'Admin\AgendaLivreProfissionalController@update']);
+Route::get('admin/agenda-livre-profissionais/listaragendalivreprofissionais', ['as' => 'admin.agenda-livre-profissionais.listaragendalivreprofissionais', 'uses' => 'Admin\AgendaLivreProfissionalController@listaragendalivreprofissionais']);

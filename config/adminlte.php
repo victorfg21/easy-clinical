@@ -167,6 +167,12 @@ return [
                     'role'    => 'superadministrator',
                     'url'  => 'admin/agendas',
                 ],
+                [//Agenda Livre
+                    'text' => 'Agenda Livre',
+                    'icon' => 'calendar-minus-o ',
+                    'role'    => 'superadministrator',
+                    'url'  => 'admin/agenda-livre-profissionais',
+                ],
             ],
         ],
         [//Paciente

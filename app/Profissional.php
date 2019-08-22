@@ -25,6 +25,10 @@ class Profissional extends Model
     }
 
     public function AreasAtuacao(){
+        return $this->belongsTo(Agenda::class);
+    }
+
+    public function Agendas(){
         return $this->belongsToMany(AreaAtuacao::class);
     }
 
