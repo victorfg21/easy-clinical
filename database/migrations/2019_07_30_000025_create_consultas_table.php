@@ -26,8 +26,8 @@ class CreateConsultasTable extends Migration
             $table->date('data_consulta');
             $table->time('horario_consulta');
             $table->text('anotacao');
-            $table->boolean('compareceu');
-            $table->boolean('cancelado');
+            $table->boolean('realizado')->nullable();
+            $table->boolean('cancelado')->nullable();
             $table->timestamps();
         });
     }

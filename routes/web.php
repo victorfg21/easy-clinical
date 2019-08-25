@@ -132,3 +132,12 @@ Route::get('admin/agenda-livre-profissionais/edit/{id}', ['as' => 'admin.agenda-
 Route::get('admin/agenda-livre-profissionais/show/{id}', ['as' => 'admin.agenda-livre-profissionais.show', 'uses' => 'Admin\AgendaLivreProfissionalController@show']);
 Route::put('admin/agenda-livre-profissionais/update/{id}', ['as' => 'admin.agenda-livre-profissionais.update', 'uses' => 'Admin\AgendaLivreProfissionalController@update']);
 Route::get('admin/agenda-livre-profissionais/listaragendalivreprofissionais', ['as' => 'admin.agenda-livre-profissionais.listaragendalivreprofissionais', 'uses' => 'Admin\AgendaLivreProfissionalController@listaragendalivreprofissionais']);
+
+//Agenda Livre Profissionais
+Route::get('atendimento/agendamento-consulta', ['as' => 'atendimento.agendamento-consulta', 'uses' => 'Atendimento\AgendamentoConsultaController@index']);
+Route::get('atendimento/agendamento-consulta/create', ['as' => 'atendimento.agendamento-consulta.create', 'uses' => 'Atendimento\AgendamentoConsultaController@create']);
+Route::post('atendimento/agendamento-consulta/store', ['as' => 'atendimento.agendamento-consulta.store', 'uses' => 'Atendimento\AgendamentoConsultaController@store']);
+Route::get('atendimento/agendamento-consulta/edit/{id}', ['as' => 'atendimento.agendamento-consulta.edit', 'uses' => 'Atendimento\AgendamentoConsultaController@edit']);
+Route::get('atendimento/agendamento-consulta/show/{id}', ['as' => 'atendimento.agendamento-consulta.show', 'uses' => 'Atendimento\AgendamentoConsultaController@show']);
+Route::put('atendimento/agendamento-consulta/update/{id}', ['as' => 'atendimento.agendamento-consulta.update', 'uses' => 'Atendimento\AgendamentoConsultaController@update']);
+Route::get('atendimento/agendamento-consulta/listaragenda', ['as' => 'atendimento.agendamento-consulta.listaragenda', 'uses' => 'Atendimento\AgendamentoConsultaController@listaragenda']);

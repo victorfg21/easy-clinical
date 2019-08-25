@@ -21,6 +21,7 @@ class CreateAgendaLivreProfissionaisTable extends Migration
             $table->time('inicio_periodo');
             $table->time('fim_periodo');
             $table->string('motivo', 200);
+            $table->boolean('ativo');
             $table->timestamps();
         });
     }

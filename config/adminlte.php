@@ -228,11 +228,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Agendar Consulta/Retorno',
-                    'url'  => 'clinica/agenda-consulta',
+                    'url'  => 'atendimento/agendamento-consulta',
                 ],
                 [
                     'text' => 'Agendar Exame',
-                    'url'  => 'clinica/agenda-consulta',
+                    'url'  => 'atendimento/agendamento-exame',
                 ],
             ],
         ],
