@@ -22,6 +22,13 @@ class UserTableSeeder extends Seeder
         $manager->password = bcrypt('123@Mudar');
         $manager->tipo_cadastro = 'A';
         $manager->save();
+
+        $manager = new User();
+        $manager->name = 'Usuario';
+        $manager->email = 'usuario@mail.com';
+        $manager->password = bcrypt('123@Mudar');
+        $manager->tipo_cadastro = '2';
+        $manager->save();
         //$manager->roles()->attach($role_manager);
     }
 }

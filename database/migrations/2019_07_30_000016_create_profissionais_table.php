@@ -19,6 +19,7 @@ class CreateProfissionaisTable extends Migration
             $table->string('rg', 30);
             $table->string('cpf', 11);
             $table->string('conselho', 30)->nullable();
+            $table->string('conselho_uf', 2)->nullable();
             $table->string('numero_registro', 30)->nullable();
             $table->date('dt_nasc');
             $table->string('sexo', 1);

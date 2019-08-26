@@ -21,7 +21,6 @@ class CreateReservasMarcacoesConsultasTable extends Migration
             $table->foreign('paciente_id')->references('id')->on('pacientes');
             $table->date('data_consulta');
             $table->time('horario_consulta');
-            $table->text('anotacao')->nullable();
             $table->timestamps();
         });
     }
