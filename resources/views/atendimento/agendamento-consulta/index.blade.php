@@ -75,7 +75,7 @@
 @section('js')
 
 <script>
-    /*var tblAgendas = $('#tblAgendas').DataTable({
+    var tblAgendamentos = $('#tblAgendamentos').DataTable({
         'paging'      : true,
         'lengthChange': true,
         'searching'   : true,
@@ -128,47 +128,22 @@
     });
 
     $('input[name=data]').change(function () {
-        tblAgendas.ajax.reload();
-
-        $.ajax({
-            type: "get",
-            url: "{{ route('atendimento.agendamento-consulta.listaragenda') }}",
-            data: { data:$("input[name=data]").val(),
-                    profissional_id:$('select[name=profissional_id]').val(),
-                    especialidade_id:$('select[name=especialidade_id]').val(),
-                    area_atuacao_id:$('select[name=area_atuacao_id]').val()},
-            success: function (data) {
-                Swal.fire({
-                    type: 'success',
-                    showConfirmButton: false,
-                    timer: 700
-                })
-            }
-        }).fail(function (response){
-
-            Swal.fire({
-                type: 'error',
-                showConfirmButton: false,
-                timer: 700
-            })
-        });
-
-        $("#tblAgendas").ajax.reload();
+        tblAgendamentos.ajax.reload();
     });
 
     $('select[name=profissional_id]').change(function () {
-        tblAgendas.ajax.reload();
+        tblAgendamentos.ajax.reload();
     });
 
     $('select[name=especialidade_id]').change(function () {
-        tblAgendas.ajax.reload();
+        tblAgendamentos.ajax.reload();
     });
 
     $('select[name=area_atuacao_id]').change(function () {
-        tblAgendas.ajax.reload();
-    });*/
+        tblAgendamentos.ajax.reload();
+    });
 
-    $("#btnListarAgenda").unbind("click").click(function (e) {
+    /*$("#btnListarAgenda").unbind("click").click(function (e) {
         e.preventDefault();
 
         var data = $('input[name=data]').val();
@@ -259,7 +234,7 @@
             })
         });
     });
-
+*/
 
 </script>
 
