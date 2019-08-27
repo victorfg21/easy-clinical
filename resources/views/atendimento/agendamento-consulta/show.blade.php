@@ -1,7 +1,7 @@
-<form id="frmAgenda">
+<form id="frmAgendamento">
     {{ csrf_field() }}
     <input type="hidden" name="_method" value="put"/>
-    @include('admin.agendas._form')
+    @include('atendimento.agendamento-consulta._form')
     <!-- DIV ERROS -->
     <div class="alert alert-danger print-error-msg" style="display:none">
         <ul></ul>
@@ -14,13 +14,13 @@
 <script>
     $("#btnSaveLarge").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmAgenda").serialize();
+        var form = $("#frmAgendamento").serialize();
 
         $("#btnSaveLarge").css("pointer-events", "none");
         $("#btnCloseLarge").css("pointer-events", "none");
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.agendas.update', $registro->id) }}",
+            url: "{{ route('atendimento.agendamento-consulta.update', $registro->id) }}",
             data: form,
             success: function (data) {
 
@@ -32,7 +32,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblAgendas").DataTable().ajax.reload();
+                    $("#tblAgendamentos").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
                 else {
@@ -46,14 +46,14 @@
             }
         }).fail(function (response){
             console.log(response);
-            associate_errors(response['responseJSON']['errors'], $("#frmAgenda"));
+            associate_errors(response['responseJSON']['errors'], $("#frmAgendamento"));
             $("#btnSaveLarge").css("pointer-events", "");
             $("#btnCloseLarge").css("pointer-events", "");
         });
     });
 
     $('#modal_Large').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblAgendas").DataTable().ajax.reload();
+        $("#tblAgendamentos").DataTable().ajax.reload();
     });
 
     function associate_errors(errors, $form)

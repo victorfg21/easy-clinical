@@ -6,7 +6,7 @@
         <input type="hidden" value="{{ $medicamento->id }}" name="id">
 
         <div class="alert alert-danger" role="alert">
-            Deseja REALMENTE excluir essa medicamento?
+            Deseja realmente EXCLUIR esse Medicamento?
         </div>
 
         <div class="form-group">

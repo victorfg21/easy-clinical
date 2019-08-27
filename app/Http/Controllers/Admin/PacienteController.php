@@ -9,6 +9,7 @@ use App\Paciente;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Config;
 
 class PacienteController extends Controller
 {
@@ -69,7 +70,7 @@ class PacienteController extends Controller
             $usuario->name = $req->input('nome');
             $usuario->email = $req->input('email');
             //Paciente = 2
-            $usuario->tipo_cadastro = '2';
+            $usuario->tipo_cadastro = Config::get('constants.options.paciente');
             $usuario->password = Hash::make($dados->ih);
             $usuario->save();
 

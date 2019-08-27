@@ -6,7 +6,7 @@
         <input type="hidden" value="{{ $exameMaterial->id }}" name="id">
 
         <div class="alert alert-danger" role="alert">
-            Deseja REALMENTE excluir essa Área de Atuação?
+            Deseja realmente EXCLUIR esse Material?
         </div>
 
         <div class="form-group">

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Config;
 
 class UsuarioController extends Controller
 {
@@ -46,7 +47,7 @@ class UsuarioController extends Controller
         $dados->name = $req->input('name');
         $dados->email = $req->input('email');
         $dados->password = Hash::make($req->input('password'));
-        $dados->tipo_cadastro = '3';
+        $dados->tipo_cadastro = Config::get('constants.options.administrativo');
 
         $dados->save();
         return "Cadastrado com sucesso!";
@@ -79,8 +80,7 @@ class UsuarioController extends Controller
             $dados->email = $req->input('email');
             if ($dados->password != $req->input('password'))
                 $dados->password = Hash::make($req->input('password'));
-            $dados->tipo_cadastro = '3';
-            
+
             $dados->update();
             return "Alterado com sucesso!";
         } catch (Exception $e) {

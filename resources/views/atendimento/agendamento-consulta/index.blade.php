@@ -16,7 +16,7 @@
         <div class="form-group col-md-2">
             <label for="inicio_periodo" class="control-label">Data</label>
             <input for="inicio_periodo" class="form-control" type="date" name="data"
-                value="{{ isset($registro->inicio_periodo) ? date("Y-m-d", strtotime($registro->inicio_periodo)) : '' }}" />
+                value="{{ date("Y-m-d") }}" />
         </div>
         <div class="form-group col-md-4">
             <label for="profissional_id" class="control-label">Profissional</label>
@@ -44,10 +44,6 @@
                     <option value="{{ $area_atuacao->id }}">{{ $area_atuacao->nome }}</option>
                 @endforeach
             </select>
-        </div>
-        <div class="form-group col-md-12">
-            <a href="#" class="btn btn-info col-md-1" id="btnListarAgenda"><i class="fa fa-search fa-lg"></i>
-                <strong>Filtrar</strong></a>
         </div>
         <div class="table-responsive col-md-12">
             <table id="tblAgendamentos" class="table table-hover table-striped">
@@ -106,10 +102,12 @@
                 { "data": "paciente_nome", "width": "50%" },
                 { "data": "data", "width": "20%" },
                 { "data": "hora", "width": "20%" },
-                { "data": "status", "width": "50%" },
+                {"render": function (data, type, full, meta) {
+                        return full.status;
+                }, "width": "40%"},
                 {"render": function (data, type, full, meta) {
                         return full.action;
-                }, "width": "10%"},
+                }, "width": "20%"},
         ],
         columnDefs: [
             { responsivePriority: 1, targets: 0 },

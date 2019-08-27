@@ -6,7 +6,7 @@
         <input type="hidden" value="{{ $fabricante->id }}" name="id">
 
         <div class="alert alert-danger" role="alert">
-            Deseja REALMENTE excluir essa Especialidade?
+            Deseja realmente EXCLUIR esse Fabricante?
         </div>
 
         <div class="form-group">

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Especialidade;
 use App\AreaAtuacao;
+use Config;
 
 class ProfissionalController extends Controller
 {
@@ -27,6 +28,7 @@ class ProfissionalController extends Controller
         $profissionais = Profissional::orderBy('nome')->get();
         return view('admin.profissionais.index', compact('profissionais'));
     }
+    
     //Método que lista todos os usuarios no DataTable da Tela
     public function listarprofissionais(Request $request)
     {
@@ -80,7 +82,7 @@ class ProfissionalController extends Controller
             $usuario->name = $req->input('nome');
             $usuario->email = $req->input('email');
             //Profissional = 1
-            $usuario->tipo_cadastro = '1';
+            $usuario->tipo_cadastro = Config::get('constants.options.profissional');
             $usuario->password = Hash::make($dados->ih);
             $usuario->save();
 
@@ -101,6 +103,7 @@ class ProfissionalController extends Controller
         $registro = Profissional::find($id);
         return view('admin.profissionais.show', compact('registro'));
     }
+
     public function edit($id)
     {
         //if (Auth::user()->authorizeRoles() == false)
@@ -129,6 +132,7 @@ class ProfissionalController extends Controller
             'areaAtuacao_list' => $areaAtuacao_list,
         ]);
     }
+
     public function update(ProfissionalRequest $req, $id)
     {
         try {
@@ -160,7 +164,7 @@ class ProfissionalController extends Controller
 
             $especialidades = json_decode($req->input('especialidades'));
             $areasAtuacao = json_decode($req->input('areasAtuacao'));
-            
+
             foreach ($especialidades as $especialidade) {
                 $exists = $dados->Especialidades->contains($especialidade->id);
 

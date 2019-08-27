@@ -19,5 +19,10 @@ return [
         'quinta' => '4',
         'sexta' => '5',
         'sabado' => '6',
+
+        //TIPO CADASTRO
+        'proissional' => '1',
+        'paciente' => '2',
+        'administrativo' => '3',
     ]
 ];

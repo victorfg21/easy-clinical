@@ -10,6 +10,7 @@ use App\Profissional;
 use App\Especialidade;
 use App\AreaAtuacao;
 use App\AgendaLivreProfissional;
+use App\Paciente;
 use Config;
 
 class AgendamentoConsultaController extends Controller
@@ -43,6 +44,9 @@ class AgendamentoConsultaController extends Controller
         $especialidade_id = $request->especialidade_id;
         $area_atuacao_id = $request->area_atuacao_id;
         $data = date('Y-m-d', strtotime($request->data));
+
+        if (!isset($profissional_id) && !isset($especialidade_id) && !isset($area_atuacao_id))
+            return response()->json();
 
         $agendas = null;
         if (isset($profissional_id))
@@ -125,8 +129,8 @@ class AgendamentoConsultaController extends Controller
             }
         }
 
-        return response()->json($horarios);
-        //return $this->preparaJson($request, $horarios);
+        //return response()->json($horarios);
+        return $this->preparaJson($request, $horarios);
     }
 
     private function MontarAgenda($agenda, $data)
@@ -207,18 +211,19 @@ class AgendamentoConsultaController extends Controller
                 $horaConsultaMarcada = date("H:i", strtotime($consulta->horario_consulta));
 
                 if ($horaConsultaMarcada == $horario["hora"]) {
-                    if ($consulta->cancelado != 0)
+                    if ($consulta->cancelado == 0 || $consulta->cancelado == null)
                         $horario["status"] = Config::get('constants.options.marcado');
                     else if ($consulta->cancelado == 1)
                         $horario["status"] = Config::get('constants.options.cancelado');
 
                     if ($consulta->realizado == 1)
                         $horario["status"] = Config::get('constants.options.realizado');
-                    else if ($consulta->realizado == 0)
+                    else if ($consulta->realizado == 0 && $consulta->realizado != null)
                         $horario["status"] = Config::get('constants.options.nao_realizado');
 
                     $horario["paciente_id"] = $consulta->paciente_id;
                     $horario["paciente_nome"] = $consulta->nome;
+                    $horario["consulta_id"] = $consulta->id;
                     $horarios[$i] = $horario;
                 }
             }
@@ -246,7 +251,6 @@ class AgendamentoConsultaController extends Controller
 
     private function preparaJson($request, $horarios = [])
     {
-        //dd($horarios);
         $columns = array(
             0 => 'profissional_id',
             1 => 'profissional_nome',
@@ -264,36 +268,165 @@ class AgendamentoConsultaController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        dd($start);
-
-
-        for ($i = 0; $i < sizeof($horarios); $i++) {
-            if ($start >= $i && $limit < ($start + $i)) {
+        for ($i = $start; $i < sizeof($horarios); $i++) {
+            if ($start <= $i && $i < ($start + $limit)) {
                 $horario = $horarios[$i];
 
-                dd($horario['status']);
-                /*$show =  route('admin.pacientes.editar', $horario[""]);
-                $edit =  route('admin.pacientes.edit', $paciente->id);
+                $create =  route('atendimento.agendamento-consulta.create');
+                $show =  route('atendimento.agendamento-consulta.show', $horario["consulta_id"]);
+                $cancel =  route('atendimento.agendamento-consulta.cancel', $horario["consulta_id"]);
 
-                $nestedData['id'] = $paciente->id;
-                $nestedData['nome'] = $paciente->nome;
-                $nestedData['cpf'] = $paciente->cpf;
-                $nestedData['ih'] = $paciente->ih;
-                $nestedData['action'] = "<a href='#' title='Editar Paciente'
-                                        onclick=\"modalBootstrap('{$edit}', 'Editar Paciente', '#modal_Large', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>";
+                $nestedData['profissional_id'] = $horario["profissional_id"];
+                $nestedData['profissional_nome'] = $horario["profissional_nome"];
+                $nestedData['paciente_id'] = $horario["paciente_id"];
+                $nestedData['paciente_nome'] = $horario["paciente_nome"];
+                $nestedData['data'] = date('d/m/Y', strtotime($horario["data"]));
+                $nestedData['hora'] = $horario["hora"];
 
-                $data[] = $nestedData;*/
+                switch ($horario["status"]) {
+                    case Config::get('constants.options.disponivel'):
+                        $statusMarcacao = "<font color=\"green\">Disponível</font>";
+                        break;
+
+                    case Config::get('constants.options.em_marcacao'):
+                        $statusMarcacao = "<font color=\"yellow\">Em Marcação</font>";
+                        break;
+
+                    case Config::get('constants.options.marcado'):
+                        $statusMarcacao = "<font color=\"blue\">Marcado</font>";
+                        break;
+
+                    case Config::get('constants.options.cancelado'):
+                        $statusMarcacao = "<font color=\"red\">Cancelado</font>";
+                        break;
+
+                    case Config::get('constants.options.nao_disponivel'):
+                        $statusMarcacao = "<font color=\"orange\">Não Disponivel</font>";
+                        break;
+
+                    case Config::get('constants.options.realizado'):
+                        $statusMarcacao = "<font color=\"LightSkyBlue  \">Realizado</font>";
+                        break;
+
+                    case Config::get('constants.options.nao_realizado'):
+                        $statusMarcacao = "<font color=\"FireBrick \">Faltou</font>";
+                        break;
+                }
+
+                $nestedData['status'] = $statusMarcacao;
+                $nestedData['consulta_id'] = $horario["consulta_id"];
+
+                if (empty($horario["consulta_id"]))
+                    $nestedData['action'] = "<a href='#' title='Criar Consulta'
+                                onclick=\"modalBootstrap('{$create}', 'Criar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-ok'></span></a>";
+                else
+                    $nestedData['action'] = "<a href='#' title='Visualizar Consulta'
+                                        onclick=\"modalBootstrap('{$show}', 'Visualizar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-search'></span></a>
+                                        <a href='#' title='Cancelar Consulta'
+                                        onclick=\"modalBootstrap('{$cancel}', 'Cancelar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-ban-circle'></span></a>";
+
+                $data[] = $nestedData;
             }
         }
 
         $json_data = array(
             "draw"            => intval($request->input('draw')),
             "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered->count()),
+            "recordsFiltered" => intval($totalData),
             "style"           => '',
-            "data"            => $horarios
+            "data"            => $data
         );
 
         return json_encode($json_data);
+    }
+
+    public function create()
+    {
+        //if (Auth::user()->authorizeRoles() == false)
+        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+
+        $profissional_list = Profissional::orderBy('nome')->get();
+        $paciente_list = Paciente::orderBy('nome')->get();
+        return view('atendimento.agendamento-consulta.create', [
+            'profissional_list' => $profissional_list,
+            'paciente_list' => $paciente_list
+        ]);
+    }
+
+    public function store(AgendaRequest $req)
+    {
+        try {
+            DB::beginTransaction();
+
+            $dados = new Agenda;
+            $dados->profissional_id = $req->input('profissional_id');
+            $dados->segunda = ($req->input('segunda') == 'on') ? true : false;
+            $dados->terca = ($req->input('terca') == 'on') ? true : false;
+            $dados->quarta = ($req->input('quarta') == 'on') ? true : false;
+            $dados->quinta = ($req->input('quinta') == 'on') ? true : false;
+            $dados->sexta = ($req->input('sexta') == 'on') ? true : false;
+            $dados->sabado = ($req->input('sabado') == 'on') ? true : false;
+            $dados->domingo = ($req->input('domingo') == 'on') ? true : false;
+            $dados->inicio_periodo = date('Y-m-d H:i:s', strtotime($req->input('inicio_periodo')));
+            $dados->fim_periodo = date('Y-m-d H:i:s', strtotime($req->input('fim_periodo')));
+            $dados->tempo_consulta = $req->input('tempo_consulta');
+            $dados->inicio_horario_1 = $req->input('inicio_horario_1');
+            $dados->fim_horario_1 = $req->input('fim_horario_1');
+            $dados->inicio_horario_2 = $req->input('inicio_horario_2');
+            $dados->fim_horario_2 = $req->input('fim_horario_2');
+            $dados->ativo = 1;
+
+            $dados->save();
+            DB::commit();
+
+            return "Cadastrado com sucesso!";
+
+        } catch (Exception $e) {
+            DB::rollback();
+            return "Ocorreu um erro ao cadastrar.";
+        }
+    }
+
+    public function show($id)
+    {
+        //if (Auth::user()->authorizeRoles() == false)
+        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+
+        $registro = Consulta::find($id);
+        $profissional_list = Profissional::orderBy('nome')->get();
+        $paciente_list = Paciente::orderBy('nome')->get();
+        return view('atendimento.agendamento-consulta.show', [
+            'registro' => $registro,
+            'profissional_list' => $profissional_list,
+            'paciente_list' => $paciente_list
+        ]);
+    }
+
+    public function cancel(Request $request, $id)
+    {
+        //if (Auth::user()->authorizeRoles() == false)
+        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        $consulta = Consulta::find($id);
+        return view ('atendimento.agendamento-consulta.cancel', compact('consulta'));
+    }
+
+    public function confirmarcancel($id)
+    {
+        try
+        {
+            DB::beginTransaction();
+
+            $consulta = Consulta::find($id);
+            $consulta->cancelado = 1;
+            $consulta->update();
+
+            DB::commit();
+            return "Cancelado com sucesso!";
+        }
+        catch(Exception $e)
+        {
+            DB::rollback();
+            return "Ocorreu um erro ao cancelar";
+        }
     }
 }

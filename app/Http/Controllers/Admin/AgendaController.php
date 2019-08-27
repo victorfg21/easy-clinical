@@ -65,6 +65,7 @@ class AgendaController extends Controller
             $dados->fim_horario_1 = $req->input('fim_horario_1');
             $dados->inicio_horario_2 = $req->input('inicio_horario_2');
             $dados->fim_horario_2 = $req->input('fim_horario_2');
+            $dados->ativo = 1;
 
             $dados->save();
             DB::commit();

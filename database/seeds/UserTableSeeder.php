@@ -13,21 +13,18 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        //$role_employee = Role::where('name', 'user')->first();
-        //$role_manager  = Role::where('name', 'superadministrator')->first();
-
         $manager = new User();
         $manager->name = 'Administrador';
         $manager->email = 'admin@mail.com';
         $manager->password = bcrypt('123@Mudar');
-        $manager->tipo_cadastro = 'A';
+        $manager->tipo_cadastro = Config::get('constants.options.administrativo');
         $manager->save();
 
         $manager = new User();
         $manager->name = 'Usuario';
         $manager->email = 'usuario@mail.com';
         $manager->password = bcrypt('123@Mudar');
-        $manager->tipo_cadastro = '2';
+        $manager->tipo_cadastro = Config::get('constants.options.paciente');
         $manager->save();
         //$manager->roles()->attach($role_manager);
     }

@@ -1,38 +1,27 @@
-<form id="frmAreaAtuacao" class="form-horizontal">
+<form id="frmAgendamento" class="form-horizontal">
     {{ csrf_field() }}
 
     <div class="box-body">
-
-        <input type="hidden" value="{{ $areaAtuacao->id }}" name="id">
-
+        <input type="hidden" value="{{ $consulta->id }}" name="id">
         <div class="alert alert-danger" role="alert">
-            Deseja realmente EXCLUIR essa Área de Atuação?
+            Deseja realmente CANCELAR essa Consulta?
         </div>
-
-        <div class="form-group">
-            <label for="nome" class="col-sm-2 control-label">Descrição</label>
-
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="nome" value="{{ $areaAtuacao->nome }}" disabled="disabled">
-            </div>
-        </div>
-
     </div>
 </form>
 
 <script>
     $("#btnSave").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmAreaAtuacao").serialize();
+        var form = $("#frmAgendamento").serialize();
         $("#btnSave").css("pointer-events", "none");
         $("#btnClose").css("pointer-events", "none");
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.areas-atuacao.confirmardelete', $areaAtuacao->id) }}",
+            url: "{{ route('atendimento.agendamento-consulta.confirmardelete', $consulta->id) }}",
             data: form,
             success: function (data) {
 
-                if (data == "Removido com sucesso!") {
+                if (data == "Cancelado com sucesso!") {
                     Swal.fire({
                         position: 'center ',
                         type: 'success',
@@ -40,7 +29,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblAreasAtuacao").DataTable().ajax.reload();
+                    $("#tblAgendamentos").DataTable().ajax.reload();
                     $("#modal_CRUD").modal("hide");
                 }
                 else {
@@ -55,6 +44,6 @@
         });
     });
     $('#modal_CRUD').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblAreasAtuacao").DataTable().ajax.reload();
+        $("#tblAgendamentos").DataTable().ajax.reload();
     });
 </script>
