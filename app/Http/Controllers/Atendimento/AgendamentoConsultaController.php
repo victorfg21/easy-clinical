@@ -38,15 +38,22 @@ class AgendamentoConsultaController extends Controller
         ]);
     }
 
-    public function listaragenda(Request $request)
+    //Método que lista todos os usuarios no DataTable da Tela
+    public function listarconsultas(Request $request)
     {
+        //if (Auth::user()->authorizeRoles() == false)
+        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        /*$consultas = new Consulta();
+        return $consultas->ListarConsultas($request);
+        */
         $profissional_id = $request->profissional_id;
         $especialidade_id = $request->especialidade_id;
         $area_atuacao_id = $request->area_atuacao_id;
         $data = date('Y-m-d', strtotime($request->data));
+        $horarios = [];
 
         if (!isset($profissional_id) && !isset($especialidade_id) && !isset($area_atuacao_id))
-            return response()->json();
+            return $this->preparaJson($request, $horarios);
 
         $agendas = null;
         if (isset($profissional_id))
@@ -80,9 +87,8 @@ class AgendamentoConsultaController extends Controller
                 ->where('agendas.fim_periodo', '>=', $data)
                 ->get();
 
-        $horarios = [];
         foreach ($this->$agendas as $agenda) {
-            if ($agenda->inicio_periodo <= $data && $agenda->fim_periodo = $data) {
+            if ($agenda->inicio_periodo <= $data && $agenda->fim_periodo >= $data) {
 
                 $diaSemana = date('w', strtotime($data));
                 $montarAgenda = true;
@@ -129,7 +135,6 @@ class AgendamentoConsultaController extends Controller
             }
         }
 
-        //return response()->json($horarios);
         return $this->preparaJson($request, $horarios);
     }
 
@@ -205,8 +210,8 @@ class AgendamentoConsultaController extends Controller
             ->where('data_consulta', '=', $data)
             ->get();
         for ($i = 0; $i < sizeof($horarios); $i++) {
-
             foreach ($consultas as $consulta) {
+
                 $horario = $horarios[$i];
                 $horaConsultaMarcada = date("H:i", strtotime($consulta->horario_consulta));
 
@@ -225,6 +230,17 @@ class AgendamentoConsultaController extends Controller
                     $horario["paciente_nome"] = $consulta->nome;
                     $horario["consulta_id"] = $consulta->id;
                     $horarios[$i] = $horario;
+
+                    /*if ($horario["status"] == Config::get('constants.options.cancelado')) {
+                        $horario["paciente_id"] = '';
+                        $horario["paciente_nome"] = '';
+                        $horario["consulta_id"] = '';
+                        $horario["status"] = Config::get('constants.options.disponivel');
+
+                        $novosHorarios = array();
+                        array_push($novosHorarios, $horario);
+                        array_splice($horarios, $i, 0, $novosHorarios);
+                    }*/
                 }
             }
         }
@@ -268,6 +284,7 @@ class AgendamentoConsultaController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
+        $data = [];
         for ($i = $start; $i < sizeof($horarios); $i++) {
             if ($start <= $i && $i < ($start + $limit)) {
                 $horario = $horarios[$i];
@@ -318,12 +335,12 @@ class AgendamentoConsultaController extends Controller
 
                 if (empty($horario["consulta_id"]))
                     $nestedData['action'] = "<a href='#' title='Criar Consulta'
-                                onclick=\"modalBootstrap('{$create}', 'Criar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-ok'></span></a>";
+                                onclick=\"modalBootstrap('{$create}', 'Criar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Adicionar', 'Fechar')\"><span class='glyphicon glyphicon-ok'></span></a>";
                 else
                     $nestedData['action'] = "<a href='#' title='Visualizar Consulta'
-                                        onclick=\"modalBootstrap('{$show}', 'Visualizar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-search'></span></a>
+                                        onclick=\"modalBootstrap('{$show}', 'Visualizar Consulta', '#modal_CRUD', '', 'false', 'true', 'false', '', 'Fechar')\"><span class='glyphicon glyphicon-search'></span></a>
                                         <a href='#' title='Cancelar Consulta'
-                                        onclick=\"modalBootstrap('{$cancel}', 'Cancelar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-ban-circle'></span></a>";
+                                        onclick=\"modalBootstrap('{$cancel}', 'Cancelar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Adicionar', 'Fechar')\"><span class='glyphicon glyphicon-ban-circle'></span></a>";
 
                 $data[] = $nestedData;
             }
@@ -380,7 +397,6 @@ class AgendamentoConsultaController extends Controller
             DB::commit();
 
             return "Cadastrado com sucesso!";
-
         } catch (Exception $e) {
             DB::rollback();
             return "Ocorreu um erro ao cadastrar.";
@@ -407,13 +423,12 @@ class AgendamentoConsultaController extends Controller
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
         $consulta = Consulta::find($id);
-        return view ('atendimento.agendamento-consulta.cancel', compact('consulta'));
+        return view('atendimento.agendamento-consulta.cancel', compact('consulta'));
     }
 
     public function confirmarcancel($id)
     {
-        try
-        {
+        try {
             DB::beginTransaction();
 
             $consulta = Consulta::find($id);
@@ -422,9 +437,7 @@ class AgendamentoConsultaController extends Controller
 
             DB::commit();
             return "Cancelado com sucesso!";
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             DB::rollback();
             return "Ocorreu um erro ao cancelar";
         }

@@ -133,7 +133,7 @@ Route::get('admin/agenda-livre-profissionais/show/{id}', ['as' => 'admin.agenda-
 Route::put('admin/agenda-livre-profissionais/update/{id}', ['as' => 'admin.agenda-livre-profissionais.update', 'uses' => 'Admin\AgendaLivreProfissionalController@update']);
 Route::get('admin/agenda-livre-profissionais/listaragendalivreprofissionais', ['as' => 'admin.agenda-livre-profissionais.listaragendalivreprofissionais', 'uses' => 'Admin\AgendaLivreProfissionalController@listaragendalivreprofissionais']);
 
-//Agenda Livre Profissionais
+//Agendamento Consulta
 Route::get('atendimento/agendamento-consulta', ['as' => 'atendimento.agendamento-consulta', 'uses' => 'Atendimento\AgendamentoConsultaController@index']);
 Route::get('atendimento/agendamento-consulta/create', ['as' => 'atendimento.agendamento-consulta.create', 'uses' => 'Atendimento\AgendamentoConsultaController@create']);
 Route::post('atendimento/agendamento-consulta/store', ['as' => 'atendimento.agendamento-consulta.store', 'uses' => 'Atendimento\AgendamentoConsultaController@store']);
@@ -142,4 +142,4 @@ Route::get('atendimento/agendamento-consulta/show/{id}', ['as' => 'atendimento.a
 Route::put('atendimento/agendamento-consulta/update/{id}', ['as' => 'atendimento.agendamento-consulta.update', 'uses' => 'Atendimento\AgendamentoConsultaController@update']);
 Route::get('atendimento/agendamento-consulta/cancel/{id}', ['as' => 'atendimento.agendamento-consulta.cancel', 'uses' => 'Atendimento\AgendamentoConsultaController@cancel']);
 Route::post('atendimento/agendamento-consulta/confirmarcancel/{id}', ['as' => 'atendimento.agendamento-consulta.confirmardelete', 'uses' => 'Atendimento\AgendamentoConsultaController@confirmarcancel']);
-Route::get('atendimento/agendamento-consulta/listaragenda', ['as' => 'atendimento.agendamento-consulta.listaragenda', 'uses' => 'Atendimento\AgendamentoConsultaController@listaragenda']);
+Route::get('atendimento/agendamento-consulta/listarconsultas', ['as' => 'atendimento.agendamento-consulta.listarconsultas', 'uses' => 'Atendimento\AgendamentoConsultaController@listarconsultas']);

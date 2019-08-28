@@ -85,7 +85,7 @@
             "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
         },
         "ajax":{
-            "url": "{!! route('atendimento.agendamento-consulta.listaragenda') !!}",
+            "url": "{!! route('atendimento.agendamento-consulta.listarconsultas') !!}",
             "dataType": "json",
             "type": "get",
             "data": function (d) {
@@ -140,100 +140,6 @@
     $('select[name=area_atuacao_id]').change(function () {
         tblAgendamentos.ajax.reload();
     });
-
-    /*$("#btnListarAgenda").unbind("click").click(function (e) {
-        e.preventDefault();
-
-        var data = $('input[name=data]').val();
-        var profissional_id = $('select[name=profissional_id]').val();
-        var especialidade_id = $('select[name=especialidade_id]').val();
-        var area_atuacao_id = $('select[name=area_atuacao_id]').val();
-
-        $.ajax({
-            url: "{{ route('atendimento.agendamento-consulta.listaragenda') }}",
-            type: "get",
-            data: {data:data, profissional_id:profissional_id, especialidade_id:especialidade_id, area_atuacao_id:area_atuacao_id, },
-            success: function(response) {
-
-                Swal.fire({
-                    type: 'success',
-                    showConfirmButton: false,
-                    timer: 700
-                })
-
-                $("#tblAgendamentos").empty();
-                $("#tblAgendamentos").addClass("table table-hover table-striped");
-                $("#tblAgendamentos").append("<thead>" +
-                            "<tr>" +
-                                "<th style=\"display:none;\">Profissional ID</th>" +
-                                "<th class=\"col-xs-3\">Profissional</th>" +
-                                "<th style=\"display:none;\">Paciente ID</th>" +
-                                "<th class=\"col-xs-3\">Paciente</th>" +
-                                "<th class=\"col-xs-2\">Data</th>" +
-                                "<th class=\"col-xs-2\">Horário</th>" +
-                                "<th class=\"col-xs-3\">Status</th>" +
-                                "<th class=\"col-xs-2\">Ações</th>" +
-                            "</tr>" +
-                        "</thead>"
-                );
-
-                $("#tblAgendamentos").append("<tbody>");
-                $.each(response, function (a, b) {
-                    var statusMarcacao = "";
-                    switch (b.status) {
-                        case "0":
-                            statusMarcacao = "<font color=\"green\">Disponível</font>";
-                            break;
-
-                        case "1":
-                            statusMarcacao = "<font color=\"yellow\">Em Marcação</font>";
-                            break;
-
-                        case "2":
-                            statusMarcacao = "<font color=\"blue\">Marcado</font>";
-                            break;
-
-                        case "3":
-                            statusMarcacao = "<font color=\"red\">Cancelado</font>";
-                            break;
-
-                        case "4":
-                            statusMarcacao = "<font color=\"orange\">Não Disponivel</font>";
-                            break;
-                        case "5":
-                            statusMarcacao = "<font color=\"LightSkyBlue  \">Realizado</font>";
-                            break;
-                        case "6":
-                            statusMarcacao = "<font color=\"FireBrick \">Faltou</font>";
-                            break;
-                    }
-
-                    $("#tblAgendamentos").append("<tr>" +
-                        "<td style=\"display:none;\">" + b.profissional_id + "</td>" +
-                        "<td>" + b.profissional_nome + "</td>" +
-                        "<td style=\"display:none;\">" + b.paciente_id + "</td>" +
-                        "<td>" + b.paciente_nome + "</td>" +
-                        "<td>" + b.data + "</td>" +
-                        "<td>" + b.hora + "</td>" +
-                        "<td>" + statusMarcacao + "</td>" +
-                        "<td><a href='#'><span class='glyphicon glyphicon-edit'></span></a><a href='#'><span class='glyphicon glyphicon-trash'></span></a></td>" +
-                        "</tr>"
-                    );
-                });
-
-                $("#tblAgendamentos").append("</tbody>");
-            }
-        }).fail(function (response){
-
-            Swal.fire({
-                type: 'error',
-                showConfirmButton: false,
-                timer: 700
-            })
-        });
-    });
-*/
-
 </script>
 
 @stop

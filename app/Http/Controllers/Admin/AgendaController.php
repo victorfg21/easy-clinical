@@ -24,6 +24,7 @@ class AgendaController extends Controller
         $agendas = Agenda::all();
         return view('admin.agendas.index', compact('agendas'));
     }
+
     //Método que lista todos os usuarios no DataTable da Tela
     public function listaragendas(Request $request)
     {
