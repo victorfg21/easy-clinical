@@ -25,9 +25,10 @@ class CreateConsultasTable extends Migration
             //$table->foreign('receita_id')->references('id')->on('receitas');
             $table->date('data_consulta');
             $table->time('horario_consulta');
-            $table->text('anotacao');
+            $table->text('anotacao')->nullable();
             $table->boolean('realizado')->nullable();
             $table->boolean('cancelado')->nullable();
+            $table->boolean('bloqueado')->nullable();
             $table->timestamps();
         });
     }

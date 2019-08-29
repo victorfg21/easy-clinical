@@ -45,7 +45,6 @@
                 $("#btnCloseLarge").css("pointer-events", "");
             }
         }).fail(function (response){
-            console.log(response);
             associate_errors(response['responseJSON']['errors'], $("#frmPaciente"));
             $("#btnSaveLarge").css("pointer-events", "");
             $("#btnCloseLarge").css("pointer-events", "");

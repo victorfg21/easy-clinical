@@ -72,6 +72,7 @@
 
 <!--JavaScript do Sistema-->
 <script src="{{ asset('js/cep.js') }}"></script>
+<script src="{{ asset('js/moment.js') }}"></script>
 <script src="{{ asset('js/mascaraform.js') }}"></script>
 
 @yield('adminlte_js')

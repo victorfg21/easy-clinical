@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AgendaLivreProfissionalRequest;
 use App\Http\Controllers\Controller;
 use App\AgendaLivreProfissional;
+use App\Consulta;
 use App\Profissional;
 use Illuminate\Support\Facades\DB;
 
@@ -57,6 +58,10 @@ class AgendaLivreProfissionalController extends Controller
             $dados->motivo = $req->input('motivo');
 
             $dados->save();
+
+            $consultas = new Consulta;
+            $consultas->BloquearConsultas($dados->data_livre, $dados->inicio_periodo, $dados->fim_periodo);
+
             DB::commit();
             return "Cadastrado com sucesso!";
         } catch (Exception $e) {

@@ -10,6 +10,7 @@ return [
         'nao_disponivel' => '4',
         'realizado' => '5',
         'nao_realizado' => '6',
+        'sem_marcacao' => '7',
 
         //DIAS DA SEMANA
         'domingo' => '0',

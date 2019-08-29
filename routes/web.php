@@ -127,6 +127,7 @@ Route::get('admin/agendas/listaragendas', ['as' => 'admin.agendas.listaragendas'
 //Agenda Livre Profissionais
 Route::get('admin/agenda-livre-profissionais', ['as' => 'admin.agenda-livre-profissionais', 'uses' => 'Admin\AgendaLivreProfissionalController@index']);
 Route::get('admin/agenda-livre-profissionais/create', ['as' => 'admin.agenda-livre-profissionais.create', 'uses' => 'Admin\AgendaLivreProfissionalController@create']);
+Route::get('admin/agenda-livre-profissionais/create-consulta', ['as' => 'admin.agenda-livre-profissionais.create-consulta', 'uses' => 'Admin\AgendaLivreProfissionalController@create']);
 Route::post('admin/agenda-livre-profissionais/store', ['as' => 'admin.agenda-livre-profissionais.store', 'uses' => 'Admin\AgendaLivreProfissionalController@store']);
 Route::get('admin/agenda-livre-profissionais/edit/{id}', ['as' => 'admin.agenda-livre-profissionais.edit', 'uses' => 'Admin\AgendaLivreProfissionalController@edit']);
 Route::get('admin/agenda-livre-profissionais/show/{id}', ['as' => 'admin.agenda-livre-profissionais.show', 'uses' => 'Admin\AgendaLivreProfissionalController@show']);
@@ -141,5 +142,6 @@ Route::get('atendimento/agendamento-consulta/edit/{id}', ['as' => 'atendimento.a
 Route::get('atendimento/agendamento-consulta/show/{id}', ['as' => 'atendimento.agendamento-consulta.show', 'uses' => 'Atendimento\AgendamentoConsultaController@show']);
 Route::put('atendimento/agendamento-consulta/update/{id}', ['as' => 'atendimento.agendamento-consulta.update', 'uses' => 'Atendimento\AgendamentoConsultaController@update']);
 Route::get('atendimento/agendamento-consulta/cancel/{id}', ['as' => 'atendimento.agendamento-consulta.cancel', 'uses' => 'Atendimento\AgendamentoConsultaController@cancel']);
+Route::get('atendimento/agendamento-consulta/transfer/{id}', ['as' => 'atendimento.agendamento-consulta.transfer', 'uses' => 'Atendimento\AgendamentoConsultaController@transfer']);
 Route::post('atendimento/agendamento-consulta/confirmarcancel/{id}', ['as' => 'atendimento.agendamento-consulta.confirmardelete', 'uses' => 'Atendimento\AgendamentoConsultaController@confirmarcancel']);
 Route::get('atendimento/agendamento-consulta/listarconsultas', ['as' => 'atendimento.agendamento-consulta.listarconsultas', 'uses' => 'Atendimento\AgendamentoConsultaController@listarconsultas']);

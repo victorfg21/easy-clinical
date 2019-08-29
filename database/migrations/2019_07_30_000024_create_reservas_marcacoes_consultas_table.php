@@ -17,8 +17,8 @@ class CreateReservasMarcacoesConsultasTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('profissional_id');
             $table->foreign('profissional_id')->references('id')->on('profissionais');
-            $table->unsignedBigInteger('paciente_id');
-            $table->foreign('paciente_id')->references('id')->on('pacientes');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->date('data_consulta');
             $table->time('horario_consulta');
             $table->timestamps();

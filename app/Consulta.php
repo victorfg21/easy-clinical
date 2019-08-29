@@ -2,18 +2,20 @@
 
 namespace App;
 
+use Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\AgendaLivreProfissional;
-use Config;
+use Illuminate\Notifications\Notifiable;
 
 class Consulta extends Model
 {
+    use Notifiable;
+
     protected $table = 'consultas';
 
     protected $fillable = [
-        'data_consulta', 'horario_consulta', 'anotacao', 'realizado', 'cancelado'
+        'data_consulta', 'horario_consulta', 'anotacao', 'realizado', 'cancelado',
     ];
 
     public function Profissional()
@@ -31,6 +33,27 @@ class Consulta extends Model
         return $this->hasOne(\App\SolicitacaoExame::class, 'id', 'solicitacao_exame_id');
     }
 
+    public function BloquearConsultas($data, $hora_inicio, $hora_fim)
+    {
+        $consultas = Consulta::select('consultas.*')
+            ->where('data_consulta', '=', $data)
+            ->where('horario_consulta', '>=', $hora_inicio)
+            ->where('horario_consulta', '<=', $hora_fim)
+            ->where('bloqueado', null)
+            ->get()
+        ;
+
+        foreach ($consultas as $consulta) {
+            $consulta->bloqueado = true;
+            $consulta->update();
+        }
+    }
+
+    public function ReservarHorario()
+    {
+
+    }
+
     public function ListarConsultas(Request $request)
     {
         $profissional_id = $request->profissional_id;
@@ -39,21 +62,23 @@ class Consulta extends Model
         $data = date('Y-m-d', strtotime($request->data));
         $horarios = [];
 
-        if (!isset($profissional_id) && !isset($especialidade_id) && !isset($area_atuacao_id))
+        if (!isset($profissional_id) && !isset($especialidade_id) && !isset($area_atuacao_id)) {
             return $this->preparaJson($request, $horarios);
-
+        }
         $agendas = null;
-        if (isset($profissional_id))
-            $this->$agendas = DB::table('agendas')
+        if (isset($profissional_id)) {
+            $this->{$agendas} = DB::table('agendas')
                 ->join('profissionais', 'agendas.profissional_id', 'profissionais.id')
                 ->select('agendas.*', 'profissionais.nome')
                 ->where('profissional_id', $profissional_id)
                 ->where('agendas.inicio_periodo', '<=', $data)
                 ->where('agendas.fim_periodo', '>=', $data)
-                ->get();
+                ->get()
+            ;
+        }
 
-        if (isset($especialidade_id))
-            $this->$agendas = DB::table('especialidades')
+        if (isset($especialidade_id)) {
+            $this->{$agendas} = DB::table('especialidades')
                 ->join('especialidade_profissional', 'especialidades.id', 'especialidade_profissional.especialidade_id')
                 ->join('agendas', 'especialidade_profissional.profissional_id', 'agendas.profissional_id')
                 ->join('profissionais', 'agendas.profissional_id', 'profissionais.id')
@@ -61,10 +86,12 @@ class Consulta extends Model
                 ->where('especialidades.id', $especialidade_id)
                 ->where('agendas.inicio_periodo', '<=', $data)
                 ->where('agendas.fim_periodo', '>=', $data)
-                ->get();
+                ->get()
+            ;
+        }
 
-        if (isset($area_atuacao_id))
-            $this->$agendas = DB::table('areas_atuacao')
+        if (isset($area_atuacao_id)) {
+            $this->{$agendas} = DB::table('areas_atuacao')
                 ->join('area_atuacao_profissional', 'areas_atuacao.id', 'area_atuacao_profissional.area_atuacao_id')
                 ->join('agendas', 'area_atuacao_profissional.profissional_id', 'agendas.profissional_id')
                 ->join('profissionais', 'agendas.profissional_id', 'profissionais.id')
@@ -72,53 +99,63 @@ class Consulta extends Model
                 ->where('areas_atuacao.id', $area_atuacao_id)
                 ->where('agendas.inicio_periodo', '<=', $data)
                 ->where('agendas.fim_periodo', '>=', $data)
-                ->get();
+                ->get()
+            ;
+        }
 
-        foreach ($this->$agendas as $agenda) {
+        foreach ($this->{$agendas} as $agenda) {
             if ($agenda->inicio_periodo <= $data && $agenda->fim_periodo >= $data) {
-
                 $diaSemana = date('w', strtotime($data));
                 $montarAgenda = true;
 
                 switch ($diaSemana) {
                     case Config::get('constants.options.domingo'):
-                        if ($agenda->domingo == 1)
-                            $this->$montarAgenda = true;
-                        break;
+                        if (1 == $agenda->domingo) {
+                            $this->{$montarAgenda} = true;
+                        }
 
+                        break;
                     case Config::get('constants.options.segunda'):
-                        if ($agenda->segunda == 1)
-                            $this->$montarAgenda = true;
-                        break;
+                        if (1 == $agenda->segunda) {
+                            $this->{$montarAgenda} = true;
+                        }
 
+                        break;
                     case Config::get('constants.options.terca'):
-                        if ($agenda->terca == 1)
-                            $this->$montarAgenda = true;
-                        break;
+                        if (1 == $agenda->terca) {
+                            $this->{$montarAgenda} = true;
+                        }
 
+                        break;
                     case Config::get('constants.options.quarta'):
-                        if ($agenda->quarta == 1)
-                            $this->$montarAgenda = true;
-                        break;
+                        if (1 == $agenda->quarta) {
+                            $this->{$montarAgenda} = true;
+                        }
 
+                        break;
                     case Config::get('constants.options.quinta'):
-                        if ($agenda->quinta == 1)
-                            $this->$montarAgenda = true;
-                        break;
+                        if (1 == $agenda->quinta) {
+                            $this->{$montarAgenda} = true;
+                        }
 
+                        break;
                     case Config::get('constants.options.sexta'):
-                        if ($agenda->sexta == 1)
-                            $this->$montarAgenda = true;
-                        break;
+                        if (1 == $agenda->sexta) {
+                            $this->{$montarAgenda} = true;
+                        }
 
+                        break;
                     case Config::get('constants.options.sabado'):
-                        if ($agenda->sabado == 1)
-                            $this->$montarAgenda = true;
+                        if (1 == $agenda->sabado) {
+                            $this->{$montarAgenda} = true;
+                        }
+
                         break;
                 }
 
-                if ($this->$montarAgenda)
+                if ($this->{$montarAgenda}) {
                     $horarios = $this->MontarAgenda($agenda, $data);
+                }
             }
         }
 
@@ -150,43 +187,41 @@ class Consulta extends Model
         $quantidadeConsultasHorario2 = abs($tempoTotalAtendimentoHorario2 / $tempo_consulta);
 
         //Gera a agenda do dia para os parametros do filtro
-        $horaConsulta = date("H:i", strtotime($agenda->inicio_horario_1));
-        $horarios = array();
-        for ($i = 0; $i < $quantidadeConsultasHorario1; $i++) {
-
-            $horario = array(
+        $horaConsulta = date('H:i', strtotime($agenda->inicio_horario_1));
+        $horarios = [];
+        for ($i = 0; $i < $quantidadeConsultasHorario1; ++$i) {
+            $horario = [
                 'profissional_id' => $agenda->profissional_id,
                 'profissional_nome' => $agenda->nome,
                 'paciente_id' => '',
                 'paciente_nome' => '',
-                'data' => date("Y-m-d", strtotime($data)),
+                'data' => date('Y-m-d', strtotime($data)),
                 'hora' => $horaConsulta,
                 'status' => Config::get('constants.options.disponivel'),
-                'consulta_id' => ''
-            );
+                'consulta_id' => '',
+            ];
 
             array_push($horarios, $horario);
             //Próximo horário
-            $horaConsulta = date("H:i", strtotime($horaConsulta) + 60 * (60 * $tempo_consulta));
+            $horaConsulta = date('H:i', strtotime($horaConsulta) + 60 * (60 * $tempo_consulta));
         }
 
-        $horaConsulta = date("H:i", strtotime($agenda->inicio_horario_2));
-        for ($i = 0; $i < $quantidadeConsultasHorario2; $i++) {
-
-            $horario = array(
+        $horaConsulta = date('H:i', strtotime($agenda->inicio_horario_2));
+        for ($i = 0; $i < $quantidadeConsultasHorario2; ++$i) {
+            $horario = [
                 'profissional_id' => $agenda->profissional_id,
                 'profissional_nome' => $agenda->nome,
                 'paciente_id' => '',
                 'paciente_nome' => '',
-                'data' => date("Y-m-d", strtotime($data)),
+                'data' => date('Y-m-d', strtotime($data)),
                 'hora' => $horaConsulta,
                 'status' => Config::get('constants.options.disponivel'),
-                'consulta_id' => ''
-            );
+                'consulta_id' => '',
+            ];
 
             array_push($horarios, $horario);
             //Próximo horário
-            $horaConsulta = date("H:i", strtotime($horaConsulta) + 60 * (60 * $tempo_consulta));
+            $horaConsulta = date('H:i', strtotime($horaConsulta) + 60 * (60 * $tempo_consulta));
         }
 
         //Preenche as consultas já marcadas
@@ -195,32 +230,33 @@ class Consulta extends Model
             ->select('consultas.*', 'pacientes.nome')
             ->where('consultas.profissional_id', '=', $agenda->profissional_id)
             ->where('data_consulta', '=', $data)
-            ->get();
-        for ($i = 0; $i < sizeof($horarios); $i++) {
-
+            ->get()
+        ;
+        for ($i = 0; $i < sizeof($horarios); ++$i) {
             foreach ($consultas as $consulta) {
                 $horario = $horarios[$i];
                 $horaConsultaMarcada = $consulta->horario_consulta;
 
-                if ($horaConsultaMarcada == $horario["hora"]) {
-                    if ($consulta->cancelado == 0 || $consulta->cancelado == null)
-                        $horario["status"] = Config::get('constants.options.marcado');
-                    else if ($consulta->cancelado == 1)
-                        $horario["status"] = Config::get('constants.options.cancelado');
+                if ($horaConsultaMarcada == $horario['hora']) {
+                    if (0 == $consulta->cancelado || null == $consulta->cancelado) {
+                        $horario['status'] = Config::get('constants.options.marcado');
+                    } elseif (1 == $consulta->cancelado) {
+                        $horario['status'] = Config::get('constants.options.cancelado');
+                    }
 
-                    if ($consulta->realizado == 1)
-                        $horario["status"] = Config::get('constants.options.realizado');
-                    else if ($consulta->realizado == 0 && $consulta->realizado != null)
-                        $horario["status"] = Config::get('constants.options.nao_realizado');
+                    if (1 == $consulta->realizado) {
+                        $horario['status'] = Config::get('constants.options.realizado');
+                    } elseif (0 == $consulta->realizado && null != $consulta->realizado) {
+                        $horario['status'] = Config::get('constants.options.nao_realizado');
+                    }
 
-                    $horario["paciente_id"] = $consulta->paciente_id;
-                    $horario["paciente_nome"] = $consulta->nome;
-                    $horario["consulta_id"] = $consulta->id;
+                    $horario['paciente_id'] = $consulta->paciente_id;
+                    $horario['paciente_nome'] = $consulta->nome;
+                    $horario['consulta_id'] = $consulta->id;
                     $horarios[$i] = $horario;
 
-                    if ($horario["status"] == Config::get('constants.options.cancelado')) {
-
-                        $horario["status"] = Config::get('constants.options.disponivel');
+                    if ($horario['status'] == Config::get('constants.options.cancelado')) {
+                        $horario['status'] = Config::get('constants.options.disponivel');
                         array_splice($horarios, $i, 0, $horario);
                     }
                 }
@@ -230,15 +266,16 @@ class Consulta extends Model
         //Preenche os horários livre da agenda do profissional
         $agendaLivreProfissional = AgendaLivreProfissional::where('profissional_id', '=', $agenda->profissional_id)
             ->where('data_livre', '=', $data)
-            ->get();
-        for ($i = 0; $i < sizeof($horarios); $i++) {
+            ->get()
+        ;
+        for ($i = 0; $i < sizeof($horarios); ++$i) {
             foreach ($agendaLivreProfissional as $agendaLivre) {
                 $horario = $horarios[$i];
                 $horaAgendaLivreInicio = strtotime($agendaLivre->inicio_periodo);
                 $horaAgendaLivreFim = strtotime($agendaLivre->fim_periodo);
 
-                if (strtotime($horario["hora"]) >= $horaAgendaLivreInicio && strtotime($horario["hora"]) <= $horaAgendaLivreFim) {
-                    $horario["status"] = Config::get('constants.options.nao_disponivel');
+                if (strtotime($horario['hora']) >= $horaAgendaLivreInicio && strtotime($horario['hora']) <= $horaAgendaLivreFim) {
+                    $horario['status'] = Config::get('constants.options.nao_disponivel');
                     $horarios[$i] = $horario;
                 }
             }
@@ -249,7 +286,7 @@ class Consulta extends Model
 
     private function preparaJson($request, $horarios = [])
     {
-        $columns = array(
+        $columns = [
             0 => 'profissional_id',
             1 => 'profissional_nome',
             2 => 'paciente_id',
@@ -258,7 +295,7 @@ class Consulta extends Model
             5 => 'hora',
             6 => 'status',
             7 => 'consulta_id',
-        );
+        ];
 
         $totalData = sizeof($horarios);
         $limit = $request->input('length');
@@ -267,74 +304,76 @@ class Consulta extends Model
         $dir = $request->input('order.0.dir');
 
         $data = [];
-        for ($i = $start; $i < sizeof($horarios); $i++) {
+        for ($i = $start; $i < sizeof($horarios); ++$i) {
             if ($start <= $i && $i < ($start + $limit)) {
                 $horario = $horarios[$i];
 
-                $create =  route('atendimento.agendamento-consulta.create');
-                $show =  route('atendimento.agendamento-consulta.show', $horario["consulta_id"]);
-                $cancel =  route('atendimento.agendamento-consulta.cancel', $horario["consulta_id"]);
+                $create = route('atendimento.agendamento-consulta.create');
+                $show = route('atendimento.agendamento-consulta.show', $horario['consulta_id']);
+                $cancel = route('atendimento.agendamento-consulta.cancel', $horario['consulta_id']);
 
-                $nestedData['profissional_id'] = $horario["profissional_id"];
-                $nestedData['profissional_nome'] = $horario["profissional_nome"];
-                $nestedData['paciente_id'] = $horario["paciente_id"];
-                $nestedData['paciente_nome'] = $horario["paciente_nome"];
-                $nestedData['data'] = date('d/m/Y', strtotime($horario["data"]));
-                $nestedData['hora'] = $horario["hora"];
+                $nestedData['profissional_id'] = $horario['profissional_id'];
+                $nestedData['profissional_nome'] = $horario['profissional_nome'];
+                $nestedData['paciente_id'] = $horario['paciente_id'];
+                $nestedData['paciente_nome'] = $horario['paciente_nome'];
+                $nestedData['data'] = date('d/m/Y', strtotime($horario['data']));
+                $nestedData['hora'] = $horario['hora'];
 
-                switch ($horario["status"]) {
+                switch ($horario['status']) {
                     case Config::get('constants.options.disponivel'):
-                        $statusMarcacao = "<font color=\"green\">Disponível</font>";
-                        break;
+                        $statusMarcacao = '<font color="green">Disponível</font>';
 
+                        break;
                     case Config::get('constants.options.em_marcacao'):
-                        $statusMarcacao = "<font color=\"yellow\">Em Marcação</font>";
-                        break;
+                        $statusMarcacao = '<font color="yellow">Em Marcação</font>';
 
+                        break;
                     case Config::get('constants.options.marcado'):
-                        $statusMarcacao = "<font color=\"blue\">Marcado</font>";
-                        break;
+                        $statusMarcacao = '<font color="blue">Marcado</font>';
 
+                        break;
                     case Config::get('constants.options.cancelado'):
-                        $statusMarcacao = "<font color=\"red\">Cancelado</font>";
-                        break;
+                        $statusMarcacao = '<font color="red">Cancelado</font>';
 
+                        break;
                     case Config::get('constants.options.nao_disponivel'):
-                        $statusMarcacao = "<font color=\"orange\">Não Disponivel</font>";
-                        break;
+                        $statusMarcacao = '<font color="orange">Não Disponivel</font>';
 
+                        break;
                     case Config::get('constants.options.realizado'):
-                        $statusMarcacao = "<font color=\"LightSkyBlue  \">Realizado</font>";
-                        break;
+                        $statusMarcacao = '<font color="LightSkyBlue  ">Realizado</font>';
 
+                        break;
                     case Config::get('constants.options.nao_realizado'):
-                        $statusMarcacao = "<font color=\"FireBrick \">Faltou</font>";
+                        $statusMarcacao = '<font color="FireBrick ">Faltou</font>';
+
                         break;
                 }
 
                 $nestedData['status'] = $statusMarcacao;
-                $nestedData['consulta_id'] = $horario["consulta_id"];
+                $nestedData['consulta_id'] = $horario['consulta_id'];
 
-                if (empty($horario["consulta_id"]))
+                if (empty($horario['consulta_id'])) {
                     $nestedData['action'] = "<a href='#' title='Criar Consulta'
                                 onclick=\"modalBootstrap('{$create}', 'Criar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Adicionar', 'Fechar')\"><span class='glyphicon glyphicon-ok'></span></a>";
-                else
+                } else {
                     $nestedData['action'] = "<a href='#' title='Visualizar Consulta'
                                         onclick=\"modalBootstrap('{$show}', 'Visualizar Consulta', '#modal_CRUD', '', 'false', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-search'></span></a>
                                         <a href='#' title='Cancelar Consulta'
                                         onclick=\"modalBootstrap('{$cancel}', 'Cancelar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Adicionar', 'Fechar')\"><span class='glyphicon glyphicon-ban-circle'></span></a>";
+                }
 
                 $data[] = $nestedData;
             }
         }
 
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),
-            "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalData),
-            "style"           => '',
-            "data"            => $data
-        );
+        $json_data = [
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => intval($totalData),
+            'recordsFiltered' => intval($totalData),
+            'style' => '',
+            'data' => $data,
+        ];
 
         return json_encode($json_data);
     }

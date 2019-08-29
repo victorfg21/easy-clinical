@@ -45,7 +45,6 @@
                 $("#btnClose").css("pointer-events", "");
             }
         }).fail(function (response){
-            console.log(response);
             associate_errors(response['responseJSON']['errors'], $("#frmUsuario"));
             $("#btnSave").css("pointer-events", "");
             $("#btnClose").css("pointer-events", "");

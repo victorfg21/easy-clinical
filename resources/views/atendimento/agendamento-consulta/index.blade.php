@@ -45,11 +45,16 @@
                 @endforeach
             </select>
         </div>
+        <div class="form-group col-md-3">
+            <a href="#" class="btn btn-info"
+                onclick="modalBootstrap('{{ route('admin.agenda-livre-profissionais.create-consulta') }}', 'Adicionar Agenda', '#modal_Large', '', 'true', 'true', 'true', 'Salvar', 'Fechar')">
+                <strong>Liberar Agenda do Profissional</strong></a>
+        </div>
         <div class="table-responsive col-md-12">
             <table id="tblAgendamentos" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th style="display:none;">Profissional ID</th>
+                        <th style="col-xs-1">Cod.</th>
                         <th class="col-xs-3">Profissional</th>
                         <th style="display:none;">Paciente ID</th>
                         <th class="col-xs-3">Paciente</th>
@@ -96,12 +101,12 @@
             },
         },
         "columns": [
-                { "data": "profissional_id", "width": "50%", "visible": false },
-                { "data": "profissional_nome", "width": "20%" },
-                { "data": "paciente_id", "width": "20%", "visible": false },
-                { "data": "paciente_nome", "width": "50%" },
-                { "data": "data", "width": "20%" },
-                { "data": "hora", "width": "20%" },
+                { "data": "profissional_id", "className": "profissional_id", "width": "5%" },
+                { "data": "profissional_nome", "className": "profissional_nome", "width": "50%" },
+                { "data": "paciente_id", "className": "paciente_id", "width": "10%", "visible": false },
+                { "data": "paciente_nome", "className": "paciente_nome", "width": "50%" },
+                { "data": "data", "className": "data", "width": "20%" },
+                { "data": "hora", "className": "hora", "width": "20%" },
                 {"render": function (data, type, full, meta) {
                         return full.status;
                 }, "width": "40%"},
@@ -139,6 +144,27 @@
 
     $('select[name=area_atuacao_id]').change(function () {
         tblAgendamentos.ajax.reload();
+    });
+
+    $('select[name=area_atuacao_id]').change(function () {
+    tblAgendamentos.ajax.reload();
+    });
+
+    $(document).on('click', '.addConsulta', function () {
+        var profissional_id = $(this).closest("tr").find(".profissional_id").text();
+        var data = moment($(this).closest("tr").find(".data").text(), 'DD/MM/YYYY').format("YYYY-MM-DD");
+        var hora = $(this).closest("tr").find(".hora").text();
+        $.ajax({
+            url: "{{ route('atendimento.agendamento-consulta.create') }}",
+            type: 'GET',
+            data: {profissional_id: profissional_id, data: data, hora: hora},
+
+            success: function (data) {
+                modalBootstrapView(data, 'Criar Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Adicionar', 'Fechar')
+            }
+        }).fail(function (response){
+
+        });
     });
 </script>
 

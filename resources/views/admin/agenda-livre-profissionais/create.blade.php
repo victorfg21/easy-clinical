@@ -43,7 +43,6 @@
                 $("#btnCloseLarge").css("pointer-events", "");
             }
         }).fail(function (response){
-            console.log(response);
             associate_errors(response['responseJSON']['errors'], $("#frmAgendaLivre"));
             $("#btnSaveLarge").css("pointer-events", "");
             $("#btnCloseLarge").css("pointer-events", "");

@@ -43,7 +43,6 @@
                 $("#btnCloseLarge").css("pointer-events", "");
             }
         }).fail(function (response){
-            console.log(response);
             associate_errors(response['responseJSON']['errors'], $("#frmAreaAtuacao"));
             $("#btnSave").css("pointer-events", "");
             $("#btnCloseLarge").css("pointer-events", "");

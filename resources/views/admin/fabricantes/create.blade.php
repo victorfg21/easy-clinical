@@ -43,7 +43,6 @@
                 $("#btnClose").css("pointer-events", "");
             }
         }).fail(function (response){
-            console.log(response);
             associate_errors(response['responseJSON']['errors'], $("#frmFabricante"));
             $("#btnSave").css("pointer-events", "");
             $("#btnClose").css("pointer-events", "");

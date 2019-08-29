@@ -1,6 +1,6 @@
-<form id="frmPaciente">
+<form id="frmAgendaLivre">
     {{ csrf_field() }}
-    @include('admin.pacientes._form')
+    @include('admin.agenda-livre-profissionais._form')
     <!-- DIV ERROS -->
     <div class="alert alert-danger print-error-msg" style="display:none">
         <ul></ul>
@@ -13,12 +13,12 @@
 <script>
     $("#btnSaveLarge").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmPaciente").serialize();
+        var form = $("#frmAgendaLivre").serialize();
         $("#btnSaveLarge").css("pointer-events", "none");
         $("#btnCloseLarge").css("pointer-events", "none");
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.pacientes.store') }}",
+            url: "{{ route('admin.agenda-livre-profissionais.store') }}",
             data: form,
             success: function (data) {
 
@@ -30,7 +30,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblPacientes").DataTable().ajax.reload();
+                    $("#tblAgendamentos").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
                 else {
@@ -43,21 +43,21 @@
                 $("#btnCloseLarge").css("pointer-events", "");
             }
         }).fail(function (response){
-            associate_errors(response['responseJSON']['errors'], $("#frmPaciente"));
+            associate_errors(response['responseJSON']['errors'], $("#frmAgendaLivre"));
             $("#btnSaveLarge").css("pointer-events", "");
             $("#btnCloseLarge").css("pointer-events", "");
 
             Swal.fire({
                 position: 'center',
                 type: 'error',
-                title: "Erro ao cadastrar paciente",
+                title: "Erro ao cadastrar agenda",
                 showConfirmButton: false,
                 timer: 1500
             })
         });
     });
     $('#modal_Large').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblPacientes").DataTable().ajax.reload();
+        $("#tblAgendamentos").DataTable().ajax.reload();
     });
     function associate_errors(errors, $form)
     {
