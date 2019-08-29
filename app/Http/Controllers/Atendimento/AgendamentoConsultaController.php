@@ -66,8 +66,7 @@ class AgendamentoConsultaController extends Controller
                 ->where('profissional_id', $profissional_id)
                 ->where('agendas.inicio_periodo', '<=', $data)
                 ->where('agendas.fim_periodo', '>=', $data)
-                ->get()
-            ;
+                ->get();
         }
 
         if (isset($especialidade_id)) {
@@ -79,8 +78,7 @@ class AgendamentoConsultaController extends Controller
                 ->where('especialidades.id', $especialidade_id)
                 ->where('agendas.inicio_periodo', '<=', $data)
                 ->where('agendas.fim_periodo', '>=', $data)
-                ->get()
-            ;
+                ->get();
         }
 
         if (isset($area_atuacao_id)) {
@@ -92,8 +90,7 @@ class AgendamentoConsultaController extends Controller
                 ->where('areas_atuacao.id', $area_atuacao_id)
                 ->where('agendas.inicio_periodo', '<=', $data)
                 ->where('agendas.fim_periodo', '>=', $data)
-                ->get()
-            ;
+                ->get();
         }
 
         foreach ($this->{$agendas} as $agenda) {
@@ -157,31 +154,40 @@ class AgendamentoConsultaController extends Controller
 
     public function create(Request $request)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        //dd($request);
-        $profissional_list = Profissional::orderBy('nome')->get();
-        $paciente_list = Paciente::orderBy('nome')->get();
+        try {
+            DB::beginTransaction();
 
-        $registro = new Consulta();
-        $registro->profissional_id = $request->input('profissional_id');
-        $registro->data_consulta = date('Y-m-d', strtotime($request->input('data')));
-        $registro->horario_consulta = $request->input('hora');
+            //if (Auth::user()->authorizeRoles() == false)
+            //    abort(403, 'Você não possui autorização para realizar essa ação.');
+            //dd($request);
+            $profissional_list = Profissional::orderBy('nome')->get();
+            $paciente_list = Paciente::orderBy('nome')->get();
 
-        $reserva = new ReservaMarcacaoConsulta();
-        $reserva->profissional_id = $request->input('profissional_id');
-        $reserva->data_consulta = date('Y-m-d', strtotime($request->input('data')));
-        $reserva->horario_consulta = $request->input('hora');
-        $reserva->user_id = auth()->user()->id;
-        $reserva->save();
+            $registro = new Consulta();
+            $registro->profissional_id = $request->input('profissional_id');
+            $registro->data_consulta = date('Y-m-d', strtotime($request->input('data')));
+            $registro->horario_consulta = $request->input('hora');
 
-        $reserva->notify(new ReservaHorarioNotification($reserva));
+            $reserva = new ReservaMarcacaoConsulta();
+            $reserva->profissional_id = $request->input('profissional_id');
+            $reserva->data_consulta = date('Y-m-d', strtotime($request->input('data')));
+            $reserva->horario_consulta = $request->input('hora');
+            $reserva->user_id = auth()->user()->id;
+            $reserva->save();
+            DB::commit();
 
-        return view('atendimento.agendamento-consulta.create', [
-            'profissional_list' => $profissional_list,
-            'paciente_list' => $paciente_list,
-            'registro' => $registro,
-        ]);
+            $reserva->notify(new ReservaHorarioNotification($reserva));
+
+            return view('atendimento.agendamento-consulta.create', [
+                'profissional_list' => $profissional_list,
+                'paciente_list' => $paciente_list,
+                'registro' => $registro,
+            ]);
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return 'Ocorreu um erro ao cadastrar.';
+        }
     }
 
     public function store(ConsultaRequest $request)
@@ -327,8 +333,7 @@ class AgendamentoConsultaController extends Controller
             ->select('consultas.*', 'pacientes.nome')
             ->where('consultas.profissional_id', '=', $agenda->profissional_id)
             ->where('data_consulta', '=', $data)
-            ->get()
-        ;
+            ->get();
 
         foreach ($consultas as $consulta) {
             $horaConsultaMarcada = date('H:i', strtotime($consulta->horario_consulta));
@@ -376,8 +381,7 @@ class AgendamentoConsultaController extends Controller
         //Preenche os horários livre da agenda do profissional com status bloqueado
         $agendaLivreProfissional = AgendaLivreProfissional::where('profissional_id', '=', $agenda->profissional_id)
             ->where('data_livre', '=', $data)
-            ->get()
-        ;
+            ->get();
         for ($i = 0; $i < sizeof($horarios); ++$i) {
             foreach ($agendaLivreProfissional as $agendaLivre) {
                 $horario = $horarios[$i];
@@ -394,8 +398,10 @@ class AgendamentoConsultaController extends Controller
         //Horários de datas anteriores status vazio
         for ($i = 0; $i < sizeof($horarios); ++$i) {
             $horario = $horarios[$i];
-            if ($horario['data'] < date('Y-m-d') &&
-                            $horario['status'] == Config::get('constants.options.disponivel')) {
+            if (
+                $horario['data'] < date('Y-m-d') &&
+                $horario['status'] == Config::get('constants.options.disponivel')
+            ) {
                 $horario['status'] = Config::get('constants.options.sem_marcacao');
                 $horarios[$i] = $horario;
             }
