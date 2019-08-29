@@ -157,33 +157,42 @@ class AgendamentoConsultaController extends Controller
 
     public function create(Request $request)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        //dd($request);
-        $profissional_list = Profissional::orderBy('nome')->get();
-        $paciente_list = Paciente::orderBy('nome')->get();
+        try {
+            DB::beginTransaction();
 
-        $registro = new Consulta();
-        $registro->profissional_id = $request->input('profissional_id');
-        $registro->data_consulta = date('Y-m-d', strtotime($request->input('data')));
-        $registro->horario_consulta = $request->input('hora');
+            //if (Auth::user()->authorizeRoles() == false)
+            //    abort(403, 'Você não possui autorização para realizar essa ação.');
+            //dd($request);
+            $profissional_list = Profissional::orderBy('nome')->get();
+            $paciente_list = Paciente::orderBy('nome')->get();
 
-        $reserva = new ReservaMarcacaoConsulta();
-        $reserva->profissional_id = $request->input('profissional_id');
-        $reserva->data_consulta = date('Y-m-d', strtotime($request->input('data')));
-        $reserva->horario_consulta = $request->input('hora');
-        $reserva->user_id = auth()->user()->id;
-        $reserva->save();
+            $registro = new Consulta();
+            $registro->profissional_id = $request->input('profissional_id');
+            $registro->data_consulta = date('Y-m-d', strtotime($request->input('data')));
+            $registro->horario_consulta = $request->input('hora');
 
-        $users = Users::where('tipo_cadastro', '=', Config::get('constants.options.administrativo'))->get();
-        Notification::send($users, new ReservaHorarioNotification($registro));
-        //$reserva->notify(new ReservaHorarioNotification($reserva));
+            $reserva = new ReservaMarcacaoConsulta();
+            $reserva->profissional_id = $request->input('profissional_id');
+            $reserva->data_consulta = date('Y-m-d', strtotime($request->input('data')));
+            $reserva->horario_consulta = $request->input('hora');
+            $reserva->user_id = auth()->user()->id;
+            $reserva->save();
+            DB::commit();
 
-        return view('atendimento.agendamento-consulta.create', [
-            'profissional_list' => $profissional_list,
-            'paciente_list' => $paciente_list,
-            'registro' => $registro,
-        ]);
+            $users = Users::where('tipo_cadastro', '=', Config::get('constants.options.administrativo'))->get();
+            Notification::send($users, new ReservaHorarioNotification($registro));
+            //$reserva->notify(new ReservaHorarioNotification($reserva));
+
+            return view('atendimento.agendamento-consulta.create', [
+                'profissional_list' => $profissional_list,
+                'paciente_list' => $paciente_list,
+                'registro' => $registro,
+            ]);
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return 'Ocorreu um erro ao cadastrar.';
+        }
     }
 
     public function store(ConsultaRequest $request)
@@ -396,8 +405,10 @@ class AgendamentoConsultaController extends Controller
         //Horários de datas anteriores status vazio
         for ($i = 0; $i < sizeof($horarios); ++$i) {
             $horario = $horarios[$i];
-            if ($horario['data'] < date('Y-m-d') &&
-                            $horario['status'] == Config::get('constants.options.disponivel')) {
+            if (
+                $horario['data'] < date('Y-m-d') &&
+                $horario['status'] == Config::get('constants.options.disponivel')
+            ) {
                 $horario['status'] = Config::get('constants.options.sem_marcacao');
                 $horarios[$i] = $horario;
             }
