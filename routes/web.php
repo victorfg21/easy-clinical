@@ -11,9 +11,12 @@
 |
 */
 
-Auth::routes();
+use Illuminate\Support\Facades\Broadcast;
 
-Route::get('/', function(){
+Auth::routes();
+Broadcast::routes();
+
+Route::get('/', function () {
     return view('auth/login');
 });
 

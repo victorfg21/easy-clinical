@@ -5,8 +5,9 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\DatabaseMessage;
-use Illuminate\Notifications\Notification;
-use App\ReservaMarcacaoConsulta;
+use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Support\Facades\Notification;
+use App\Consulta;
 
 class ReservaHorarioNotification extends Notification implements ShouldQueue
 {
@@ -19,7 +20,7 @@ class ReservaHorarioNotification extends Notification implements ShouldQueue
      *
      * @param mixed $horario
      */
-    public function __construct(ReservaMarcacaoConsulta $reserva)
+    public function __construct(Consulta $reserva)
     {
         $this->reserva = $reserva;
     }
@@ -33,7 +34,7 @@ class ReservaHorarioNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'broadcasting'];
     }
 
     /**
@@ -52,14 +53,14 @@ class ReservaHorarioNotification extends Notification implements ShouldQueue
         ;
     }*/
 
-    /*public function toBroadcast($notifiable)
+    public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'profissional_id' => $this->horario['profissional_id'],
-            'data_consulta' => $this->horario['data_consulta'],
-            'horario_consulta' => $this->horario['horario_consulta'],
+            'id' => $this->id,
+            'read_at' => null,
+            'data' => $this->reserva,
         ]);
-    }*/
+    }
 
     /**
      * Get the array representation of the notification.

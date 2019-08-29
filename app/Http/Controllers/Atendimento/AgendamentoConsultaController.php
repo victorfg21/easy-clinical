@@ -175,7 +175,9 @@ class AgendamentoConsultaController extends Controller
         $reserva->user_id = auth()->user()->id;
         $reserva->save();
 
-        $reserva->notify(new ReservaHorarioNotification($reserva));
+        $users = Users::where('tipo_cadastro', '=', Config::get('constants.options.administrativo'))->get();
+        Notification::send($users, new ReservaHorarioNotification($registro));
+        //$reserva->notify(new ReservaHorarioNotification($reserva));
 
         return view('atendimento.agendamento-consulta.create', [
             'profissional_list' => $profissional_list,
