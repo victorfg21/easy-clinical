@@ -102,14 +102,14 @@
         },
         "columns": [
                 { "data": "profissional_id", "className": "profissional_id", "width": "5%" },
-                { "data": "profissional_nome", "className": "profissional_nome", "width": "50%" },
+                { "data": "profissional_nome", "className": "profissional_nome", "width": "35%" },
                 { "data": "paciente_id", "className": "paciente_id", "width": "10%", "visible": false },
-                { "data": "paciente_nome", "className": "paciente_nome", "width": "50%" },
-                { "data": "data", "className": "data", "width": "20%" },
-                { "data": "hora", "className": "hora", "width": "20%" },
+                { "data": "paciente_nome", "className": "paciente_nome", "width": "35%" },
+                { "data": "data", "className": "data", "width": "10%" },
+                { "data": "hora", "className": "hora", "width": "10%" },
                 {"render": function (data, type, full, meta) {
                         return full.status;
-                }, "width": "40%"},
+                }, "width": "20%"},
                 {"render": function (data, type, full, meta) {
                         return full.action;
                 }, "width": "20%"},
@@ -117,11 +117,11 @@
         columnDefs: [
             { responsivePriority: 1, targets: 0 },
             { responsivePriority: 2, targets: 1 },
-            { responsivePriority: 3, targets: 2 },
-            { responsivePriority: 4, targets: 3 },
-            { responsivePriority: 5, targets: 4 },
-            { responsivePriority: 6, targets: 5 },
-            { responsivePriority: 7, targets: 6 },
+            { responsivePriority: 4, targets: 2 },
+            { responsivePriority: 5, targets: 3 },
+            { responsivePriority: 6, targets: 4 },
+            { responsivePriority: 7, targets: 5 },
+            { responsivePriority: 3, targets: 6 },
             { responsivePriority: 8, targets: 7 },
             {
                 "targets": [7],
@@ -144,10 +144,6 @@
 
     $('select[name=area_atuacao_id]').change(function () {
         tblAgendamentos.ajax.reload();
-    });
-
-    $('select[name=area_atuacao_id]').change(function () {
-    tblAgendamentos.ajax.reload();
     });
 
     $(document).on('click', '.addConsulta', function () {

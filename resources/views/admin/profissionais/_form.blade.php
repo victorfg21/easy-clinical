@@ -47,7 +47,7 @@
         </div>
         <div class="form-group {{ $errors->has('dt_nasc') ? 'has-error' : '' }}">
             <label for="Nasc" class="control-label">Data de Nascimento</label>
-            <input for="Nasc" class="form-control data" type="text" name="dt_nasc" value="{{ isset($registro->dt_nasc) ? date('d-m-Y', strtotime($registro->dt_nasc)) : old('dt_nasc') }}" />
+            <input for="Nasc" class="form-control" type="date" name="dt_nasc" value="{{ isset($registro->dt_nasc) ? date('Y-m-d', strtotime($registro->dt_nasc)) : old('dt_nasc') }}" />
             @if($errors->has('dt_nasc'))
                 <small for="Nasc" class="control-label">{{ $errors->first('dt_nasc') }}</small>
             @endif
@@ -243,7 +243,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(isset($especialidades_profissional))
+                                    @if(isset($areas_atuacao_profissional))
                                         @foreach ($areas_atuacao_profissional as $areaAtuacao)
                                             <tr>
                                                 <td class="col-xs-1">{{ $areaAtuacao->id }}</td>

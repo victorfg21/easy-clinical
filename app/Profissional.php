@@ -24,11 +24,11 @@ class Profissional extends Model
         return $this->hasOne(Foto::class, 'id', 'foto_id');
     }
 
-    public function AreasAtuacao(){
+    public function Agendas(){
         return $this->belongsTo(Agenda::class);
     }
 
-    public function Agendas(){
+    public function AreasAtuacao(){
         return $this->belongsToMany(AreaAtuacao::class);
     }
 

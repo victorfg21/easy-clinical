@@ -28,7 +28,7 @@ class ProfissionalController extends Controller
         $profissionais = Profissional::orderBy('nome')->get();
         return view('admin.profissionais.index', compact('profissionais'));
     }
-    
+
     //Método que lista todos os usuarios no DataTable da Tela
     public function listarprofissionais(Request $request)
     {
@@ -54,14 +54,13 @@ class ProfissionalController extends Controller
     public function store(ProfissionalRequest $req)
     {
         try {
-            DB::beginTransaction();
             $dados = new Profissional;
             $dados->nome = $req->input('nome');
             $dados->rg = $req->input('rg');
             $dados->cpf = $req->input('cpf');
             $dados->conselho = $req->input('conselho');
             $dados->numero_registro = $req->input('numero_registro');
-            $dados->dt_nasc = date("Ymd", strtotime($req->input('dt_nasc')));
+            $dados->dt_nasc = date('Y-m-d', strtotime($req->input('dt_nasc')));
             $dados->sexo = $req->input('sexo');
             $dados->celular = $req->input('celular');
             $dados->telefone = $req->input('telefone');
@@ -78,20 +77,36 @@ class ProfissionalController extends Controller
             $dados->celular = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->celular))));
             $dados->telefone = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->telefone))));
 
+            $especialidades = json_decode($req->input('especialidades'));
+            $areasAtuacao = json_decode($req->input('areasAtuacao'));
+
+            foreach ($especialidades as $especialidade) {
+                $exists = $dados->Especialidades->contains($especialidade->id);
+
+                if (!$exists) {
+                    $dados->Especialidades()->attach($especialidade->id);
+                }
+            }
+
+            foreach ($areasAtuacao as $areaAtuacao) {
+                $exists = $dados->AreasAtuacao->contains($areaAtuacao->id);
+
+                if (!$exists) {
+                    $dados->AreasAtuacao()->attach($areaAtuacao->id);
+                }
+            }
+
             $usuario = new User;
             $usuario->name = $req->input('nome');
             $usuario->email = $req->input('email');
-            //Profissional = 1
             $usuario->tipo_cadastro = Config::get('constants.options.profissional');
-            $usuario->password = Hash::make($dados->ih);
+            $usuario->password = Hash::make($dados->cpf);
             $usuario->save();
 
-            $dados->user_id = DB::table('users')->max('id');
+            $dados->user_id = DB::table('users')->where('email', '=', $usuario->email)->max('id');
             $dados->save();
-            DB::commit();
             return "Cadastrado com sucesso!";
         } catch (Exception $e) {
-            DB::rollback();
             return "Ocorreu um erro ao remover.";
         }
     }
@@ -138,14 +153,13 @@ class ProfissionalController extends Controller
         try {
             //if (Auth::user()->authorizeRoles() == false)
             //    abort(403, 'Você não possui autorização para realizar essa ação.');
-            DB::beginTransaction();
             $dados = Profissional::find($id);
             $dados->nome = $req->input('nome');
             $dados->rg = $req->input('rg');
             $dados->cpf = $req->input('cpf');
             $dados->conselho = $req->input('conselho');
             $dados->numero_registro = $req->input('numero_registro');
-            $dados->dt_nasc = date("Ymd", strtotime($req->input('dt_nasc')));
+            $dados->dt_nasc = date('Y-m-d', strtotime($req->input('dt_nasc')));
             $dados->sexo = $req->input('sexo');
             $dados->celular = $req->input('celular');
             $dados->telefone = $req->input('telefone');
@@ -164,7 +178,6 @@ class ProfissionalController extends Controller
 
             $especialidades = json_decode($req->input('especialidades'));
             $areasAtuacao = json_decode($req->input('areasAtuacao'));
-
             foreach ($especialidades as $especialidade) {
                 $exists = $dados->Especialidades->contains($especialidade->id);
 
@@ -180,10 +193,8 @@ class ProfissionalController extends Controller
             }
 
             $dados->update();
-            DB::commit();
             return "Alterado com sucesso!";
         } catch (Exception $e) {
-            DB::rollback();
             return "Ocorreu um erro ao alterar!";
         }
     }

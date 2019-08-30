@@ -21,11 +21,11 @@ class ProfissionalRequest extends FormRequest
     {
         return [
             'nome' => 'required|max:150',
-            'rg' => 'required|max:20|unique:pacientes,'.$this->get('id').',id',
-            'cpf' => 'required|unique:pacientes,'.$this->get('id').',id',
+            //'rg' => 'required|max:20|unique:profissionais',
+            //'cpf' => 'required|unique:profissionais',
             'dt_nasc' => 'required',
             'sexo' => 'required',
-            'email' => 'email|max:200|unique:users,'.$this->get('user_id').',id',
+            //'email' => 'email|max:200|unique:users',
             'celular' => 'required',
             'cep' => 'required',
             'endereco' => 'required|max:150',

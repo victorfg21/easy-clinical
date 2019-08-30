@@ -4,23 +4,21 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\DatabaseMessage;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Support\Facades\Notification;
-use App\Consulta;
 
 class ReservaHorarioNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-
     private $reserva;
 
     /**
      * Create a new notification instance.
      *
      * @param mixed $horario
+     * @param mixed $reserva
      */
-    public function __construct(Consulta $reserva)
+    public function __construct($reserva)
     {
         $this->reserva = $reserva;
     }
@@ -72,7 +70,9 @@ class ReservaHorarioNotification extends Notification implements ShouldQueue
     public function toDatabase($notifiable)
     {
         return [
-            'reserva' => $this->reserva
+            'profissional_id' => $this->reserva['profissional_id'],
+            'data_consulta' => $this->reserva['data_consulta'],
+            'horario_consulta' => $this->reserva['horario_consulta'],
         ];
     }
 }

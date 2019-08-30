@@ -12,9 +12,11 @@ use App\Notifications\ReservaHorarioNotification;
 use App\Paciente;
 use App\Profissional;
 use App\ReservaMarcacaoConsulta;
+use App\User;
 use Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class AgendamentoConsultaController extends Controller
 {
@@ -99,7 +101,7 @@ class AgendamentoConsultaController extends Controller
         foreach ($this->{$agendas} as $agenda) {
             if ($agenda->inicio_periodo <= $data && $agenda->fim_periodo >= $data) {
                 $diaSemana = date('w', strtotime($data));
-                $montarAgenda = true;
+                $montarAgenda = false;
 
                 switch ($diaSemana) {
                     case Config::get('constants.options.domingo'):
@@ -146,7 +148,7 @@ class AgendamentoConsultaController extends Controller
                         break;
                 }
 
-                if ($this->{$montarAgenda}) {
+                if ($this->$montarAgenda) {
                     $horarios = $this->MontarAgenda($agenda, $data);
                 }
             }
@@ -163,25 +165,47 @@ class AgendamentoConsultaController extends Controller
             //if (Auth::user()->authorizeRoles() == false)
             //    abort(403, 'Você não possui autorização para realizar essa ação.');
             //dd($request);
+
+            $reserva = ReservaMarcacaoConsulta::where('data_consulta', '=', date('Y-m-d', strtotime($request->input('data'))))
+                ->where('horario_consulta', '=', date('H:i', strtotime($request->input('hora'))))
+                ->get()
+            ;
+
+            if (!$reserva->isEmpty()) {
+                return "<h4 class=\"alert alert-danger\"><strong>Horário com status EM MARCAÇÃO por outro atendente!</strong></h4>";
+            }
+
             $profissional_list = Profissional::orderBy('nome')->get();
             $paciente_list = Paciente::orderBy('nome')->get();
 
-            $registro = new Consulta();
+            /*$registro = new Consulta();
             $registro->profissional_id = $request->input('profissional_id');
             $registro->data_consulta = date('Y-m-d', strtotime($request->input('data')));
             $registro->horario_consulta = $request->input('hora');
+            */
 
-            $reserva = new ReservaMarcacaoConsulta();
-            $reserva->profissional_id = $request->input('profissional_id');
-            $reserva->data_consulta = date('Y-m-d', strtotime($request->input('data')));
-            $reserva->horario_consulta = $request->input('hora');
-            $reserva->user_id = auth()->user()->id;
-            $reserva->save();
+            $registro = new ReservaMarcacaoConsulta();
+            $registro->profissional_id = $request->input('profissional_id');
+            $registro->data_consulta = date('Y-m-d', strtotime($request->input('data')));
+            $registro->horario_consulta = $request->input('hora');
+            $registro->user_id = auth()->user()->id;
+            $registro->save();
+
             DB::commit();
 
-            $users = Users::where('tipo_cadastro', '=', Config::get('constants.options.administrativo'))->get();
-            Notification::send($users, new ReservaHorarioNotification($registro));
+            /*$reservaConsulta = [
+                'profissional_id' => $registro->profissional_id,
+                'data_consulta' => $registro->data_consulta,
+                'horario_consulta' => $registro->horario_consulta
+
+            ];*/
+
+            /*$users = User::where('tipo_cadastro', '=', Config::get('constants.options.administrativo'))->get();
+            //dd($users);
+            Notification::send($users, new ReservaHorarioNotification($reservaConsulta));
             //$reserva->notify(new ReservaHorarioNotification($reserva));
+
+            dd($users->notifications);*/
 
             return view('atendimento.agendamento-consulta.create', [
                 'profissional_list' => $profissional_list,
@@ -204,9 +228,16 @@ class AgendamentoConsultaController extends Controller
             $dados->profissional_id = $request->input('profissional_id');
             $dados->paciente_id = $request->input('paciente_id');
             $dados->data_consulta = date('Y-m-d H:i:s', strtotime($request->input('data_consulta')));
-            $dados->horario_consulta = $request->input('horario_consulta');
+            $dados->horario_consulta = date('H:i', strtotime($request->input('horario_consulta')));
 
             $dados->save();
+
+            DB::table('reservas_marcacoes_consultas')
+                ->where('data_consulta', '=', $dados->data_consulta)
+                ->where('horario_consulta', '=', $dados->horario_consulta)
+                ->delete()
+            ;
+
             DB::commit();
 
             return 'Cadastrado com sucesso!';
@@ -356,7 +387,7 @@ class AgendamentoConsultaController extends Controller
 
                     if (true == $consulta->realizado) {
                         $horario['status'] = Config::get('constants.options.realizado');
-                    } elseif (false == $consulta->realizado && $horario['data'] <= date('Y-m-d') && strtotime('+15 minutes') > strtotime($horario['hora'])) {
+                    } elseif (false == $consulta->realizado && ($horario['data'] < date('Y-m-d') || ($horario['data'] == date('Y-m-d') && strtotime('+15 minutes') > strtotime($horario['hora'])))) {
                         $horario['status'] = Config::get('constants.options.nao_realizado');
                     }
 
@@ -402,13 +433,37 @@ class AgendamentoConsultaController extends Controller
             }
         }
 
+        //Consultas em marcação
+        $marcacoesAndamento = ReservaMarcacaoConsulta::where('profissional_id', '=', $agenda->profissional_id)
+            ->where('data_consulta', '=', $data)
+            ->get()
+        ;
+
+        for ($i = 0; $i < sizeof($horarios); ++$i) {
+            foreach ($marcacoesAndamento as $emMarcacao) {
+                $horario = $horarios[$i];
+                $dataConsulta = date('Y-m-d', strtotime($emMarcacao->data_consulta));
+                $horaConsulta = date('H:i', strtotime($emMarcacao->horario_consulta));
+                if ($dataConsulta == date('Y-m-d', strtotime($horario['data'])) && $horaConsulta == date('H:i', strtotime($horario['hora']))) {
+                    $horario['status'] = Config::get('constants.options.em_marcacao');
+                    $horarios[$i] = $horario;
+                }
+            }
+        }
+
         //Horários de datas anteriores status vazio
         for ($i = 0; $i < sizeof($horarios); ++$i) {
             $horario = $horarios[$i];
-            if (
-                $horario['data'] < date('Y-m-d') &&
-                $horario['status'] == Config::get('constants.options.disponivel')
-            ) {
+            if (($horario['data'] < date('Y-m-d')
+                    || ($horario['data'] == date('Y-m-d') && $horario['hora'] <= date('H:i')))
+                        && $horario['status'] == Config::get('constants.options.disponivel')) {
+                $horario['status'] = Config::get('constants.options.sem_marcacao');
+                $horarios[$i] = $horario;
+            }
+
+            if (($horario['data'] < date('Y-m-d')
+                    || ($horario['data'] == date('Y-m-d') && $horario['hora'] <= date('H:i')))
+                        && $horario['status'] == Config::get('constants.options.em_marcacao')) {
                 $horario['status'] = Config::get('constants.options.sem_marcacao');
                 $horarios[$i] = $horario;
             }
@@ -460,7 +515,7 @@ class AgendamentoConsultaController extends Controller
 
                         break;
                     case Config::get('constants.options.em_marcacao'):
-                        $nestedData['status'] = '<font color="Yellow">Em Marcação</font>';
+                        $nestedData['status'] = '<font color="SlateBlue">Em Marcação</font>';
                         $nestedData['action'] = '';
 
                         break;
@@ -485,12 +540,12 @@ class AgendamentoConsultaController extends Controller
                             $nestedData['action'] = '';
                         }
                         //Bloqueado possibilidade de transferência
-                        else {
+                        /*else {
                             $nestedData['action'] = "<a href='#' title='Visualizar Consulta'
                                                         onclick=\"modalBootstrap('{$show}', 'Visualizar Consulta', '#modal_CRUD', '', 'false', 'true', 'false', '', 'Fechar')\"><span class='glyphicon glyphicon-search'></span></a>
                                                     <a href='#' title='Transferir Consulta'
                                                         onclick=\"modalBootstrap('{$transfer}', 'Transferir Consulta', '#modal_CRUD', '', 'true', 'true', 'false', 'Adicionar', 'Fechar')\"><span class='glyphicon glyphicon-refresh'></span></a>";
-                        }
+                        }*/
 
                         break;
                     case Config::get('constants.options.realizado'):

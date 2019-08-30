@@ -45,13 +45,12 @@ class PacienteController extends Controller
     public function store(PacienteRequest $req)
     {
         try {
-            DB::beginTransaction();
             $dados = new Paciente;
             $dados->nome = $req->input('nome');
             $dados->rg = $req->input('rg');
             $dados->cpf = $req->input('cpf');
             $dados->ih = str_pad(DB::table('pacientes')->max('ih') + 1, 7, "0", STR_PAD_LEFT);
-            $dados->dt_nasc = date("Ymd", strtotime($req->input('dt_nasc')));
+            $dados->dt_nasc = date('Y-m-d', strtotime($req->input('dt_nasc')));
             $dados->sexo = $req->input('sexo');
             $dados->celular = $req->input('celular');
             $dados->numero = $req->input('numero');
@@ -69,17 +68,14 @@ class PacienteController extends Controller
             $usuario = new User;
             $usuario->name = $req->input('nome');
             $usuario->email = $req->input('email');
-            //Paciente = 2
             $usuario->tipo_cadastro = Config::get('constants.options.paciente');
             $usuario->password = Hash::make($dados->ih);
             $usuario->save();
 
-            $dados->user_id = DB::table('users')->max('id');
+            $dados->user_id = DB::table('users')->where('email', '=', $usuario->email)->max('id');
             $dados->save();
             return "Cadastrado com sucesso!";
-            DB::commit();
         } catch (Exception $e) {
-            DB::rollback();
             return "Ocorreu um erro ao cadastrar.";
         }
     }
@@ -116,7 +112,7 @@ class PacienteController extends Controller
             $dados->rg = $req->input('rg');
             $dados->cpf = $req->input('cpf');
             $dados->ih = $req->input('ih');
-            $dados->dt_nasc = $req->input('dt_nasc');
+            $dados->dt_nasc = date('Y-m-d', strtotime($req->input('dt_nasc')));
             $dados->sexo = $req->input('sexo');
             $dados->celular = $req->input('celular');
             $dados->numero = $req->input('numero');
