@@ -148,3 +148,13 @@ Route::get('atendimento/agendamento-consulta/cancel/{id}', ['as' => 'atendimento
 Route::get('atendimento/agendamento-consulta/transfer/{id}', ['as' => 'atendimento.agendamento-consulta.transfer', 'uses' => 'Atendimento\AgendamentoConsultaController@transfer']);
 Route::post('atendimento/agendamento-consulta/confirmarcancel/{id}', ['as' => 'atendimento.agendamento-consulta.confirmardelete', 'uses' => 'Atendimento\AgendamentoConsultaController@confirmarcancel']);
 Route::get('atendimento/agendamento-consulta/listarconsultas', ['as' => 'atendimento.agendamento-consulta.listarconsultas', 'uses' => 'Atendimento\AgendamentoConsultaController@listarconsultas']);
+
+//Exames
+Route::get('admin/exames', ['as' => 'admin.exames', 'uses' => 'Admin\ExameController@index']);
+Route::get('admin/exames/create', ['as' => 'admin.exames.create', 'uses' => 'Admin\ExameController@create']);
+Route::post('admin/exames/store', ['as' => 'admin.exames.store', 'uses' => 'Admin\ExameController@store']);
+Route::get('admin/exames/edit/{id}', ['as' => 'admin.exames.edit', 'uses' => 'Admin\ExameController@edit']);
+Route::put('admin/exames/update/{id}', ['as' => 'admin.exames.update', 'uses' => 'Admin\ExameController@update']);
+Route::get('admin/exames/listarexames', ['as' => 'admin.exames.listarexames', 'uses' => 'Admin\ExameController@listarexames']);
+Route::get('admin/exames/delete/{id}', ['as' => 'admin.exames.delete', 'uses' => 'Admin\ExameController@delete']);
+Route::post('admin/exames/confirmardelete/{id}', ['as' => 'admin.exames.confirmardelete', 'uses' => 'Admin\ExameController@confirmardelete']);

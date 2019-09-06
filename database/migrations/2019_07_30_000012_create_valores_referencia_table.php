@@ -13,13 +13,13 @@ class CreateExamesTable extends Migration
      */
     public function up()
     {
-        Schema::create('exames', function (Blueprint $table) {
+        Schema::create('valores_referencia', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome');
-            $table->unsignedInteger('exame_metodo_id');
-            $table->foreign('exame_metodo_id')->references('id')->on('exame_metodos');
-            $table->unsignedInteger('exame_material_id');
-            $table->foreign('exame_material_id')->references('id')->on('exame_materiais');
+            $table->string('descricao');
+            $table->string('val_desejavel', 10);
+            $table->string('val_limitrofe_min', 10);
+            $table->string('val_limitrofe_max', 10);
+            $table->string('val_alto', 10);
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateExamesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exames');
+        Schema::dropIfExists('valores_referencia');
     }
 }

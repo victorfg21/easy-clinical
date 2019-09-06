@@ -15,7 +15,7 @@
         e.preventDefault();
         var form = $("#frmExameMetodo").serialize();
         $("#btnSave").css("pointer-events", "none");
-        $("#btnCloseLarge   ").css("pointer-events", "none");
+        $("#btnClose").css("pointer-events", "none");
         $.ajax({
             type: "POST",
             url: "{{ route('admin.exame-metodos.store') }}",
@@ -40,7 +40,7 @@
                     $('#modalMensagens').modal('show');
                 }
                 $("#btnSave").css("pointer-events", "");
-                $("#btnCloseLarge").css("pointer-events", "");
+                $("#btnClose").css("pointer-events", "");
             }
         }).fail(function (response){
             associate_errors(response['responseJSON']['errors'], $("#frmExameMetodo"));

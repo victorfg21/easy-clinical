@@ -1,7 +1,7 @@
-<form id="frmExameMetodo">
+<form id="frmExames">
     {{ csrf_field() }}
     <input type="hidden" name="_method" value="put"/>
-    @include('admin.exame-metodos._form')
+    @include('admin.exames._form')
     <!-- DIV ERROS -->
     <div class="alert alert-danger print-error-msg" style="display:none">
         <ul></ul>
@@ -14,13 +14,13 @@
 <script>
     $("#btnSave").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmExameMetodo").serialize();
+        var form = $("#frmExames").serialize();
         console.log(form);
         $("#btnSave").css("pointer-events", "none");
         $("#btnClose").css("pointer-events", "none");
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.exame-metodos.update', $registro->id) }}",
+            url: "{{ route('admin.exames.update', $registro->id) }}",
             data: form,
             success: function (data) {
 
@@ -32,7 +32,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblExameMetodos").DataTable().ajax.reload();
+                    $("#tblExames").DataTable().ajax.reload();
                     $("#modal_CRUD").modal("hide");
                 }
                 else {
@@ -45,14 +45,14 @@
                 $("#btnClose").css("pointer-events", "");
             }
         }).fail(function (response){
-            associate_errors(response['responseJSON']['errors'], $("#frmExameMetodo"));
+            associate_errors(response['responseJSON']['errors'], $("#frmExames"));
             $("#btnSave").css("pointer-events", "");
             $("#btnClose").css("pointer-events", "");
 
             Swal.fire({
                 position: 'center',
                 type: 'error',
-                title: "Erro ao atualizar método",
+                title: "Erro ao atualizar material",
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -60,7 +60,7 @@
     });
 
     $('#modal_CRUD').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblExameMetodos").DataTable().ajax.reload();
+        $("#tblExames").DataTable().ajax.reload();
     });
 
     function associate_errors(errors, $form)
