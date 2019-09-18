@@ -11,6 +11,29 @@
             @endif
         </div>
         <div class="form-group">
+            <label for="exame_grupo_id" class="control-label">Grupo</label>
+            <select for="exame_grupo_id" class="form-control js-example-responsive" name="exame_grupo_id" >
+                @if(!isset($registro->exame_grupo_id))
+                {
+                    <option value="" selected></option>
+                    @foreach ($exame_grupo_list as $exame_grupo)
+                        <option value="{{ $exame_grupo->id }}">{{ $exame_grupo->nome }}</option>
+                    @endforeach
+                }
+                @else
+                {
+                    @foreach ($exame_grupo_list as $exame_grupo)
+                        @if($exame_grupo->id == $registro->exame_grupo_id)
+                            <option value="{{ $exame_grupo->id }}" selected>{{ $exame_grupo->nome }}</option>
+                        @else
+                            <option value="{{ $exame_grupo->id }}">{{ $exame_grupo->nome }}</option>
+                        @endif
+                    @endforeach
+                }
+                @endif
+            </select>
+        </div>
+        <div class="form-group">
             <label for="exame_metodo_id" class="control-label">Método</label>
             <select for="exame_metodo_id" class="form-control js-example-responsive" name="exame_metodo_id" >
                 @if(!isset($registro->exame_metodo_id))
@@ -56,52 +79,39 @@
                 @endif
             </select>
         </div>
-        <div class="tab-pane fade" id="area">
-            <div class="box-body">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="valor_referencia_id" class="control-label">Área de Atuação</label>
-                                <select for="valor_referencia_id" class="form-control js-example-responsive" name="valor_referencia_id">
-                                    @foreach ($valor_referencia_list as $valor_referencia)
-                                            <option value="{{ $valor_referencia->id }}">{{ $valor_referencia->nome }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <a class="btn btn-primary btn-md" id="btnSetItemValorRef">Adicionar</a>
+        <div class="form-group {{ $errors->has('observacao') ? 'has-error' : '' }}">
+            <label for="observacao" class="control-label">Descrição</label>
+            <textarea for="observacao" class="form-control" name="observacao"><!--{{ isset($registro->observacao) ? $registro->observacao : '' }}--></textarea>
+        </div>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="exame_linha">
+                <div class="box-body">
+                    <div class="col-md-12">
+                        <div class="row panel panel-default">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped table-bordered" id="tblExameLinha">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-1">ID</th>
+                                            <th class="col-md-4">Descrição</th>
+                                            <th class="col-md-2">Mínimo</th>
+                                            <th class="col-md-2">Máximo</th>
+                                            <th class="col-md-2">Unidade</th>
+                                            <th class="col-md-1">Remover</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                    <div class="row panel panel-default">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped table-bordered" id="tblValorReferencia">
-                                <thead>
-                                    <tr>
-                                        <th class="col-xs-1">ID</th>
-                                        <th class="col-xs-10">Descrição</th>
-                                        <th class="col-xs-1">Remover</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if(isset($valores_referencia_exame))
-                                        @foreach ($valores_referencia_exame as $valorReferencia)
-                                            <tr>
-                                                <td class="col-xs-1">{{ $valorReferencia->id }}</td>
-                                                <td class="col-xs-10">{{ $valorReferencia->nome }}</td>
-                                                <td class="col-xs-1"><a class="btnDelLinhaValorRef"><i class="fa fa-trash fa-lg"></i></a></td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <a class="btn btn-info btn-md pull-right" id="btnAddLinhaExame"><i class="fa fa-plus fa-lg"></i></a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="{{ asset('js/adicionaLinhaExame.js') }}"></script>

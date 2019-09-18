@@ -5,16 +5,16 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class ExameMetodo extends Model
+class ExameGrupo extends Model
 {
-    protected $table = 'exame_metodos';
+    protected $table = 'exame_grupos';
 
     protected $fillable = [
         'nome'
     ];
 
     //Listar as areas de atuação no DataTable da página Index
-    public function ListarExameMetodos(Request $request)
+    public function ListarexameGrupos(Request $request)
     {
         $columns = array(
             0 => 'nome'
@@ -28,31 +28,31 @@ class ExameMetodo extends Model
 
         if(empty($request->input('search.value')))
         {
-            $exameMetodos = $this;
+            $exameGrupos = $this;
             $totalFiltered = $this;
         }
         else {
             $search = $request->input('search.value');
-            $exameMetodos =  $this->where('nome','LIKE',"%{$search}%");
+            $exameGrupos =  $this->where('nome','LIKE',"%{$search}%");
             $totalFiltered = $this->where('nome','LIKE',"%{$search}%");
         }
         $data = array();
-        if(!empty($exameMetodos))
+        if(!empty($exameGrupos))
         {
-            $exameMetodos = $exameMetodos->offset($start)
+            $exameGrupos = $exameGrupos->offset($start)
                                  ->limit($limit)
                                  ->orderBy($order,$dir)
                                  ->get();
-            foreach ($exameMetodos as $exameMetodo)
+            foreach ($exameGrupos as $exameGrupo)
             {
-                $edit =  route('admin.exame-metodos.edit', $exameMetodo->id);
-                $delete =  route('admin.exame-metodos.delete', $exameMetodo->id);
+                $edit =  route('admin.exame-metodos.edit', $exameGrupo->id);
+                $delete =  route('admin.exame-metodos.delete', $exameGrupo->id);
 
-                $nestedData['nome'] = $exameMetodo->nome;
-                $nestedData['action'] = "<a href='#' title='Editar Método'
-                                                onclick=\"modalBootstrap('{$edit}', 'Editar Método', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>
-                                                &emsp;<a href='#' title='Excluir Método'
-                                                onclick=\"modalBootstrap('{$delete}', 'Excluir Método', '#modal_CRUD', '', 'true', 'true', 'false', 'Sim', 'Não')\"><span class='glyphicon glyphicon-trash'></span></a>";
+                $nestedData['nome'] = $exameGrupo->nome;
+                $nestedData['action'] = "<a href='#' title='Editar Grupo'
+                                                onclick=\"modalBootstrap('{$edit}', 'Editar Grupo', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>
+                                                &emsp;<a href='#' title='Excluir Grupo'
+                                                onclick=\"modalBootstrap('{$delete}', 'Excluir Grupo', '#modal_CRUD', '', 'true', 'true', 'false', 'Sim', 'Não')\"><span class='glyphicon glyphicon-trash'></span></a>";
 
 
                 $data[] = $nestedData;

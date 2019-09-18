@@ -1,50 +1,24 @@
-<form id="frmExames">
+<form id="frmExameGrupo">
     {{ csrf_field() }}
-    @include('admin.exames._form')
+    @include('admin.exame-grupos._form')
     <!-- DIV ERROS -->
     <div class="alert alert-danger print-error-msg" style="display:none">
         <ul></ul>
     </div>
 </form>
 
+<script src="{{ asset('js/cep.js') }}"></script>
 <script src="{{ asset('js/mascaraform.js') }}"></script>
 
 <script>
-    $("#btnSaveLarge").unbind("click").click(function (e) {
+    $("#btnSave").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmExames").serialize();
-        var exameLinha = [];
-        var id = "";
-        var descricao = "";
-        var minimo = "";
-        var maximo = "";
-        var unidade = "";
-
-        $("#btnSaveLarge").css("pointer-events", "none");
-        $("#btnCloseLarge").css("pointer-events", "none");
-
-        $("#tblExameLinha tbody tr").each(function () {
-            id = $(this).find("td:nth-child(1)").text();
-            descricao = $(this).find("td:nth-child(2)").text();
-            minimo = $(this).find("td:nth-child(3)").text();
-            maximo = $(this).find("td:nth-child(4)").text();
-            unidade = $(this).find("td:nth-child(5)").text();
-
-            exameLinha.push({
-                "id": id,
-                "descricao": descricao,
-                "minimo": minimo,
-                "maximo": maximo,
-                "unidade": unidade
-            });
-        });
-        exameLinha = JSON.stringify(exameLinha);
-
-        form = form + "&exameLinha=" + exameLinha;
-
+        var form = $("#frmExameGrupo").serialize();
+        $("#btnSave").css("pointer-events", "none");
+        $("#btnClose").css("pointer-events", "none");
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.exames.store') }}",
+            url: "{{ route('admin.exame-grupos.store') }}",
             data: form,
             success: function (data) {
 
@@ -56,8 +30,8 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblExames").DataTable().ajax.reload();
-                    $("#modal_Large").modal("hide");
+                    $("#tblExameGrupos").DataTable().ajax.reload();
+                    $("#modal_CRUD").modal("hide");
                 }
                 else {
                     $("#modalMensagens .modal-body").html(data);
@@ -65,25 +39,25 @@
                     $('#modalMensagens').modal('toggle');
                     $('#modalMensagens').modal('show');
                 }
-                $("#btnSaveLarge").css("pointer-events", "");
-                $("#btnCloseLarge").css("pointer-events", "");
+                $("#btnSave").css("pointer-events", "");
+                $("#btnClose").css("pointer-events", "");
             }
         }).fail(function (response){
-            associate_errors(response['responseJSON']['errors'], $("#frmExames"));
-            $("#btnSaveLarge").css("pointer-events", "");
+            associate_errors(response['responseJSON']['errors'], $("#frmExameGrupo"));
+            $("#btnSave").css("pointer-events", "");
             $("#btnCloseLarge").css("pointer-events", "");
 
             Swal.fire({
                 position: 'center',
                 type: 'error',
-                title: "Erro ao cadastrar exame",
+                title: "Erro ao cadastrar grupo",
                 showConfirmButton: false,
                 timer: 1500
             })
         });
     });
-    $('#modal_Large').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblExames").DataTable().ajax.reload();
+    $('#modal_CRUD').unbind("hide.bs.modal").on('hide.bs.modal', function () {
+        $("#tblExameGrupos").DataTable().ajax.reload();
     });
     function associate_errors(errors, $form)
     {

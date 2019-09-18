@@ -201,6 +201,11 @@ return [
                     'url'  => 'admin/exame-metodos',
                     'icon' => 'sticky-note-o',
                 ],
+                [
+                    'text' => 'Grupo',
+                    'url'  => 'admin/exame-grupos',
+                    'icon' => 'group',
+                ],
             ],
         ],
         [//Medicamento

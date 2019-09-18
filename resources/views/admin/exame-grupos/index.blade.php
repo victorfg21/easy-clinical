@@ -10,11 +10,11 @@
 
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">Exames</h3>
+        <h3 class="box-title">Grupos</h3>
     </div>
     <div class="box-body">
         <div class="table-responsive">
-            <table id="tblExames" class="table table-hover table-striped">
+            <table id="tblExameGrupos" class="table table-hover table-striped">
                 <thead>
                     <tr>
                         <th class="col-xs-6">Descrição</th>
@@ -25,7 +25,7 @@
                 </tbody>
             </table>
             <a href="#" class="btn btn-info"
-                onclick="modalBootstrap('{{ route('admin.exames.create') }}', 'Adicionar Exame', '#modal_Large', '', 'true', 'true', 'true', 'Salvar', 'Fechar')"><i class="fa fa-plus fa-lg"></i></a>
+                onclick="modalBootstrap('{{ route('admin.exame-grupos.create') }}', 'Adicionar Grupo', '#modal_CRUD', '', 'true', 'true', 'true', 'Salvar', 'Fechar')"><i class="fa fa-plus fa-lg"></i></a>
         </div>
     </div>
 </div>
@@ -35,7 +35,7 @@
 @section('js')
 
 <script>
-var tblExames = $('#tblExames').DataTable({
+var tblExameGrupos = $('#tblExameGrupos').DataTable({
       'paging'      : true,
       'lengthChange': true,
       'searching'   : true,
@@ -49,7 +49,7 @@ var tblExames = $('#tblExames').DataTable({
             "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
         },
       "ajax":{
-              "url": "{!! route('admin.exames.listarexames') !!}",
+              "url": "{!! route('admin.exame-grupos.listarexamegrupos') !!}",
               "dataType": "json",
               "type": "get"
          },

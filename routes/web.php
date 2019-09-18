@@ -98,6 +98,16 @@ Route::get('admin/exame-metodos/listarexamemetodos', ['as' => 'admin.exame-metod
 Route::get('admin/exame-metodos/delete/{id}', ['as' => 'admin.exame-metodos.delete', 'uses' => 'Admin\ExameMetodoController@delete']);
 Route::post('admin/exame-metodos/confirmardelete/{id}', ['as' => 'admin.exame-metodos.confirmardelete', 'uses' => 'Admin\ExameMetodoController@confirmardelete']);
 
+//Exame Grupos
+Route::get('admin/exame-grupos', ['as' => 'admin.exame-grupos', 'uses' => 'Admin\ExameGrupoController@index']);
+Route::get('admin/exame-grupos/create', ['as' => 'admin.exame-grupos.create', 'uses' => 'Admin\ExameGrupoController@create']);
+Route::post('admin/exame-grupos/store', ['as' => 'admin.exame-grupos.store', 'uses' => 'Admin\ExameGrupoController@store']);
+Route::get('admin/aexame-grupos/edit/{id}', ['as' => 'admin.exame-grupos.edit', 'uses' => 'Admin\ExameGrupoController@edit']);
+Route::put('admin/exame-grupos/update/{id}', ['as' => 'admin.exame-grupos.update', 'uses' => 'Admin\ExameGrupoController@update']);
+Route::get('admin/exame-grupos/listarexamegrupos', ['as' => 'admin.exame-grupos.listarexamegrupos', 'uses' => 'Admin\ExameGrupoController@listarexamegrupos']);
+Route::get('admin/exame-grupos/delete/{id}', ['as' => 'admin.exame-grupos.delete', 'uses' => 'Admin\ExameGrupoController@delete']);
+Route::post('admin/exame-grupos/confirmardelete/{id}', ['as' => 'admin.exame-grupos.confirmardelete', 'uses' => 'Admin\ExameGrupoController@confirmardelete']);
+
 //Fabricantes
 Route::get('admin/fabricantes', ['as' => 'admin.fabricantes', 'uses' => 'Admin\FabricanteController@index']);
 Route::get('admin/fabricantes/create', ['as' => 'admin.fabricantes.create', 'uses' => 'Admin\FabricanteController@create']);

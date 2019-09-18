@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Exame;
 use App\ExameMaterial;
 use App\ExameMetodo;
+use App\ExameGrupo;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExameRequest;
-use App\ValorReferencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,17 +44,18 @@ class ExameController extends Controller
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
         $exame_material_list = ExameMaterial::orderBy('nome')->get();
         $exame_metodo_list = ExameMetodo::orderBy('nome')->get();
-        $valor_referencia_list = ValorReferencia::orderBy('nome')->get();
+        $exame_grupo_list = ExameGrupo::orderBy('nome')->get();
 
         return view('admin.exames.create', [
             'exame_material_list' => $exame_material_list,
             'exame_metodo_list' => $exame_metodo_list,
-            'valor_referencia_list' => $valor_referencia_list,
+            'exame_grupo_list' => $exame_grupo_list
         ]);
     }
 
     public function store(ExameRequest $req)
     {
+        dd($req);
         $dados = new Exame();
         $dados->nome = $req->input('nome');
         $dados->save();
