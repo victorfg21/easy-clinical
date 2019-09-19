@@ -11,29 +11,6 @@
             @endif
         </div>
         <div class="form-group">
-            <label for="exame_grupo_id" class="control-label">Grupo</label>
-            <select for="exame_grupo_id" class="form-control js-example-responsive" name="exame_grupo_id" >
-                @if(!isset($registro->exame_grupo_id))
-                {
-                    <option value="" selected></option>
-                    @foreach ($exame_grupo_list as $exame_grupo)
-                        <option value="{{ $exame_grupo->id }}">{{ $exame_grupo->nome }}</option>
-                    @endforeach
-                }
-                @else
-                {
-                    @foreach ($exame_grupo_list as $exame_grupo)
-                        @if($exame_grupo->id == $registro->exame_grupo_id)
-                            <option value="{{ $exame_grupo->id }}" selected>{{ $exame_grupo->nome }}</option>
-                        @else
-                            <option value="{{ $exame_grupo->id }}">{{ $exame_grupo->nome }}</option>
-                        @endif
-                    @endforeach
-                }
-                @endif
-            </select>
-        </div>
-        <div class="form-group">
             <label for="exame_metodo_id" class="control-label">Método</label>
             <select for="exame_metodo_id" class="form-control js-example-responsive" name="exame_metodo_id" >
                 @if(!isset($registro->exame_metodo_id))
@@ -80,7 +57,7 @@
             </select>
         </div>
         <div class="form-group {{ $errors->has('observacao') ? 'has-error' : '' }}">
-            <label for="observacao" class="control-label">Descrição</label>
+            <label for="observacao" class="control-label">Observação</label>
             <textarea for="observacao" class="form-control" name="observacao"><!--{{ isset($registro->observacao) ? $registro->observacao : '' }}--></textarea>
         </div>
         <!-- Tab panes -->
@@ -94,7 +71,8 @@
                                     <thead>
                                         <tr>
                                             <th class="col-md-1">ID</th>
-                                            <th class="col-md-4">Descrição</th>
+                                            <th class="col-md-3">Descrição</th>
+                                            <th class="col-md-3">Grupo</th>
                                             <th class="col-md-2">Mínimo</th>
                                             <th class="col-md-2">Máximo</th>
                                             <th class="col-md-2">Unidade</th>

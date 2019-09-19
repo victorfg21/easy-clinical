@@ -20,6 +20,8 @@ class CreateExamesTable extends Migration
             $table->foreign('exame_metodo_id')->references('id')->on('exame_metodos');
             $table->unsignedInteger('exame_material_id');
             $table->foreign('exame_material_id')->references('id')->on('exame_materiais');
+            $table->unsignedInteger('exame_grupo_id');
+            $table->foreign('exame_grupo_id')->references('id')->on('exame_grupos');
             $table->text('obsevacao');
             $table->timestamps();
         });

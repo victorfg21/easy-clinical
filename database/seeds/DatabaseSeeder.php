@@ -16,5 +16,8 @@ class DatabaseSeeder extends Seeder
         $profissionais = factory(App\Profissional::class, 3)->create();
         $this->call(AreaAtuacaoTableSeeder::class);
         $this->call(EspecialidadeTableSeeder::class);
+        $this->call(ExameGrupoTableSeeder::class);
+        $this->call(ExameMaterialTableSeeder::class);
+        $this->call(ExameMetodoTableSeeder::class);
     }
 }

@@ -26,20 +26,28 @@ $(document).ready(function () {
                     break;
 
                 case 2:
+                    newCell.innerHTML = '<select for="exame_grupo_id" class="form-control js-example-responsive" name="exame_grupo_id" >';
+
+                    $(".js-example-responsive").select2({
+                        width: '100% ' // need to override the changed default
+                    });
+                    break;
+
+                case 3:
                     newCell.innerHTML = '<input for="minimo" class="form-control peso" type="text" name="minimo" value="" />';
                     $('.peso').mask("#.##0,00", { reverse: true });
                     break;
 
-                case 3:
+                case 4:
                     newCell.innerHTML = '<input for="maximo" class="form-control peso" type="text" name="maximo" value="" />';
                     $('.peso').mask("#.##0,00", { reverse: true });
                     break;
 
-                case 4:
+                case 5:
                     newCell.innerHTML = '<input for="unidade" class="form-control" type="text" name="unidade" value="" />';
                     break;
 
-                case 5:
+                case 6:
                     newCell.innerHTML = '<a class="btnDelLinhaExame"><i class="fa fa-trash fa-lg"></i></a>';
                     break;
 

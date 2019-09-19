@@ -29,7 +29,10 @@ class ExameRequest extends FormRequest
     {
         return [
             'nome.required'=> 'Descrição é um campo obrigatório',
-            'nome.max' => 'Descrição deve conter até :max caracteres'
+            'nome.max' => 'Descrição deve conter até :max caracteres',
+            'exame_metodo_id.required'=> 'Método é um campo obrigatório',
+            'exame_material_id.required'=> 'Material é um campo obrigatório',
+            'exame_grupo_id.required'=> 'Material é um campo obrigatório',
         ];
     }
 }
