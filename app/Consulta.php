@@ -5,8 +5,8 @@ namespace App;
 use Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class Consulta extends Model
 {
@@ -51,7 +51,6 @@ class Consulta extends Model
 
     public function ReservarHorario()
     {
-
     }
 
     public function ListarConsultas(Request $request)
@@ -230,6 +229,7 @@ class Consulta extends Model
             ->select('consultas.*', 'pacientes.nome')
             ->where('consultas.profissional_id', '=', $agenda->profissional_id)
             ->where('data_consulta', '=', $data)
+            ->whereNull('cancelado')
             ->get()
         ;
         for ($i = 0; $i < sizeof($horarios); ++$i) {
@@ -341,13 +341,17 @@ class Consulta extends Model
 
                         break;
                     case Config::get('constants.options.realizado'):
-                        $statusMarcacao = '<font color="LightSkyBlue  ">Realizado</font>';
+                        $statusMarcacao = '<font color="LightSkyBlue">Realizado</font>';
 
                         break;
                     case Config::get('constants.options.nao_realizado'):
-                        $statusMarcacao = '<font color="FireBrick ">Faltou</font>';
+                        $statusMarcacao = '<font color="FireBrick">Faltou</font>';
 
                         break;
+                    default:
+                        $statusMarcacao = '<font color="orange">Não Disponivel</font>';
+
+                    break;
                 }
 
                 $nestedData['status'] = $statusMarcacao;

@@ -46,7 +46,7 @@
             associate_errors(response['responseJSON']['errors'], $("#frmAgendamento"));
             $("#btnSave").css("pointer-events", "");
             $("#btnClose").css("pointer-events", "");
-            
+
             Swal.fire({
                 position: 'center',
                 type: 'error',
@@ -56,6 +56,40 @@
             })
         });
     });
+
+    $("#btnClose").unbind("click").click(function (e) {
+        e.preventDefault();
+        var form = $("#frmAgendamento").serialize();
+        $("#btnSave").css("pointer-events", "none");
+        $("#btnClose").css("pointer-events", "none");
+        $.ajax({
+            type: "POST",
+            url: "{{ route('atendimento.agendamento-consulta.reservaconsultacancel') }}",
+            data: form,
+            success: function (data) {
+                if (data == "Agendamento Cancelado!") {
+                   Swal.fire({
+                        position: 'center ',
+                        type: 'success',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 1100
+                    })
+                    $("#tblAgendamentos").DataTable().ajax.reload();
+                    $("#modal_CRUD").modal("hide");
+                }
+                else {
+                    $("#modalMensagens .modal-body").html(data);
+                    $("#modalMensagens .modal-title").html("Erros");
+                    $('#modalMensagens').modal('toggle');
+                    $('#modalMensagens').modal('show');
+                }
+                $("#btnSave").css("pointer-events", "");
+                $("#btnClose").css("pointer-events", "");
+            }
+        });
+    });
+
     $('#modal_CRUD').unbind("hide.bs.modal").on('hide.bs.modal', function () {
         $("#tblAgendamentos").DataTable().ajax.reload();
     });

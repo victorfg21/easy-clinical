@@ -158,6 +158,7 @@ Route::get('atendimento/agendamento-consulta/cancel/{id}', ['as' => 'atendimento
 Route::get('atendimento/agendamento-consulta/transfer/{id}', ['as' => 'atendimento.agendamento-consulta.transfer', 'uses' => 'Atendimento\AgendamentoConsultaController@transfer']);
 Route::post('atendimento/agendamento-consulta/confirmarcancel/{id}', ['as' => 'atendimento.agendamento-consulta.confirmardelete', 'uses' => 'Atendimento\AgendamentoConsultaController@confirmarcancel']);
 Route::get('atendimento/agendamento-consulta/listarconsultas', ['as' => 'atendimento.agendamento-consulta.listarconsultas', 'uses' => 'Atendimento\AgendamentoConsultaController@listarconsultas']);
+Route::post('atendimento/agendamento-consulta/reservaconsultacancel', ['as' => 'atendimento.agendamento-consulta.reservaconsultacancel', 'uses' => 'Atendimento\AgendamentoConsultaController@reservaconsultacancel']);
 
 //Exames
 Route::get('admin/exames', ['as' => 'admin.exames', 'uses' => 'Admin\ExameController@index']);

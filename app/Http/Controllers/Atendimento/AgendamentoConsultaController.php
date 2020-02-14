@@ -148,7 +148,7 @@ class AgendamentoConsultaController extends Controller
                         break;
                 }
 
-                if ($this->$montarAgenda) {
+                if ($this->{$montarAgenda}) {
                     $horarios = $this->MontarAgenda($agenda, $data);
                 }
             }
@@ -164,7 +164,6 @@ class AgendamentoConsultaController extends Controller
 
             //if (Auth::user()->authorizeRoles() == false)
             //    abort(403, 'Você não possui autorização para realizar essa ação.');
-            //dd($request);
 
             $reserva = ReservaMarcacaoConsulta::where('data_consulta', '=', date('Y-m-d', strtotime($request->input('data'))))
                 ->where('horario_consulta', '=', date('H:i', strtotime($request->input('hora'))))
@@ -172,7 +171,7 @@ class AgendamentoConsultaController extends Controller
             ;
 
             if (!$reserva->isEmpty()) {
-                return "<h4 class=\"alert alert-danger\"><strong>Horário com status EM MARCAÇÃO por outro atendente!</strong></h4>";
+                return '<h4 class="alert alert-danger"><strong>Horário com status EM MARCAÇÃO por outro atendente!</strong></h4>';
             }
 
             $profissional_list = Profissional::orderBy('nome')->get();
@@ -301,6 +300,29 @@ class AgendamentoConsultaController extends Controller
         }
     }
 
+    public function reservaconsultacancel(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $data_consulta = date('Y-m-d H:i:s', strtotime($request->input('data_consulta')));
+            $horario_consulta = date('H:i', strtotime($request->input('horario_consulta')));
+
+            DB::table('reservas_marcacoes_consultas')
+                ->where('data_consulta', '=', $data_consulta)
+                ->where('horario_consulta', '=', $horario_consulta)
+                ->delete()
+            ;
+
+            DB::commit();
+            return 'Agendamento Cancelado!';
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return 'Ocorreu um erro ao cancelar';
+        }
+    }
+
     private function MontarAgenda($agenda, $data)
     {
         $inicio_horario_1 = new \DateTime(date('Y-m-d H:i', strtotime($agenda->inicio_horario_1)));
@@ -379,9 +401,11 @@ class AgendamentoConsultaController extends Controller
                 $horario = $horarios[$i];
 
                 if ($horaConsultaMarcada == $horario['hora']) {
-                    if (false == $consulta->cancelado || null == $consulta->cancelado) {
+                    error_log($consulta->cancelado);
+                    if (0 == $consulta->cancelado || null == $consulta->cancelado) {
                         $horario['status'] = Config::get('constants.options.marcado');
-                    } elseif (true == $consulta->cancelado) {
+                        error_log('xds');
+                    } elseif (1 == $consulta->cancelado) {
                         $horario['status'] = Config::get('constants.options.cancelado');
                     }
 
@@ -495,7 +519,6 @@ class AgendamentoConsultaController extends Controller
         for ($i = $start; $i < sizeof($horarios); ++$i) {
             if ($start <= $i && $i < ($start + $limit)) {
                 $horario = $horarios[$i];
-
                 $create = ''; //route('atendimento.agendamento-consulta.create');
                 $show = route('atendimento.agendamento-consulta.show', $horario['consulta_id']);
                 $cancel = route('atendimento.agendamento-consulta.cancel', $horario['consulta_id']);
@@ -561,7 +584,7 @@ class AgendamentoConsultaController extends Controller
 
                         break;
                     case Config::get('constants.options.sem_marcacao'):
-                        $nestedData['status'] = '<font color="DarkGray">Vazio</font>';
+                        $nestedData['status'] = '<font color="DarkGray">Indisponível</font>';
                         $nestedData['action'] = '';
 
                         break;

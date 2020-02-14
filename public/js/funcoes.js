@@ -25,8 +25,6 @@ function modalBootstrap(caminho, titulo, idModal, id, botaoSalvar, botaoCancelar
                 $(idModal + " .modal-footer .btnSave").hide();
             }
 
-
-
             if (botaoCancelar == 'true') {
                 $(idModal + " .modal-footer .btnClose").show();
                 //Mudar o botão Fechar se tiver definido outro nome
@@ -49,8 +47,6 @@ function modalBootstrap(caminho, titulo, idModal, id, botaoSalvar, botaoCancelar
             $(idModal + " .modal-title").html(titulo);
             $(idModal).modal('toggle');
             $(idModal).modal('show');
-
-
         }
     })
 }
@@ -77,8 +73,6 @@ function modalBootstrapView(view, titulo, idModal, id, botaoSalvar, botaoCancela
             $(idModal + " .modal-footer .btnSave").hide();
         }
 
-
-
         if (botaoCancelar == 'true') {
             $(idModal + " .modal-footer .btnClose").show();
             //Mudar o botão Fechar se tiver definido outro nome
@@ -89,7 +83,6 @@ function modalBootstrapView(view, titulo, idModal, id, botaoSalvar, botaoCancela
         } else {
             $(idModal + " .modal-footer .btnClose").hide();
         }
-
 
         if (botaoFecharSuperior == 'true') {
             $(idModal + " .modal-header .close").show();

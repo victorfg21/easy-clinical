@@ -127,7 +127,7 @@
         <!-- /.content-wrapper -->
 
         <!-- Modal CRUD -->
-        <div class="modal fade" id="modal_CRUD" role="dialog">
+        <div class="modal fade" id="modal_CRUD" role="dialog" data-backdrop="static">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -136,15 +136,15 @@
                     </div>
                     <div class="modal-body"></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btnSave" id="btnSave">Salvar</button>
-                        <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal" id="btnClose">Fechar</button>
+                        <button type="button" class="btn btn-success btnSave" id="btnSave">Salvar</button>
+                        <button type="button" class="btn btn-danger btnClose" data-dismiss="modal" id="btnClose">Fechar</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Modal CRUD -->
-        <div class="modal fade" id="modal_Large" role="dialog">
+        <div class="modal fade" id="modal_Large" role="dialog" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -153,8 +153,8 @@
                     </div>
                     <div class="modal-body"></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btnSave" id="btnSaveLarge">Salvar</button>
-                        <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal" id="btnCloseLarge">Fechar</button>
+                        <button type="button" class="btn btn-success btnSave" id="btnSaveLarge">Salvar</button>
+                        <button type="button" class="btn btn-danger btnClose" data-dismiss="modal" id="btnCloseLarge">Fechar</button>
                     </div>
                 </div>
             </div>
@@ -166,7 +166,7 @@
                 <div class="modal-content">
                     <div class="modal-body"></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>    
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
