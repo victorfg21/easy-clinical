@@ -6,6 +6,7 @@ use App\Exame;
 use App\ExameMaterial;
 use App\ExameMetodo;
 use App\ExameGrupo;
+use App\ExameLinha;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExameRequest;
 use Illuminate\Http\Request;
@@ -55,10 +56,40 @@ class ExameController extends Controller
 
     public function store(ExameRequest $req)
     {
-        dd($req);
         $dados = new Exame();
         $dados->nome = $req->input('nome');
+        $dados->exame_metodo_id = $req->input('exame_metodo_id');
+        $dados->exame_material_id = $req->input('exame_material_id');
+        $dados->observacao = $req->input('observacao');
+        //dd($dados);
         $dados->save();
+
+        $linhasExame = json_decode($req->input('exameLinha'));
+        foreach ($linhasExame as $linha) {
+            $dadosLinha = new ExameLinha();
+            $dadosLinha->descricao = $req->input('descricao');
+            $dadosLinha->exame_grupo_id = '1';//$req->input('exame_grupo_id');
+            $dadosLinha->valor_min = $req->input('minimo');
+            $dadosLinha->valor_max = $req->input('maximo');
+            $dadosLinha->unidade = $req->input('unidade');
+
+            $dadosLinha->exame_id = $dados->id;
+            $dadosLinha->save();
+            /* $table->increments('id');
+             $table->unsignedInteger('exame_id');
+             $table->foreign('exame_id')->references('id')->on('exames');
+             $table->unsignedInteger('exame_grupo_id');
+             $table->foreign('exame_grupo_id')->references('id')->on('exame_grupos');
+             $table->string('descricao');
+             $table->string('tipo_valor', 10);
+             $table->string('valor_simples', 30);
+             $table->string('valor_min', 30);
+             $table->string('valor_max', 30);
+             $table->string('unidade', 50);
+        }
+
+*/
+        }
 
         return 'Cadastrado com sucesso!';
     }
@@ -79,19 +110,11 @@ class ExameController extends Controller
         $registro = Exame::find($id);
         $exame_material_list = ExameMaterial::orderBy('nome')->get();
         $exame_metodo_list = ExameMetodo::orderBy('nome')->get();
-        $valor_referencia_list = ValorReferencia::orderBy('nome')->get();
-        $valores_referencia_exame = DB::table('valor_referencia_exame')->where('exame_id', $id)
-            ->join('valores_referencia', 'valor_referencia_exame.valor_referencia_id', '=', 'valores_referencia.id')
-            ->select('valores_referencia.id', 'valores_referencia.descricao')
-            ->get()
-        ;
 
         return view('admin.exames.edit', [
             'registro' => $registro,
             'exame_material_list' => $exame_material_list,
             'exame_metodo_list' => $exame_metodo_list,
-            'valor_referencia_list' => $valor_referencia_list,
-            'valores_referencia_exame' => $valores_referencia_exame,
         ]);
     }
 

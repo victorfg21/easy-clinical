@@ -193,7 +193,7 @@ return [
                 ],
                 [
                     'text' => 'Material',
-                    'url'  => 'admin/exame-materiais    ',
+                    'url'  => 'admin/exame-materiais',
                     'icon' => 'clone',
                 ],
                 [

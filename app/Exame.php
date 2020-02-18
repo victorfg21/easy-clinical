@@ -10,7 +10,7 @@ class Exame extends Model
     protected $table = 'exames';
 
     protected $fillable = [
-        'nome'
+        'nome', 'observacao'
     ];
 
     public function ExameMetodo(){
@@ -21,8 +21,8 @@ class Exame extends Model
         return $this->hasOne(ExameMaterial::class, 'id', 'exame_material_id');
     }
 
-    public function ValoresReferencia(){
-        return $this->belongsToMany(ValorReferencia::class);
+    public function ExameLinha(){
+        return $this->belongsToMany(ExameLinha::class);
     }
 
     //Listar os exames no DataTable da página Index

@@ -400,13 +400,14 @@ class AgendamentoConsultaController extends Controller
             for ($i = 0; $i < sizeof($horarios); ++$i) {
                 $horario = $horarios[$i];
 
-                if ($horaConsultaMarcada == $horario['hora']) {
-                    error_log($consulta->cancelado);
-                    if (0 == $consulta->cancelado || null == $consulta->cancelado) {
-                        $horario['status'] = Config::get('constants.options.marcado');
-                        error_log('xds');
-                    } elseif (1 == $consulta->cancelado) {
+                if ($horaConsultaMarcada == $horario['hora'] && $horario['status'] == Config::get('constants.options.disponivel')) {
+                    $entrouHorario = true;
+                    if ($consulta->cancelado == true) {
                         $horario['status'] = Config::get('constants.options.cancelado');
+                    }
+                    else
+                    {
+                        $horario['status'] = Config::get('constants.options.marcado');
                     }
 
                     if (true == $consulta->realizado) {

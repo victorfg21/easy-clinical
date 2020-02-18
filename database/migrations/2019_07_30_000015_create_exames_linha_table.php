@@ -20,8 +20,8 @@ class CreateExamesLinhaTable extends Migration
             $table->unsignedInteger('exame_grupo_id');
             $table->foreign('exame_grupo_id')->references('id')->on('exame_grupos');
             $table->string('descricao');
-            $table->string('tipo_valor', 10);
-            $table->string('valor_simples', 30);
+            //$table->string('tipo_valor', 10);
+            //$table->string('valor_simples', 30);
             $table->string('valor_min', 30);
             $table->string('valor_max', 30);
             $table->string('unidade', 50);

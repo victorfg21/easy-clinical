@@ -29,8 +29,7 @@
                         title: data,
                         showConfirmButton: false,
                         timer: 1500
-                    })
-                    $("#tblAgendamentos").DataTable().ajax.reload();
+                    });
                     $("#modal_CRUD").modal("hide");
                 }
                 else {
@@ -53,7 +52,7 @@
                 title: "Erro ao cadastrar consulta",
                 showConfirmButton: false,
                 timer: 1500
-            })
+            });
         });
     });
 
@@ -68,14 +67,6 @@
             data: form,
             success: function (data) {
                 if (data == "Agendamento Cancelado!") {
-                   Swal.fire({
-                        position: 'center ',
-                        type: 'success',
-                        title: data,
-                        showConfirmButton: false,
-                        timer: 1100
-                    })
-                    $("#tblAgendamentos").DataTable().ajax.reload();
                     $("#modal_CRUD").modal("hide");
                 }
                 else {
@@ -86,7 +77,19 @@
                 }
                 $("#btnSave").css("pointer-events", "");
                 $("#btnClose").css("pointer-events", "");
-            }
+            }).fail(function (response){
+                associate_errors(response['responseJSON']['errors'], $("#frmAgendamento"));
+                $("#btnSave").css("pointer-events", "");
+                $("#btnClose").css("pointer-events", "");
+
+                Swal.fire({
+                    position: 'center',
+                    type: 'error',
+                    title: "Erro ao cadastrar consulta",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
         });
     });
 

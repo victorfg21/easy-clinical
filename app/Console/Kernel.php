@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class Kernel extends ConsoleKernel
 {
@@ -21,9 +22,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        DB::table('reservas_marcacoes_consultas')
+        if (Schema::hasTable('reservas_marcacoes_consultas')) {
+            DB::table('reservas_marcacoes_consultas')
             ->where('created_at', '<', date('Y-m-d H:i:s', strtotime('+1 minutes')))
             ->delete();
+        }
     }
 
     /**
