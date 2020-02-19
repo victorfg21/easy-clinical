@@ -80,6 +80,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @if(isset($exames_linha))
+                                            @foreach ($exames_linha as $linha)
+                                                <tr>
+                                                    <td class="col-md-1">{{ $linha->id }}</td>
+                                                    <td class="col-md-3">{{ $linha->descricao }}</td>
+                                                    <td class="col-md-3">{{ $linha->exame_grupo_id }}</td>
+                                                    <td class="col-md-2">{{ $linha->valor_min }}</td>
+                                                    <td class="col-md-2">{{ $linha->valor_max }}</td>
+                                                    <td class="col-md-2">{{ $linha->unidade }}</td>
+                                                    <td class="col-md-1"><a class="btnDelLinha"><i class="fa fa-trash fa-lg"></i></a></td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>

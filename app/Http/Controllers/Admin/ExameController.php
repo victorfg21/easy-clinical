@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exame;
-use App\ExameMaterial;
-use App\ExameMetodo;
 use App\ExameGrupo;
 use App\ExameLinha;
+use App\ExameMaterial;
+use App\ExameMetodo;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExameRequest;
 use Illuminate\Http\Request;
@@ -50,48 +50,43 @@ class ExameController extends Controller
         return view('admin.exames.create', [
             'exame_material_list' => $exame_material_list,
             'exame_metodo_list' => $exame_metodo_list,
-            'exame_grupo_list' => $exame_grupo_list
+            'exame_grupo_list' => $exame_grupo_list,
         ]);
     }
 
     public function store(ExameRequest $req)
     {
-        $dados = new Exame();
-        $dados->nome = $req->input('nome');
-        $dados->exame_metodo_id = $req->input('exame_metodo_id');
-        $dados->exame_material_id = $req->input('exame_material_id');
-        $dados->observacao = $req->input('observacao');
-        //dd($dados);
-        $dados->save();
+        try {
+            DB::beginTransaction();
+            $dados = new Exame();
+            $dados->nome = $req->input('nome');
+            $dados->exame_metodo_id = $req->input('exame_metodo_id');
+            $dados->exame_material_id = $req->input('exame_material_id');
+            $dados->observacao = $req->input('observacao');
+            //dd($dados);
+            $dados->save();
 
-        $linhasExame = json_decode($req->input('exameLinha'));
-        foreach ($linhasExame as $linha) {
-            $dadosLinha = new ExameLinha();
-            $dadosLinha->descricao = $req->input('descricao');
-            $dadosLinha->exame_grupo_id = '1';//$req->input('exame_grupo_id');
-            $dadosLinha->valor_min = $req->input('minimo');
-            $dadosLinha->valor_max = $req->input('maximo');
-            $dadosLinha->unidade = $req->input('unidade');
+            $linhasExame = json_decode($req->input('exameLinha'));
+            foreach ($linhasExame as $linha) {
+                $dadosLinha = new ExameLinha();
+                $dadosLinha->descricao = $req->input('descricao');
+                $dadosLinha->exame_grupo_id = '1'; //$req->input('exame_grupo_id');
+                $dadosLinha->valor_min = $req->input('minimo');
+                $dadosLinha->valor_max = $req->input('maximo');
+                $dadosLinha->unidade = $req->input('unidade');
 
-            $dadosLinha->exame_id = $dados->id;
-            $dadosLinha->save();
-            /* $table->increments('id');
-             $table->unsignedInteger('exame_id');
-             $table->foreign('exame_id')->references('id')->on('exames');
-             $table->unsignedInteger('exame_grupo_id');
-             $table->foreign('exame_grupo_id')->references('id')->on('exame_grupos');
-             $table->string('descricao');
-             $table->string('tipo_valor', 10);
-             $table->string('valor_simples', 30);
-             $table->string('valor_min', 30);
-             $table->string('valor_max', 30);
-             $table->string('unidade', 50);
+                $dadosLinha->exame_id = $dados->id;
+                $dadosLinha->save();
+            }
+
+            DB::commit();
+
+            return 'Cadastrado com sucesso!';
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return 'Ocorreu um erro ao cadastrar.';
         }
-
-*/
-        }
-
-        return 'Cadastrado com sucesso!';
     }
 
     public function show($id)
@@ -110,11 +105,23 @@ class ExameController extends Controller
         $registro = Exame::find($id);
         $exame_material_list = ExameMaterial::orderBy('nome')->get();
         $exame_metodo_list = ExameMetodo::orderBy('nome')->get();
+        $exames_linha = DB::table('exames_linha')->where('exame_id', $id)
+            ->select(
+                'exames_linha.id',
+                'exames_linha.exame_grupo_id',
+                'exames_linha.descricao',
+                'exames_linha.valor_min',
+                'exames_linha.valor_max',
+                'exames_linha.unidade'
+            )
+            ->get()
+        ;
 
         return view('admin.exames.edit', [
             'registro' => $registro,
             'exame_material_list' => $exame_material_list,
             'exame_metodo_list' => $exame_metodo_list,
+            'exames_linha' => $exames_linha,
         ]);
     }
 
@@ -124,13 +131,34 @@ class ExameController extends Controller
             //if (Auth::user()->authorizeRoles() == false)
             //    abort(403, 'Você não possui autorização para realizar essa ação.');
 
+            DB::beginTransaction();
             $dados = Exame::find($id);
             $dados->nome = $req->input('nome');
+            $dados->exame_metodo_id = $req->input('exame_metodo_id');
+            $dados->exame_material_id = $req->input('exame_material_id');
+            $dados->observacao = $req->input('observacao');
 
             $dados->update();
 
+            $linhasExame = json_decode($req->input('exameLinha'));
+            foreach ($linhasExame as $linha) {
+                $dadosLinha = ExameLinha::find($linha->id);
+                $dadosLinha->descricao = $req->input('descricao');
+                $dadosLinha->exame_grupo_id = $req->input('exame_grupo_id');
+                $dadosLinha->valor_min = $req->input('minimo');
+                $dadosLinha->valor_max = $req->input('maximo');
+                $dadosLinha->unidade = $req->input('unidade');
+
+                $dadosLinha->exame_id = $dados->id;
+                $dadosLinha->update();
+            }
+
+            DB::commit();
+
             return 'Alterado com sucesso!';
         } catch (Exception $e) {
+            DB::rollback();
+
             return 'Ocorreu um erro ao alterar!';
         }
     }
@@ -139,7 +167,7 @@ class ExameController extends Controller
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        $exameMetodo = Exame::find($id);
+        $exame = Exame::find($id);
 
         return view('admin.exames.delete', compact('exameMetodo'));
     }
@@ -148,7 +176,8 @@ class ExameController extends Controller
     {
         try {
             DB::beginTransaction();
-            $exameMetodo = Exame::where('id', '=', $id)->delete();
+            $exame = Exame::where('id', '=', $id)->delete();
+            $exames_linha = ExameLinha::where('exame_id', '=', $id)->delete();
             DB::commit();
 
             return 'Removido com sucesso!';
