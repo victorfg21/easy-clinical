@@ -1,5 +1,5 @@
-$(document).ready(function () {
-    $('#btnAddLinhaExame').on('click', function (e) {
+$(document).ready(function() {
+    $('#btnAddLinhaExame').on('click', function(e) {
         // Captura a referência da tabela com id “minhaTabela”
         var table = $('#tblExameLinha')[0];
         // Captura a quantidade de linhas já existentes na tabela
@@ -26,25 +26,29 @@ $(document).ready(function () {
                     break;
 
                 case 2:
-                    let comboGrid = '';
-                    comboGrid += '<select for="exame_grupo_id" class="form-control js-example-responsive" name="exame_grupo_id" >';
+                    var comboGrid = '';
 
                     $.ajax({
                         type: "GET",
                         url: "/admin/exames/listarexamegrupos",
                         dataType: "json",
-                        success: function (data) {
+                        async: false,
+                        success: function(data) {
+                            comboGrid += '<select for="exame_grupo_id" class="form-control js-example-responsive" name="exame_grupo_id" >';
                             $.each(data, function(k, v) {
-                                comboGrid = '<option value="' + v.id + '">' + v.nome + '</option>';
+
+                                comboGrid += '<option value="' + v.id + '">' + v.nome + '</option>';
+                                console.log(comboGrid + '- ' + v.nome);
+                            });
+
+                            comboGrid += '</select>';
+                            console.log(comboGrid);
+                            newCell.innerHTML = comboGrid;
+
+                            $(".js-example-responsive").select2({
+                                width: '100% ' // need to override the changed default
                             });
                         }
-                    });
-
-                    comboGrid += '</select>';
-                    console.log(comboGrid);
-                    newCell.innerHTML = comboGrid;
-                    $(".js-example-responsive").select2({
-                        width: '100% ' // need to override the changed default
                     });
                     break;
 
@@ -72,7 +76,7 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on('click', '.btnDelLinhaExame', function (e) {
+    $(document).on('click', '.btnDelLinhaExame', function(e) {
         // Captura a referência da tabela com id “minhaTabela”
         var table = $('#tblExameLinha')[0];
         //Id da linha que será removida
