@@ -89,7 +89,7 @@
                                                     <td class="col-md-2">{{ $linha->valor_min }}</td>
                                                     <td class="col-md-2">{{ $linha->valor_max }}</td>
                                                     <td class="col-md-2">{{ $linha->unidade }}</td>
-                                                    <td class="col-md-1"><a class="btnDelLinha"><i class="fa fa-trash fa-lg"></i></a></td>
+                                                    <td class="col-md-1"><a class="btnDelLinhaExame"><i class="fa fa-trash fa-lg"></i></a></td>
                                                 </tr>
                                             @endforeach
                                         @endif

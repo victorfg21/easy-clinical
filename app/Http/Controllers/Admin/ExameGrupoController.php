@@ -23,6 +23,7 @@ class ExameGrupoController extends Controller
         $exameGrupos = ExameGrupo::orderBy('nome')->get();
         return view('admin.exame-grupos.index', compact('exameGrupos'));
     }
+    
     //Método que lista todos os usuarios no DataTable da Tela
     public function listarexamegrupos(Request $request)
     {

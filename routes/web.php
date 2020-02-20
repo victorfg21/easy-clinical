@@ -169,3 +169,6 @@ Route::put('admin/exames/update/{id}', ['as' => 'admin.exames.update', 'uses' =>
 Route::get('admin/exames/listarexames', ['as' => 'admin.exames.listarexames', 'uses' => 'Admin\ExameController@listarexames']);
 Route::get('admin/exames/delete/{id}', ['as' => 'admin.exames.delete', 'uses' => 'Admin\ExameController@delete']);
 Route::post('admin/exames/confirmardelete/{id}', ['as' => 'admin.exames.confirmardelete', 'uses' => 'Admin\ExameController@confirmardelete']);
+Route::get('admin/exames/listarexamegrupos', ['as' => 'admin.exames.listarexamegrupos', 'uses' => 'Admin\ExameController@listarexamegrupos']);
+
+

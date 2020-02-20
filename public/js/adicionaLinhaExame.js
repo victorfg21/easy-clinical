@@ -26,8 +26,23 @@ $(document).ready(function () {
                     break;
 
                 case 2:
-                    newCell.innerHTML = '<select for="exame_grupo_id" class="form-control js-example-responsive" name="exame_grupo_id" >';
+                    let comboGrid = '';
+                    comboGrid += '<select for="exame_grupo_id" class="form-control js-example-responsive" name="exame_grupo_id" >';
 
+                    $.ajax({
+                        type: "GET",
+                        url: "/admin/exames/listarexamegrupos",
+                        dataType: "json",
+                        success: function (data) {
+                            $.each(data, function(k, v) {
+                                comboGrid = '<option value="' + v.id + '">' + v.nome + '</option>';
+                            });
+                        }
+                    });
+
+                    comboGrid += '</select>';
+                    console.log(comboGrid);
+                    newCell.innerHTML = comboGrid;
                     $(".js-example-responsive").select2({
                         width: '100% ' // need to override the changed default
                     });

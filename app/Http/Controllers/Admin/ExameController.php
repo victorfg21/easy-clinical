@@ -39,6 +39,15 @@ class ExameController extends Controller
         return $exames->ListarExames($request);
     }
 
+    //Método que lista todos os usuarios no DataTable da Tela
+    public function listarexamegrupos(Request $request)
+    {
+        //if (Auth::user()->authorizeRoles() == false)
+        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        $exameGrupos = ExameGrupo::orderBy('nome')->get()->toJson();
+        return $exameGrupos;
+    }
+
     public function create()
     {
         //if (Auth::user()->authorizeRoles() == false)
@@ -140,9 +149,11 @@ class ExameController extends Controller
 
             $dados->update();
 
+            $exames_linha = ExameLinha::where('exame_id', '=', $id)->delete();
+
             $linhasExame = json_decode($req->input('exameLinha'));
             foreach ($linhasExame as $linha) {
-                $dadosLinha = ExameLinha::find($linha->id);
+                $dadosLinha = new ExameLinha();
                 $dadosLinha->descricao = $req->input('descricao');
                 $dadosLinha->exame_grupo_id = $req->input('exame_grupo_id');
                 $dadosLinha->valor_min = $req->input('minimo');
@@ -150,7 +161,7 @@ class ExameController extends Controller
                 $dadosLinha->unidade = $req->input('unidade');
 
                 $dadosLinha->exame_id = $dados->id;
-                $dadosLinha->update();
+                $dadosLinha->save();
             }
 
             DB::commit();

@@ -14,7 +14,7 @@ class ExameGrupo extends Model
     ];
 
     //Listar as areas de atuação no DataTable da página Index
-    public function ListarexameGrupos(Request $request)
+    public function ListarExameGrupos(Request $request)
     {
         $columns = array(
             0 => 'nome'
