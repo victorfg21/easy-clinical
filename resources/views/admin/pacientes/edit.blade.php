@@ -15,7 +15,6 @@
     $("#btnSaveLarge").unbind("click").click(function (e) {
         e.preventDefault();
         var form = $("#frmPaciente").serialize();
-        console.log(form);
         $("#btnSaveLarge").css("pointer-events", "none");
         $("#btnCloseLarge").css("pointer-events", "none");
         $.ajax({

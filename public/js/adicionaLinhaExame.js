@@ -36,13 +36,10 @@ $(document).ready(function() {
                         success: function(data) {
                             comboGrid += '<select for="exame_grupo_id" class="form-control js-example-responsive" name="exame_grupo_id" >';
                             $.each(data, function(k, v) {
-
                                 comboGrid += '<option value="' + v.id + '">' + v.nome + '</option>';
-                                console.log(comboGrid + '- ' + v.nome);
                             });
 
                             comboGrid += '</select>';
-                            console.log(comboGrid);
                             newCell.innerHTML = comboGrid;
 
                             $(".js-example-responsive").select2({

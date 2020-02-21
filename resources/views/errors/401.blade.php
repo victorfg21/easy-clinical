@@ -6,10 +6,9 @@
 <script>
     $(document).ready(function() {
         var link = [ "{{route('admin.atendimentos') }}" ];
-        console.log(link);
         swal({
                 type: 'error',
-                title: 'Ops!', 
+                title: 'Ops!',
                 text: 'Acesso não autorizado',
                 confirmButtonText: '<a href="' + link + '"><i class="fa fa-arrow-circle-left fa-lg"></i>  Ok</a>'
             });

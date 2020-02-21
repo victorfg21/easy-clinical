@@ -85,7 +85,17 @@
                                                 <tr>
                                                     <td class="col-md-1">{{ $linha->id }}</td>
                                                     <td class="col-md-3">{{ $linha->descricao }}</td>
-                                                    <td class="col-md-3">{{ $linha->exame_grupo_id }}</td>
+                                                    <td class="col-md-3">
+                                                        <select  class="form-control js-example-responsive" name="exameGrupo" disabled>
+                                                            @foreach ($exame_grupo_list as $exameGrupo)
+                                                                @if($exameGrupo->id == $linha->exame_grupo_id)
+                                                                    <option value="{{ $exameGrupo->id }}" selected>{{ $exameGrupo->nome }}</option>
+                                                                @else
+                                                                    <option value="{{ $exameGrupo->id }}">{{ $exameGrupo->nome }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
                                                     <td class="col-md-2">{{ $linha->valor_min }}</td>
                                                     <td class="col-md-2">{{ $linha->valor_max }}</td>
                                                     <td class="col-md-2">{{ $linha->unidade }}</td>

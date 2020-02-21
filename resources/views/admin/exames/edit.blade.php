@@ -14,7 +14,37 @@
     $("#btnSaveLarge").unbind("click").click(function (e) {
         e.preventDefault();
         var form = $("#frmExames").serialize();
-        console.log(form);
+        var linhasExame = [];
+        var id = "";
+        var descricao = "";
+        var exame_grupo_id = "";
+        var minimo = "";
+        var maximo = "";
+        var unidade = "";
+
+        $("#tblExameLinha tbody tr").each(function () {
+            id = $(this).find("td:nth-child(1)").text();
+            descricao = $(this).find("td:nth-child(2)").text();
+            exame_grupo_id = $(this).find("td:nth-child(3) first value").text();
+            minimo = $(this).find("td:nth-child(4)").text();
+            maximo = $(this).find("td:nth-child(5)").text();
+            unidade = $(this).find("td:nth-child(6)").text();
+
+            console.log($(this));
+            linhasExame.push({
+                "id": id,
+                "descricao": descricao,
+                "exame_grupo_id": exame_grupo_id,
+                "minimo": minimo,
+                "maximo": maximo,
+                "unidade": unidade
+            });
+        });
+        linhasExame = JSON.stringify(linhasExame);
+
+        console.log(linhasExame);
+        form = form + "&linhasExame=" + linhasExame;
+
         $("#btnSaveLarge").css("pointer-events", "none");
         $("#btnCloseLarge").css("pointer-events", "none");
         $.ajax({
@@ -51,7 +81,7 @@
             Swal.fire({
                 position: 'center',
                 type: 'error',
-                title: "Erro ao atualizar material",
+                title: "Erro ao atualizar exame",
                 showConfirmButton: false,
                 timer: 1500
             })

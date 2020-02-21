@@ -15,7 +15,6 @@
     $("#btnSave").unbind("click").click(function (e) {
         e.preventDefault();
         var form = $("#frmExameMaterial").serialize();
-        console.log(form);
         $("#btnSave").css("pointer-events", "none");
         $("#btnClose   ").css("pointer-events", "none");
         $.ajax({

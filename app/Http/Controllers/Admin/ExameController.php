@@ -114,6 +114,7 @@ class ExameController extends Controller
         $registro = Exame::find($id);
         $exame_material_list = ExameMaterial::orderBy('nome')->get();
         $exame_metodo_list = ExameMetodo::orderBy('nome')->get();
+        $exame_grupo_list = ExameGrupo::orderBy('nome')->get();
         $exames_linha = DB::table('exames_linha')->where('exame_id', $id)
             ->select(
                 'exames_linha.id',
@@ -131,6 +132,7 @@ class ExameController extends Controller
             'exame_material_list' => $exame_material_list,
             'exame_metodo_list' => $exame_metodo_list,
             'exames_linha' => $exames_linha,
+            'exame_grupo_list' => $exame_grupo_list,
         ]);
     }
 
@@ -149,16 +151,16 @@ class ExameController extends Controller
 
             $dados->update();
 
-            $exames_linha = ExameLinha::where('exame_id', '=', $id)->delete();
-
-            $linhasExame = json_decode($req->input('exameLinha'));
+            ExameLinha::where('exame_id', '=', $id)->delete();
+            $linhasExame = json_decode($req->input('linhasExame'));
             foreach ($linhasExame as $linha) {
+                dd($linha);
                 $dadosLinha = new ExameLinha();
-                $dadosLinha->descricao = $req->input('descricao');
-                $dadosLinha->exame_grupo_id = $req->input('exame_grupo_id');
-                $dadosLinha->valor_min = $req->input('minimo');
-                $dadosLinha->valor_max = $req->input('maximo');
-                $dadosLinha->unidade = $req->input('unidade');
+                $dadosLinha->descricao = $linha->descricao;
+                $dadosLinha->exame_grupo_id = $linha->exame_grupo_id;
+                $dadosLinha->valor_min = $linha->minimo;
+                $dadosLinha->valor_max = $linha->maximo;
+                $dadosLinha->unidade = $linha->unidade;
 
                 $dadosLinha->exame_id = $dados->id;
                 $dadosLinha->save();
