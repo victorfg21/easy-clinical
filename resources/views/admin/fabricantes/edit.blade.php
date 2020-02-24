@@ -31,7 +31,6 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblFabricantes").DataTable().ajax.reload();
                     $("#modal_CRUD").modal("hide");
                 }
                 else {

@@ -24,13 +24,11 @@
 
         $("#tblExameLinha tbody tr").each(function () {
             id = $(this).find("td:nth-child(1)").text();
-            descricao = $(this).find("td:nth-child(2)").text();
-            exame_grupo_id = $(this).find("td:nth-child(3) first value").text();
-            minimo = $(this).find("td:nth-child(4)").text();
-            maximo = $(this).find("td:nth-child(5)").text();
-            unidade = $(this).find("td:nth-child(6)").text();
-
-            console.log($(this));
+            descricao = $(this).find("td:nth-child(2) :input").val();
+            exame_grupo_id = $(this).find("td:nth-child(3) :input").val();
+            minimo = $(this).find("td:nth-child(4) :input").val();
+            maximo = $(this).find("td:nth-child(5) :input").val();
+            unidade = $(this).find("td:nth-child(6) :input").val();
             linhasExame.push({
                 "id": id,
                 "descricao": descricao,
@@ -42,7 +40,7 @@
         });
         linhasExame = JSON.stringify(linhasExame);
 
-        console.log(linhasExame);
+        //console.log(linhasExame);
         form = form + "&linhasExame=" + linhasExame;
 
         $("#btnSaveLarge").css("pointer-events", "none");
@@ -61,7 +59,6 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblExames").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
                 else {

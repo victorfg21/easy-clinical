@@ -59,7 +59,6 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblProfissionais").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
                 else {

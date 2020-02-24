@@ -30,7 +30,6 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblAgendas").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
                 else {

@@ -154,7 +154,6 @@ class ExameController extends Controller
             ExameLinha::where('exame_id', '=', $id)->delete();
             $linhasExame = json_decode($req->input('linhasExame'));
             foreach ($linhasExame as $linha) {
-                dd($linha);
                 $dadosLinha = new ExameLinha();
                 $dadosLinha->descricao = $linha->descricao;
                 $dadosLinha->exame_grupo_id = $linha->exame_grupo_id;

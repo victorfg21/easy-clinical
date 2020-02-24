@@ -40,7 +40,6 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblExames").DataTable().ajax.reload();
                     $("#modal_CRUD").modal("hide");
                 }
                 else {

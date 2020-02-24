@@ -32,7 +32,6 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblAgendasLivre").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
                 else {

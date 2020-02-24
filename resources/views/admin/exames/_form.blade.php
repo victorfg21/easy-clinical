@@ -84,9 +84,9 @@
                                             @foreach ($exames_linha as $linha)
                                                 <tr>
                                                     <td class="col-md-1">{{ $linha->id }}</td>
-                                                    <td class="col-md-3">{{ $linha->descricao }}</td>
+                                                    <td class="col-md-3"><input for="descricao" class="form-control" type="text" name="descricao" value="{{ $linha->descricao }}" /></td>
                                                     <td class="col-md-3">
-                                                        <select  class="form-control js-example-responsive" name="exameGrupo" disabled>
+                                                        <select class="form-control js-example-responsive" name="exameGrupo">
                                                             @foreach ($exame_grupo_list as $exameGrupo)
                                                                 @if($exameGrupo->id == $linha->exame_grupo_id)
                                                                     <option value="{{ $exameGrupo->id }}" selected>{{ $exameGrupo->nome }}</option>
@@ -96,9 +96,9 @@
                                                             @endforeach
                                                         </select>
                                                     </td>
-                                                    <td class="col-md-2">{{ $linha->valor_min }}</td>
-                                                    <td class="col-md-2">{{ $linha->valor_max }}</td>
-                                                    <td class="col-md-2">{{ $linha->unidade }}</td>
+                                                    <td class="col-md-2"><input for="minimo" class="form-control peso" type="text" name="minimo" value="{{ $linha->valor_min }}" /></td>
+                                                    <td class="col-md-2"><input for="maximo" class="form-control peso" type="text" name="maximo" value="{{ $linha->valor_max }}" /></td>
+                                                    <td class="col-md-2"><input for="unidade" class="form-control" type="text" name="unidade" value="{{ $linha->unidade }}" /></td>
                                                     <td class="col-md-1"><a class="btnDelLinhaExame"><i class="fa fa-trash fa-lg"></i></a></td>
                                                 </tr>
                                             @endforeach

@@ -56,7 +56,6 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblExames").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
                 else {

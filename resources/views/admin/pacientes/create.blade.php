@@ -30,7 +30,6 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#tblPacientes").DataTable().ajax.reload();
                     $("#modal_Large").modal("hide");
                 }
                 else {

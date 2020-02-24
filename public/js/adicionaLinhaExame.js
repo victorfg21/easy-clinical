@@ -42,9 +42,9 @@ $(document).ready(function() {
                             comboGrid += '</select>';
                             newCell.innerHTML = comboGrid;
 
-                            $(".js-example-responsive").select2({
+                            /*$(".js-example-responsive").select2({
                                 width: '100% ' // need to override the changed default
-                            });
+                            });*/
                         }
                     });
                     break;
