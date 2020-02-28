@@ -10,14 +10,9 @@
 
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">Agendamento Consultas</h3>
+        <h3 class="box-title">Acompanhamento Médico</h3>
     </div>
     <div class="box-body">
-        <div class="form-group col-md-2">
-            <label for="inicio_periodo" class="control-label">Data</label>
-            <input for="inicio_periodo" class="form-control" type="date" name="data"
-                value="{{ date("Y-m-d") }}" />
-        </div>
         <div class="form-group col-md-4">
             <label for="profissional_id" class="control-label">Profissional</label>
             <select for="profissional_id" class="form-control js-example-responsive" name="profissional_id">
@@ -27,44 +22,29 @@
                 @endforeach
             </select>
         </div>
-        <div class="form-group col-md-3">
-            <label for="especialidade_id" class="control-label">Especialidade</label>
-            <select for="especialidade_id" class="form-control js-example-responsive" name="especialidade_id">
-                <option value="" selected></option>
-                @foreach ($especialidade_list as $especialidade)
-                    <option value="{{ $especialidade->id }}">{{ $especialidade->nome }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group col-md-3">
-            <label for="area_atuacao_id" class="control-label">Área de Atuação</label>
-            <select for="area_atuacao_id" class="form-control js-example-responsive" name="area_atuacao_id">
-                <option value="" selected></option>
-                @foreach ($area_atuacao_list as $area_atuacao)
-                    <option value="{{ $area_atuacao->id }}">{{ $area_atuacao->nome }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group col-md-3">
-            <a href="#" class="btn btn-info"
-                onclick="modalBootstrap('{{ route('admin.agenda-livre-profissionais.create-consulta') }}', 'Adicionar Agenda', '#modal_Large', '', 'true', 'true', 'true', 'Salvar', 'Fechar')">
-                <strong>Liberar Agenda do Profissional</strong></a>
-        </div>
         <div class="table-responsive col-md-12">
-            <table id="tblAgendamentos" class="table table-hover table-striped">
+            <table id="tblConsultas" class="table table-hover table-striped">
                 <thead>
                     <tr>
                         <th class="col-xs-1">Cod.</th>
-                        <th class="col-xs-3">Profissional</th>
                         <th style="display:none;">Paciente ID</th>
-                        <th class="col-xs-3">Paciente</th>
-                        <th class="col-xs-2">Data</th>
+                        <th class="col-xs-7">Paciente</th>
                         <th class="col-xs-2">Horário</th>
-                        <th class="col-xs-3">Status</th>
                         <th class="col-xs-2">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @if(isset($consulta_list))
+                    @foreach ($consulta_list as $consulta)
+                        <tr>
+                            <td class="col-xs-1">{{ $consulta->id }}</td>
+                            <td style="display:none;">{{ $consulta->paciente_id }}</td>
+                            <td class="col-xs-10">{{ $consulta->nome }}</td>
+                            <td class="col-xs-2 hora">{{ $consulta->horario_consulta }}</td>
+                            <td class="col-xs-2"><a class="btnExecutarConsulta" href="{{ route('medico.acompanhamento.realizar', $consulta->id) }}"><i class="fa fa-check fa-lg"></i></a></td>
+                        </tr>
+                    @endforeach
+                @endif
                 </tbody>
             </table>
         </div>
@@ -76,7 +56,7 @@
 @section('js')
 
 <script>
-    var tblAgendamentos = $('#tblAgendamentos').DataTable({
+    /*var tblAgendamentos = $('#tblAgendamentos').DataTable({
         'paging'      : true,
         'lengthChange': true,
         'searching'   : true,

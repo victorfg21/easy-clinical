@@ -8,7 +8,6 @@ use App\Consulta;
 use App\Especialidade;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ConsultaRequest;
-use App\Notifications\ReservaHorarioNotification;
 use App\Paciente;
 use App\Profissional;
 use App\ReservaMarcacaoConsulta;
@@ -16,7 +15,6 @@ use App\User;
 use Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 
 class AgendamentoConsultaController extends Controller
 {

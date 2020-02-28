@@ -171,4 +171,7 @@ Route::get('admin/exames/delete/{id}', ['as' => 'admin.exames.delete', 'uses' =>
 Route::post('admin/exames/confirmardelete/{id}', ['as' => 'admin.exames.confirmardelete', 'uses' => 'Admin\ExameController@confirmardelete']);
 Route::get('admin/exames/listarexamegrupos', ['as' => 'admin.exames.listarexamegrupos', 'uses' => 'Admin\ExameController@listarexamegrupos']);
 
+//Acompanhamento Médico
+Route::get('medico/acompanhamento', ['as' => 'medico.acompanhamento', 'uses' => 'Medico\AcompanhamentoController@index']);
+Route::get('medico/acompanhamento/realizar/{id}', ['as' => 'medico.acompanhamento.realizar', 'uses' => 'Medico\AcompanhamentoController@realizar']);
 

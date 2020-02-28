@@ -29,7 +29,7 @@
                         title: data,
                         showConfirmButton: false,
                         timer: 1500
-                    });
+                    })
                     $("#modal_CRUD").modal("hide");
                 }
                 else {
@@ -52,7 +52,7 @@
                 title: "Erro ao cadastrar consulta",
                 showConfirmButton: false,
                 timer: 1500
-            });
+            })
         });
     });
 
@@ -77,19 +77,19 @@
                 }
                 $("#btnSave").css("pointer-events", "");
                 $("#btnClose").css("pointer-events", "");
-            }).fail(function (response){
-                associate_errors(response['responseJSON']['errors'], $("#frmAgendamento"));
-                $("#btnSave").css("pointer-events", "");
-                $("#btnClose").css("pointer-events", "");
+            }
+        }).fail(function (response){
+            associate_errors(response['responseJSON']['errors'], $("#frmAgendamento"));
+            $("#btnSave").css("pointer-events", "");
+            $("#btnClose").css("pointer-events", "");
 
-                Swal.fire({
-                    position: 'center',
-                    type: 'error',
-                    title: "Erro ao cadastrar consulta",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            });
+            Swal.fire({
+                position: 'center',
+                type: 'error',
+                title: "Erro ao cadastrar consulta",
+                showConfirmButton: false,
+                timer: 1500
+            })
         });
     });
 

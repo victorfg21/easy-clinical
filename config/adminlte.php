@@ -256,7 +256,7 @@ return [
                 ],
                 [
                     'text' => 'Acompanhamento Médico',
-                    'url'  => 'medico/acompanhamento-medico',
+                    'url'  => 'medico/acompanhamento',
                 ],
                 [
                     'text' => 'Emitir Receita',
