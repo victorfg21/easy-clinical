@@ -18,7 +18,12 @@
             <select for="profissional_id" class="form-control js-example-responsive" name="profissional_id">
                 <option value="" selected></option>
                 @foreach ($profissional_list as $profissional)
-                    <option value="{{ $profissional->id }}">{{ $profissional->nome }}</option>
+                    @if ($user == $profissional->user_id)
+                        <option value="{{ $profissional->id }}" selected>{{ $profissional->nome }}</option>
+
+                    @else
+                        <option value="{{ $profissional->id }}">{{ $profissional->nome }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>

@@ -53,6 +53,7 @@ class AcompanhamentoController extends Controller
         return view('medico.acompanhamento.index', [
             'profissional_list' => $profissional_list,
             'consulta_list' => $consulta_list,
+            'user' => $user,
         ]);
     }
 

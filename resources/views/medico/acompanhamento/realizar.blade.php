@@ -31,19 +31,105 @@
             @endif
         </div>
 
-        <div class="col-md-8">
+        <div class="form-group {{ $errors->has('observacao') ? 'has-error' : '' }} col-md-12">
+            <label for="observacao" class="control-label">Observação</label>
+            <textarea for="observacao" class="form-control" name="observacao"><!--{{ isset($consulta->observacao) ? $consulta->observacao : '' }}--></textarea>
+        </div>
+
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="nav active"><a href="#exame" data-toggle="tab">Solicitar Exame</a></li>
+                <li class="nav"><a href="#receita" data-toggle="tab">Emitir Receita</a></li>
+            </ul>
+        </div>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="exame">
+                <div class="box-body">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="form-group {{ $errors->has('observacaoReceita') ? 'has-error' : '' }} col-md-12">
+                                <br>
+                                <label for="observacaoReceita" class="control-label">Observação Exame</label>
+                                <textarea for="observacaoReceita" class="form-control" name="observacaoReceita"></textarea>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped table-bordered" id="tblSolicExame">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-xs-1">ID</th>
+                                            <th class="col-xs-10">Exame</th>
+                                            <th class="col-xs-1">Remover</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="col-xs-1">1</td>
+                                            <td class="col-xs-10"></td>
+                                            <td class="col-xs-1"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <a class="btn btn-info btn-md pull-right" id="btnAddLinhaExame"><i class="fa fa-plus fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="receita">
+                <div class="box-body">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="form-group {{ $errors->has('observacaoReceita') ? 'has-error' : '' }} col-md-12">
+                                <br>
+                                <label for="observacaoReceita" class="control-label">Observação Receita</label>
+                                <textarea for="observacaoReceita" class="form-control" name="observacaoReceita"></textarea>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped table-bordered" id="tblReceita">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-xs-1">ID</th>
+                                            <th class="col-xs-4">Medicação</th>
+                                            <th class="col-xs-6">Dosagem</th>
+                                            <th class="col-xs-1">Remover</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="col-xs-1">1</td>
+                                            <td class="col-xs-4"></td>
+                                            <td class="col-xs-6"></td>
+                                            <td class="col-xs-1"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <a class="btn btn-info btn-md pull-right" id="btnAddLinhaExame"><i class="fa fa-plus fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="col-md-12">
             <h3><i class="fa fa-clock-o fa-lg"></i> <strong id="timer">00:00:00</strong></h3>
-            <!--<button id="start" class="btn btn-success"><i class="fa fa-play fa-lg"></i><strong>Iniciar</strong></button>-->
             <button id="stop" class="btn btn-danger"><i class="fa fa-stop fa-lg"></i> <strong>Parar</strong></button>
         </div>
     </div>
 </div>
-<div class="row">
+<!--<div class="row">
     <div class="col-md-12">
         <a href="{{ route('medico.acompanhamento') }}"><i class="fa fa-arrow-circle-left fa-lg"></i> Retornar
             Acompanhamento</a>
     </div>
-</div>
+</div>-->
 
 @stop
 

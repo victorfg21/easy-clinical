@@ -15,10 +15,8 @@ class CreateSolicitacoesExamesTable extends Migration
     {
         Schema::create('solicitacoes_exames', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('profissional_id');
-            $table->foreign('profissional_id')->references('id')->on('profissionais');
-            $table->unsignedBigInteger('paciente_id');
-            $table->foreign('paciente_id')->references('id')->on('pacientes');
+            $table->unsignedBigInteger('consulta_id');
+            $table->foreign('consulta_id')->references('id')->on('consultas');
             $table->boolean('realizado');
             $table->timestamps();
         });
