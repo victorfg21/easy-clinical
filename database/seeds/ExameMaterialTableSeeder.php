@@ -15,5 +15,13 @@ class ExameMaterialTableSeeder extends Seeder
         $material = new ExameMaterial();
         $material->nome = 'Soro';
         $material->save();
+
+        $material = new ExameMaterial();
+        $material->nome = 'Soro Manual';
+        $material->save();
+
+        $material = new ExameMaterial();
+        $material->nome = 'Plasma em Fluoreto';
+        $material->save();
     }
 }

@@ -26,6 +26,19 @@ class UserTableSeeder extends Seeder
         $manager->password = bcrypt('123@Mudar');
         $manager->tipo_cadastro = Config::get('constants.options.paciente');
         $manager->save();
-        //$manager->roles()->attach($role_manager);
+
+        $manager = new User();
+        $manager->name = 'Profissional';
+        $manager->email = 'profissional@mail.com';
+        $manager->password = bcrypt('123@Mudar');
+        $manager->tipo_cadastro = Config::get('constants.options.profissional');
+        $manager->save();
+
+        $manager = new User();
+        $manager->name = 'Atendente';
+        $manager->email = 'atendente@mail.com';
+        $manager->password = bcrypt('123@Mudar');
+        $manager->tipo_cadastro = Config::get('constants.options.atendente');
+        $manager->save();
     }
 }

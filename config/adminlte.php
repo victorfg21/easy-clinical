@@ -247,20 +247,12 @@ return [
             'role'    => 'medico',
             'submenu' => [
                 [
-                    'text' => 'Histórico Paciente',
-                    'url'  => 'medico/historico-paciente',
-                ],
-                [
-                    'text' => 'Solicitar Exame',
-                    'url'  => 'medico/solicitar-exame',
-                ],
-                [
                     'text' => 'Acompanhamento Médico',
                     'url'  => 'medico/acompanhamento',
                 ],
                 [
-                    'text' => 'Emitir Receita',
-                    'url'  => 'medico/emitir-receita',
+                    'text' => 'Histórico Paciente',
+                    'url'  => 'medico/historico-paciente',
                 ],
             ],
         ],

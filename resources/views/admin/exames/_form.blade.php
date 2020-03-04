@@ -58,7 +58,7 @@
         </div>
         <div class="form-group {{ $errors->has('observacao') ? 'has-error' : '' }}">
             <label for="observacao" class="control-label">Observação</label>
-            <textarea for="observacao" class="form-control" name="observacao"><!--{{ isset($registro->observacao) ? $registro->observacao : '' }}--></textarea>
+            <textarea for="observacao" class="form-control" name="observacao">{{ isset($registro->observacao) ? $registro->observacao : '' }}</textarea>
         </div>
         <!-- Tab panes -->
         <div class="tab-content">
@@ -96,8 +96,8 @@
                                                             @endforeach
                                                         </select>
                                                     </td>
-                                                    <td class="col-md-2"><input for="minimo" class="form-control peso" type="text" name="minimo" value="{{ $linha->valor_min }}" /></td>
-                                                    <td class="col-md-2"><input for="maximo" class="form-control peso" type="text" name="maximo" value="{{ $linha->valor_max }}" /></td>
+                                                    <td class="col-md-2"><input for="minimo" class="form-control" type="text" name="minimo" value="{{ $linha->valor_min }}" /></td>
+                                                    <td class="col-md-2"><input for="maximo" class="form-control" type="text" name="maximo" value="{{ $linha->valor_max }}" /></td>
                                                     <td class="col-md-2"><input for="unidade" class="form-control" type="text" name="unidade" value="{{ $linha->unidade }}" /></td>
                                                     <td class="col-md-1"><a class="btnDelLinhaExame"><i class="fa fa-trash fa-lg"></i></a></td>
                                                 </tr>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSolicitacoesExamesTable extends Migration
+class CreateReceitasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateSolicitacoesExamesTable extends Migration
      */
     public function up()
     {
-        Schema::create('solicitacoes_exames', function (Blueprint $table) {
+        Schema::create('receitas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('consulta_id');
             $table->foreign('consulta_id')->references('id')->on('consultas');
-            $table->boolean('observacao');
+            $table->string('observacao');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateSolicitacoesExamesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('solicitacoes_exames');
+        Schema::dropIfExists('receitas');
     }
 }

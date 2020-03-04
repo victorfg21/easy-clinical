@@ -19,10 +19,6 @@ class CreateConsultasTable extends Migration
             $table->foreign('profissional_id')->references('id')->on('profissionais');
             $table->unsignedBigInteger('paciente_id');
             $table->foreign('paciente_id')->references('id')->on('pacientes');
-            $table->unsignedBigInteger('solicitacao_exame_id')->nullable();
-            $table->foreign('solicitacao_exame_id')->references('id')->on('solicitacoes_exames');
-            //$table->unsignedBigInteger('receita_id')->nullable();
-            //$table->foreign('receita_id')->references('id')->on('receitas');
             $table->date('data_consulta');
             $table->time('horario_consulta');
             $table->text('anotacao')->nullable();

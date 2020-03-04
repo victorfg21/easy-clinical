@@ -25,5 +25,6 @@ return [
         'proissional' => '1',
         'paciente' => '2',
         'administrativo' => '3',
+        'atendente' => '4',
     ]
 ];

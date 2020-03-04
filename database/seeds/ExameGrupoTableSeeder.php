@@ -13,6 +13,10 @@ class ExameGrupoTableSeeder extends Seeder
     public function run()
     {
         $grupo = new ExameGrupo();
+        $grupo->nome = 'Todos';
+        $grupo->save();
+        
+        $grupo = new ExameGrupo();
         $grupo->nome = 'Adulto';
         $grupo->save();
 

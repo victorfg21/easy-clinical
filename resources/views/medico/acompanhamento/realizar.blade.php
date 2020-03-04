@@ -33,7 +33,7 @@
 
         <div class="form-group {{ $errors->has('observacao') ? 'has-error' : '' }} col-md-12">
             <label for="observacao" class="control-label">Observação</label>
-            <textarea for="observacao" class="form-control" name="observacao"><!--{{ isset($consulta->observacao) ? $consulta->observacao : '' }}--></textarea>
+            <textarea for="observacao" class="form-control" name="observacao">{{ isset($consulta->observacao) ? $consulta->observacao : '' }}</textarea>
         </div>
 
         <div class="col-md-12">
@@ -65,16 +65,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="col-xs-1">1</td>
-                                            <td class="col-xs-10"></td>
-                                            <td class="col-xs-1"></td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <a class="btn btn-info btn-md pull-right" id="btnAddLinhaExame"><i class="fa fa-plus fa-lg"></i></a>
+                        <a class="btn btn-info btn-md pull-right" id="btnAddLinhaExameConsulta"><i class="fa fa-plus fa-lg"></i></a>
                     </div>
                 </div>
             </div>
@@ -100,12 +95,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="col-xs-1">1</td>
-                                            <td class="col-xs-4"></td>
-                                            <td class="col-xs-6"></td>
-                                            <td class="col-xs-1"></td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -124,12 +113,15 @@
         </div>
     </div>
 </div>
-<!--<div class="row">
+<div class="row">
     <div class="col-md-12">
         <a href="{{ route('medico.acompanhamento') }}"><i class="fa fa-arrow-circle-left fa-lg"></i> Retornar
             Acompanhamento</a>
     </div>
-</div>-->
+</div>
+
+<script src="{{ asset('js/adicionaLinhaExameConsulta.js') }}"></script>
+<script src="{{ asset('js/adicionaLinhaReceitaConsulta.js') }}"></script>
 
 @stop
 

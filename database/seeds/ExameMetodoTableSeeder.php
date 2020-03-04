@@ -27,5 +27,25 @@ class ExameMetodoTableSeeder extends Seeder
         $metodo = new ExameMetodo();
         $metodo->nome = 'Eletrodo-Seletivo';
         $metodo->save();
+
+        $metodo = new ExameMetodo();
+        $metodo->nome = 'Floculação';
+        $metodo->save();
+
+        $metodo = new ExameMetodo();
+        $metodo->nome = 'Eclia';
+        $metodo->save();
+
+        $metodo = new ExameMetodo();
+        $metodo->nome = 'Cinético';
+        $metodo->save();
+
+        $metodo = new ExameMetodo();
+        $metodo->nome = 'Glicose Hexoquinase';
+        $metodo->save();
+
+        $metodo = new ExameMetodo();
+        $metodo->nome = 'Esterase-Oxidase';
+        $metodo->save();
     }
 }

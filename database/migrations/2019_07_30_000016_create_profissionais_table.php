@@ -32,9 +32,9 @@ class CreateProfissionaisTable extends Migration
             $table->string('cidade', 150);
             $table->string('estado', 2);
             $table->string('cep', 8)->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('foto_id')->nullable();
+            $table->unsignedBigInteger('foto_id')->nullable()->nullable();
             $table->foreign('foto_id')->references('id')->on('fotos');
             $table->timestamps();
         });
