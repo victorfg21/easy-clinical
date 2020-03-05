@@ -7,6 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ConsultaRequest;
 use App\Paciente;
 use App\Profissional;
+use App\Exame;
+use App\SolicitacaoExame;
+use App\SolicitacaoExameLinha;
+use App\Receita;
+use App\ReceitaLinha;
+use App\Medicamento;
 use App\User;
 use Config;
 use Illuminate\Http\Request;
@@ -74,5 +80,68 @@ class AcompanhamentoController extends Controller
         return view('medico.acompanhamento.realizar', [
             'consulta' => $consulta,
         ]);
+    }
+
+    public function listarexames(Request $request)
+    {
+        //if (Auth::user()->authorizeRoles() == false)
+        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        $exames = Exame::orderBy('nome')->get()->toJson();
+        return $exames;
+    }
+
+    public function listarmedicamentos(Request $request)
+    {
+        //if (Auth::user()->authorizeRoles() == false)
+        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        $medicamentos = Medicamento::orderBy('nome_fabrica')->get()->toJson();
+        return $medicamentos;
+    }
+
+    public function store(Request $req)
+    {
+        try {
+            DB::beginTransaction();
+            dd($req);
+            $registro = Consulta::find($req->input('id'));
+            $registro->anotacao = $req->input('observacao');
+            $registro->realizado = true;
+            $registro->update();
+
+            $solicitacaoExame = new SolicitacaoExame();
+            $solicitacaoExame->observacao = $req->input('observacaoSolic');
+            $solicitacaoExame->consulta_id = $req->input('id');
+            $idSolicitacao = $solicitacaoExame->save();
+
+            $linhasSolicitacao = json_decode($req->input('exameLinha'));
+            foreach ($linhasSolicitacao as $linha) {
+                $dadosLinha = new SolicitacaoExameLinha();
+                $dadosLinha->exame_id = $linha->input('exame_id');
+                $dadosLinha->solicitacao_exame_id = $idSolicitacao;
+                $dadosLinha->save();
+            }
+
+            $receita = new Receita();
+            $receita->observacao = $req->input('observacaoReceita');
+            $receita->consulta_id = $req->input('id');
+            $idReceita = $receita->save();
+
+            $linhasReceita = json_decode($req->input('receitaLinha'));
+            foreach ($linhasReceita as $linha) {
+                $dadosLinha = new ReceitaLinha();
+                $dadosLinha->medicamento_id = $linha->input('medicamento_id');
+                $dadosLinha->dosagem = $linha->input('dosagem');
+                $dadosLinha->receita_id = $idReceita;
+                $dadosLinha->save();
+            }
+
+            DB::commit();
+
+            $this->index();
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return 'Ocorreu um erro ao cadastrar.';
+        }
     }
 }

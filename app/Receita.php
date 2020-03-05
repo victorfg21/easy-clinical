@@ -4,18 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SolicitacaoExame extends Model
+class Receita extends Model
 {
-    protected $table = 'solicitacoes_exames';
+    protected $table = 'receitas';
 
     protected $fillable = [
         'observacao'
     ];
 
-    public function SolicitacaoExameLinha(){
-        return $this->belongsToMany(SolicitacaoExameLinha::class);
+    public function ReceitaLinha(){
+        return $this->belongsToMany(ReceitaLinha::class);
     }
-    
+
     public function Consulta(){
         return $this->hasOne(Consulta::class, 'id', 'consulta_id');
     }

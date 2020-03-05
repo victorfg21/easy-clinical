@@ -26,7 +26,7 @@ $(document).ready(function() {
 
                     $.ajax({
                         type: "GET",
-                        url: "/admin/exames/listarexames",
+                        url: "/medico/acompanhamento/listarexames",
                         dataType: "json",
                         async: false,
                         success: function(data) {
@@ -37,6 +37,10 @@ $(document).ready(function() {
 
                             comboGrid += '</select>';
                             newCell.innerHTML = comboGrid;
+
+                            $(".js-example-responsive").select2({
+                                width: '100% ' // need to override the changed default
+                            });
                         }
                     });
                     break;

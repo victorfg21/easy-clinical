@@ -174,4 +174,6 @@ Route::get('admin/exames/listarexamegrupos', ['as' => 'admin.exames.listarexameg
 //Acompanhamento Médico
 Route::get('medico/acompanhamento', ['as' => 'medico.acompanhamento', 'uses' => 'Medico\AcompanhamentoController@index']);
 Route::get('medico/acompanhamento/realizar/{id}', ['as' => 'medico.acompanhamento.realizar', 'uses' => 'Medico\AcompanhamentoController@realizar']);
-
+Route::get('medico/acompanhamento/listarexames', ['as' => 'medico.acompanhamento.listarexames', 'uses' => 'Medico\AcompanhamentoController@listarexames']);
+Route::get('medico/acompanhamento/listarmedicamentos', ['as' => 'medico.acompanhamento.listarmedicamentos', 'uses' => 'Medico\AcompanhamentoController@listarmedicamentos']);
+Route::post('medico/acompanhamento/store', ['as' => 'medico.acompanhamento.store', 'uses' => 'Medico\AcompanhamentoController@store']);

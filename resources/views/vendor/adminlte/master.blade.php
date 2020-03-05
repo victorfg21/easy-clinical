@@ -46,13 +46,15 @@
 </head>
 <body class="hold-transition @yield('body_class')">
 
-@yield('body')
-
 <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.slimscroll.min.js') }}"></script>
+
+@yield('body')
+
 <script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <!-- SweetAlert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.all.min.js" integrity="sha256-e4Wd1TBf+OAA5INF7vCXGpnGqiXYg7WVvkXviW2XQKY=" crossorigin="anonymous"></script>
+
 <script src="{{ asset('js/jquery.mask.min.js') }}"></script>
 
 @if(config('adminlte.plugins.select2'))
@@ -71,6 +73,7 @@
 @endif
 
 <!--JavaScript do Sistema-->
+<link rel="stylesheet" href="{{ asset('css/sweet-font.css') }}">
 <script src="{{ asset('js/cep.js') }}"></script>
 <script src="{{ asset('js/moment.js') }}"></script>
 <script src="{{ asset('js/mascaraform.js') }}"></script>

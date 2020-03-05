@@ -1,7 +1,7 @@
 $(document).ready(function() {
-    $('#btnAddLinhaExameConsulta').on('click', function(e) {
+    $('#btnAddLinhaReceitaConsulta').on('click', function(e) {
         // Captura a referência da tabela com id “minhaTabela”
-        var table = $('#tblSolicExame')[0];
+        var table = $('#tblReceita')[0];
         // Captura a quantidade de linhas já existentes na tabela
         var numOfRows = table.tBodies[0].rows.length;
         var numOfRowsHead = table.tHead.rows.length;
@@ -26,17 +26,21 @@ $(document).ready(function() {
 
                     $.ajax({
                         type: "GET",
-                        url: "/admin/medicamentos/listarmedicamentos",
+                        url: "/medico/acompanhamento/listarmedicamentos",
                         dataType: "json",
                         async: false,
                         success: function(data) {
                             comboGrid += '<select for="medicamento_id" class="form-control js-example-responsive" name="medicamento_id" >';
                             $.each(data, function(k, v) {
-                                comboGrid += '<option value="' + v.id + '">' + v.nome + '</option>';
+                                comboGrid += '<option value="' + v.id + '">' + v.nome_fabrica + '</option>';
                             });
 
                             comboGrid += '</select>';
                             newCell.innerHTML = comboGrid;
+
+                            $(".js-example-responsive").select2({
+                                width: '100% ' // need to override the changed default
+                            });
                         }
                     });
                     break;
@@ -57,7 +61,7 @@ $(document).ready(function() {
 
     $(document).on('click', '.btnDelLinhaReceitaConsulta', function(e) {
         // Captura a referência da tabela com id “minhaTabela”
-        var table = $('#tblSolicExame')[0];
+        var table = $('#tblReceita')[0];
         //Id da linha que será removida
         var idLinha = e.currentTarget.parentElement.parentElement.sectionRowIndex;
         // Número de linhas
