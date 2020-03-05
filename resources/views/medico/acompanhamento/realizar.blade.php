@@ -175,7 +175,6 @@
                 cancelButtonText: 'Continuar'
             }).then((result) => {
                 if (result.value) {
-                    console.log('funcionou');
                     $('#stop').prop('disabled', true);
 
                     var form = $("#frmAcompanhamento").serialize();
@@ -284,7 +283,10 @@
         timer: 1500
     })
 
-    $('#stop').click(function () { Clock.pause(); });
+    $('#stop').unbind("click").click(function (event) { 
+        event.preventDefault();
+        Clock.pause(); 
+    });
     //$('#start').click(function () { Clock.resume(); });
 
 </script>
