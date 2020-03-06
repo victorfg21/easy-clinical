@@ -75,8 +75,7 @@ class AcompanhamentoController extends Controller
                         ->select('consultas.*', 'pacientes.nome AS paciente', 'profissionais.nome AS profissional')
                         ->where('consultas.id', '=', $id)
                         ->first();
-        //dd($consulta);
-
+        
         return view('medico.acompanhamento.realizar', [
             'consulta' => $consulta,
         ]);

@@ -72,7 +72,6 @@ class ExameController extends Controller
             $dados->exame_metodo_id = $req->input('exame_metodo_id');
             $dados->exame_material_id = $req->input('exame_material_id');
             $dados->observacao = $req->input('observacao');
-            //dd($dados);
             $dados->save();
 
             $linhasExame = json_decode($req->input('exameLinha'));

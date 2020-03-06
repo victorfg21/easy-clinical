@@ -198,11 +198,10 @@ class AgendamentoConsultaController extends Controller
             ];*/
 
             /*$users = User::where('tipo_cadastro', '=', Config::get('constants.options.administrativo'))->get();
-            //dd($users);
+            
             Notification::send($users, new ReservaHorarioNotification($reservaConsulta));
             //$reserva->notify(new ReservaHorarioNotification($reserva));
-
-            dd($users->notifications);*/
+*/
 
             return view('atendimento.agendamento-consulta.create', [
                 'profissional_list' => $profissional_list,

@@ -39,8 +39,7 @@
             });
         });
         linhasExame = JSON.stringify(linhasExame);
-
-        //console.log(linhasExame);
+        
         form = form + "&linhasExame=" + linhasExame;
 
         $("#btnSaveLarge").css("pointer-events", "none");
