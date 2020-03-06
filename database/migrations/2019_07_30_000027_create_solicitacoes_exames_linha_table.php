@@ -19,7 +19,7 @@ class CreateSolicitacoesExamesLinhaTable extends Migration
             $table->foreign('solicitacao_exame_id')->references('id')->on('solicitacoes_exames');
             $table->unsignedInteger('exame_id');
             $table->foreign('exame_id')->references('id')->on('exames');
-            $table->boolean('realizado');
+            $table->boolean('realizado')->nullable();;
             $table->timestamps();
         });
     }

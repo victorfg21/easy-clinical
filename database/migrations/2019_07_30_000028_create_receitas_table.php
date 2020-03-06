@@ -17,7 +17,7 @@ class CreateReceitasTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('consulta_id');
             $table->foreign('consulta_id')->references('id')->on('consultas');
-            $table->string('observacao');
+            $table->text('observacao');
             $table->timestamps();
         });
     }

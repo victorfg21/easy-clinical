@@ -13,7 +13,7 @@ class ProfissionalTableSeeder extends Seeder
     public function run()
     {
         $profissionais = factory(App\Profissional::class, 3)->create();
-        
+
         $profissional = Profissional::find(3);
         $profissional->user_id = 3;
         $profissional->update();

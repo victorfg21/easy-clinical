@@ -15,7 +15,7 @@ class ExameGrupoTableSeeder extends Seeder
         $grupo = new ExameGrupo();
         $grupo->nome = 'Todos';
         $grupo->save();
-        
+
         $grupo = new ExameGrupo();
         $grupo->nome = 'Adulto';
         $grupo->save();

@@ -102,7 +102,6 @@ class AcompanhamentoController extends Controller
     {
         try {
             DB::beginTransaction();
-            dd($req);
             $registro = Consulta::find($req->input('id'));
             $registro->anotacao = $req->input('observacao');
             $registro->realizado = true;
@@ -116,7 +115,7 @@ class AcompanhamentoController extends Controller
             $linhasSolicitacao = json_decode($req->input('exameLinha'));
             foreach ($linhasSolicitacao as $linha) {
                 $dadosLinha = new SolicitacaoExameLinha();
-                $dadosLinha->exame_id = $linha->input('exame_id');
+                $dadosLinha->exame_id = $linha->exame_id;
                 $dadosLinha->solicitacao_exame_id = $idSolicitacao;
                 $dadosLinha->save();
             }
@@ -129,15 +128,15 @@ class AcompanhamentoController extends Controller
             $linhasReceita = json_decode($req->input('receitaLinha'));
             foreach ($linhasReceita as $linha) {
                 $dadosLinha = new ReceitaLinha();
-                $dadosLinha->medicamento_id = $linha->input('medicamento_id');
-                $dadosLinha->dosagem = $linha->input('dosagem');
+                $dadosLinha->medicamento_id = $linha->medicamento_id;
+                $dadosLinha->dosagem = $linha->dosagem;
                 $dadosLinha->receita_id = $idReceita;
                 $dadosLinha->save();
             }
 
             DB::commit();
 
-            $this->index();
+            return 'Cadastrado com sucesso!';
         } catch (Exception $e) {
             DB::rollback();
 

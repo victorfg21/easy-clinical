@@ -183,13 +183,12 @@
                     var exame_id = "";
 
                     var receitaLinha = [];
-                    var idLinhaMedicamento = "";
                     var medicamento_id = "";
                     var dosagem = "";
 
                     $("#tblSolicExame tbody tr").each(function () {
-                        idLinhaExame = $(this).find("td:nth-child(1)").text();
-                        id = $(this).find("td:nth-child(2)>input").val();
+                        id = $(this).find("td:nth-child(1)").text();
+                        exame_id = $(this).find("td:nth-child(2)>select").val();
 
                         exameLinha.push({
                             "id": id,
@@ -200,10 +199,10 @@
 
                     $("#tblReceita tbody tr").each(function () {
                         id = $(this).find("td:nth-child(1)").text();
-                        medicamento_id = $(this).find("td:nth-child(2)>input").val();
+                        medicamento_id = $(this).find("td:nth-child(2)>select").val();
                         dosagem = $(this).find("td:nth-child(3)>input").val();
 
-                        medicamentoLinha.push({
+                        receitaLinha.push({
                             "id": id,
                             "medicamento_id": medicamento_id,
                             "dosagem": dosagem
@@ -212,7 +211,6 @@
                     receitaLinha = JSON.stringify(receitaLinha);
 
                     form = form + "&exameLinha=" + exameLinha + "&receitaLinha=" + receitaLinha;
-
                     $.ajax({
                         type: "POST",
                         url: "{{ route('medico.acompanhamento.store') }}",
@@ -224,7 +222,10 @@
                                     type: 'success',
                                     title: 'Consulta finalizada com sucesso',
                                     showConfirmButton: false,
-                                    timer: 1500
+                                    timer: 1500,
+                                    timerProgressBar: true
+                                }).then((result) => {
+                                    window.location.href = "{{ route('medico.acompanhamento')}}";
                                 })
                             }
                             else {
@@ -283,9 +284,9 @@
         timer: 1500
     })
 
-    $('#stop').unbind("click").click(function (event) { 
+    $('#stop').unbind("click").click(function (event) {
         event.preventDefault();
-        Clock.pause(); 
+        Clock.pause();
     });
     //$('#start').click(function () { Clock.resume(); });
 

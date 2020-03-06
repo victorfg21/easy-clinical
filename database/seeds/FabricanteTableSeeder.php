@@ -12,28 +12,28 @@ class FabricanteTableSeeder extends Seeder
      */
     public function run()
     {
-        $especialidade = new Fabricante();
-        $especialidade->nome = 'Takeda Pharma Ltda.';
-        $especialidade->save();
+        $fabricante = new Fabricante();
+        $fabricante->nome = 'Takeda Pharma Ltda.';
+        $fabricante->save();
 
-        $especialidade = new Fabricante();
-        $especialidade->nome = 'Zydus Nikkho';
-        $especialidade->save();
+        $fabricante = new Fabricante();
+        $fabricante->nome = 'Zydus Nikkho';
+        $fabricante->save();
 
-        $especialidade = new Fabricante();
-        $especialidade->nome = 'Sanofi';
-        $especialidade->save();
+        $fabricante = new Fabricante();
+        $fabricante->nome = 'Sanofi';
+        $fabricante->save();
 
-        $especialidade = new Fabricante();
-        $especialidade->nome = 'Teuto';
-        $especialidade->save();
+        $fabricante = new Fabricante();
+        $fabricante->nome = 'Teuto';
+        $fabricante->save();
 
-        $especialidade = new Fabricante();
-        $especialidade->nome = 'HL I.C.D.I.E.E. LTDA EPP';
-        $especialidade->save();
+        $fabricante = new Fabricante();
+        $fabricante->nome = 'HL I.C.D.I.E.E. LTDA EPP';
+        $fabricante->save();
 
-        $especialidade = new Fabricante();
-        $especialidade->nome = 'Nova Química';
-        $especialidade->save();
+        $fabricante = new Fabricante();
+        $fabricante->nome = 'Nova Química';
+        $fabricante->save();
     }
 }

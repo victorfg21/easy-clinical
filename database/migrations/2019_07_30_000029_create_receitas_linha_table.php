@@ -19,7 +19,7 @@ class CreateReceitasLinhaTable extends Migration
             $table->foreign('receita_id')->references('id')->on('receitas');
             $table->unsignedInteger('medicamento_id');
             $table->foreign('medicamento_id')->references('id')->on('medicamentos');
-            $table->string('dosagem');
+            $table->text('dosagem')->nullable();;
             $table->timestamps();
         });
     }

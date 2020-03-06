@@ -14,8 +14,8 @@ class PacienteTableSeeder extends Seeder
     {
         $pacientes = factory(App\Paciente::class, 20)->create();
 
-        $profissional = Paciente::find(1);
-        $profissional->user_id = 2;
-        $profissional->update();
+        $paciente = Paciente::find(1);
+        $paciente->user_id = 2;
+        $paciente->update();
     }
 }

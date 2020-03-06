@@ -11,8 +11,7 @@ class Agenda extends Model
 
     protected $fillable = [
         'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'domingo',
-        'inicio_periodo', 'fim_periodo', 'tempo_consulta', 'inicio_horario_1', 'fim_horario_1',
-        'inicio_horario_2', 'fim_horario_2', 'ativo'
+        'tempo_consulta', 'inicio_horario_1', 'fim_horario_1', 'inicio_horario_2', 'fim_horario_2', 'ativo'
     ];
 
     public function Profissional(){
