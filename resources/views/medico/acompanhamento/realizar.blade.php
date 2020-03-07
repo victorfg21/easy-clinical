@@ -13,9 +13,10 @@
     <div class="box">
         <div class="box-header with-border">
             <h3 class="box-title">Acompanhamento Médico</h3>
+            <a href="#" class="btn btn-info pull-right" onclick="modalBootstrap('{{ route('medico.acompanhamento.historico', $consulta->paciente_id) }}', 'Histórico', '#modal_Large', '', 'false', 'true', 'false', 'Salvar', 'Fechar')"><i class="fa fa-search fa-lg"></i> <strong>HISTÓRICO</strong></a>
         </div>
         <div class="box-body">
-            <div class="form-group {{ $errors->has('id') ? 'has-error' : '' }} col-md-3">
+            <div class="form-group {{ $errors->has('id') ? 'has-error' : '' }} col-md-4">
                 <label for="id" class="control-label">ID</label>
                 <input for="id" class="form-control" type="text" name="id"
                     value="{{ isset($consulta->id) ? $consulta->id : old('id') }}" readonly />
@@ -130,8 +131,7 @@
 </form>
 <div class="row">
     <div class="col-md-12">
-        <a href="{{ route('medico.acompanhamento') }}"><i class="fa fa-arrow-circle-left fa-lg"></i> Retornar
-            Acompanhamento</a>
+        <a href="{{ route('medico.acompanhamento') }}"><i class="fa fa-arrow-circle-left fa-lg"></i> Retornar Acompanhamento</a>
     </div>
 </div>
 

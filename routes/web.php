@@ -177,3 +177,5 @@ Route::get('medico/acompanhamento/realizar/{id}', ['as' => 'medico.acompanhament
 Route::get('medico/acompanhamento/listarexames', ['as' => 'medico.acompanhamento.listarexames', 'uses' => 'Medico\AcompanhamentoController@listarexames']);
 Route::get('medico/acompanhamento/listarmedicamentos', ['as' => 'medico.acompanhamento.listarmedicamentos', 'uses' => 'Medico\AcompanhamentoController@listarmedicamentos']);
 Route::post('medico/acompanhamento/store', ['as' => 'medico.acompanhamento.store', 'uses' => 'Medico\AcompanhamentoController@store']);
+Route::get('medico/acompanhamento/historico/{id}', ['as' => 'medico.acompanhamento.historico', 'uses' => 'Medico\AcompanhamentoController@historico']);
+Route::get('medico/acompanhamento/printreceita/{id}', ['as' => 'medico.acompanhamento.printreceita', 'uses' => 'Medico\AcompanhamentoController@printreceita']);
