@@ -180,7 +180,6 @@ class AcompanhamentoController extends Controller
             ->first()
         ;
 
-        dd($consulta);
         return view('medico.acompanhamento.realizar', [
             'consulta' => $consulta,
         ]);
@@ -250,12 +249,14 @@ class AcompanhamentoController extends Controller
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        dd($id);
         $user = Auth::id();
         $solicitacoes_exames = DB::table('consultas')
             ->join('solicitacoes_exames', 'consultas.id', 'solicitacoes_exames.consulta_id')
+            ->join('solicitacoes_exames_linha', 'solicitacoes_exames_linha.solicitacao_exame_id', 'solicitacoes_exames.id')
             ->select('solicitacoes_exames.*')
             ->where('consultas.paciente_id', '=', $id)
+            ->where('solicitacoes_exames_linha.realizado', '=', 1)
+            ->distinct()
             ->get()
         ;
 
@@ -272,125 +273,93 @@ class AcompanhamentoController extends Controller
         ]);
     }
 
-    public function printexame(Request $request)
+    public function printexame($id)
     {
-        /*$request->validate([
-          'servico_ret' => 'required',
-          'inicioServico' => 'required|date_format:Y-m-d|before:fimServico',
-          'fimServico' => 'required|date_format:Y-m-d|after:inicioServico',
-        ], $mensagensErro = [
-            'required' => 'Campo obrigatório',
-            'max' => 'Quantidade caracteres excedido',
-            'date' => 'Data inválida',
-            'before' => 'Data inicial deve ser anterior a data final',
-            'after' => 'Data final deve ser posterior a data inicial',
-            'unique' => 'O :attribute já está cadastrado! Não é permitido registro duplicado',
-        ]);
+        $solicitacoes_exames = DB::table('solicitacoes_exames')
+                        ->leftJoin('solicitacoes_exames_linha', 'solicitacoes_exames.id', 'solicitacoes_exames_linha.solicitacao_exame_id')
+                        ->leftJoin('exames_realizados', function ($join) {
+                            $join->on('exames_realizados.solicitacao_exame_id', '=', 'solicitacoes_exames_linha.solicitacao_exame_id')
+                                 ->orOn('exames_realizados.solicitacao_exame_linha_id', '=', 'solicitacoes_exames_linha.id');
+                        })
+                        ->leftJoin('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
+                        ->leftJoin('profissionais', 'consultas.profissional_id', 'profissionais.id')
+                        ->leftJoin('pacientes', 'consultas.paciente_id', 'pacientes.id')
+                        ->select('solicitacoes_exames.observacao', 'solicitacoes_exames.created_at', 'profissionais.nome', 'profissionais.numero_registro', 'pacientes.nome AS nome_paciente')
+                        ->where('solicitacoes_exames.id', '=', $id)
+                        ->first();
 
-        $dados = $request->all();
-        $id_servico = $dados['servico_ret'];
-        $ini = date("d/m/Y", strtotime($dados['inicioServico']));
-        $fim = date("d/m/Y", strtotime($dados['fimServico']));
+        $solicitacoes_exames_linha = DB::table('solicitacoes_exames_linha')
+                                        ->leftJoin('exames_realizados', function ($join) {
+                                            $join->on('exames_realizados.solicitacao_exame_id', '=', 'solicitacoes_exames_linha.solicitacao_exame_id')
+                                                ->orOn('exames_realizados.solicitacao_exame_linha_id', '=', 'solicitacoes_exames_linha.id');
+                                        })
+                                        ->leftJoin('exames', 'solicitacoes_exames_linha.exame_id', 'exames.id')
+                                        ->leftJoin('exame_materiais', 'exames.exame_material_id', 'exame_materiais.id')
+                                        ->leftJoin('exame_metodos', 'exames.exame_metodo_id', 'exame_metodos.id')
+                                        ->select('exames.id AS exame_id',
+                                                 'exames.nome AS nome_exame',
+                                                 'exame_materiais.nome AS nome_material',
+                                                 'exame_metodos.nome AS nome_metodo',
+                                                 'exames_realizados.val_resultado')
+                                        ->where('solicitacoes_exames_linha.solicitacao_exame_id', '=', $id)
+                                        ->distinct()
+                                        ->get();
 
-        $servico = '';
+        $observacao = '<strong>Observação:</strong> ' . $solicitacoes_exames->observacao . '<br><br>';
+        $profissional = '<strong>Médico:</strong> ' . $solicitacoes_exames->nome . ' <strong>- CRM:</strong> ' . $solicitacoes_exames->numero_registro . '<br><br>';
+        $paciente = '<strong>Paciente:</strong> ' . $solicitacoes_exames->nome_paciente . '<br><br>';
+
         $conteudo = '';
         $html_linha_header_todos = '
         <tr>
-          <td width="20%"><strong>CNPJ</strong></td>
-          <td width="20%"><strong>Descrição</strong></td>
-        </tr>
-        #####LINHAS#####';
-        $html_linha_header_declaracao = '
-        <tr>
-          <td width="20%"><strong>CNPJ</strong></td>
-          <td width="20%"><strong>Ano</strong></td>
-          <td width="20%"><strong>Valor</strong></td>
+            <td width="40%"></td>
+            <td width="20%"></td>
         </tr>
         #####LINHAS#####';
         $html_linha_tabela_todos = '
         <tr>
-          <td>#####CNPJ#####</td>
-          <td>#####DESCRICAO#####</td>
-        </tr>';
-        $html_linha_tabela_declaracao = '
-        <tr>
-          <td>#####CNPJ#####</td>
-          <td>#####ANO#####</td>
-          <td>#####VALOR#####</td>
+            <td>#####EXAME#####</td>
+            <td>#####REFERENCIA#####</td>
         </tr>';
         $tabela = '';
-        $rodape_label = '';
-        $tot = 0;
-        if ($id_servico == '4') {
-            $registros = DB::table('atendimentos')
-                          ->leftJoin('empresas', 'atendimentos.empresa_id', '=', 'empresas.id')
-                          ->leftJoin('atendimento_servicos', 'atendimentos.id', '=', 'atendimento_servicos.atendimento_id')
-                          ->leftJoin('servicos', 'atendimento_servicos.servico_id', '=', 'servicos.id')
-                          ->where('atendimento_servicos.servico_id', '=', $id_servico)
-                          ->whereRaw('CAST(atendimentos.data AS DATE) BETWEEN ? AND ?', [$ini, $fim])
-                          ->select(DB::raw('cnpj, ano_declaracao, to_char(valor_total, \'L9G999G990D99\') as valor_total, descricao'))
-                          ->get();
 
-            if (!empty($registros->first())) {
-                $servico = $registros->first()->descricao;
-                foreach ($registros as $key => $value) {
-                    $temp = $html_linha_tabela_declaracao;
-                    $temp = str_replace('#####CNPJ#####', $value->cnpj, $temp);
-                    $temp = str_replace('#####ANO#####', $value->ano_declaracao, $temp);
-                    $temp = str_replace('#####VALOR#####', 'R$ ' . $value->valor_total, $temp);
-                    $conteudo .= $temp;
-                }
+        foreach ($solicitacoes_exames_linha as $value) {
+            $exames_linha = DB::table('exames_linha')
+                                ->leftJoin('exame_grupos', 'exames_linha.exame_grupo_id', 'exame_grupos.id')
+                                ->select('exame_grupos.nome AS grupo_nome',
+                                         'exames_linha.valor_min',
+                                         'exames_linha.valor_max',
+                                         'exames_linha.unidade',
+                                         'exames_linha.descricao')
+                                ->where('exames_linha.exame_id', '=', $value->exame_id)
+                                ->distinct()
+                                ->get();
 
-                $registros = DB::table('atendimentos')
-                          ->leftJoin('atendimento_servicos', 'atendimentos.id', '=', 'atendimento_servicos.atendimento_id')
-                          ->where('atendimento_servicos.servico_id', '=', $id_servico)
-                          ->select(DB::raw('to_char(sum(valor_total), \'L9G999G990D99\') as valor_total'))
-                          ->get();
-                $tot = $registros->first()->valor_total;
-
-                $tabela = str_replace('#####LINHAS#####', $conteudo, $html_linha_header_declaracao);
-                $rodape_label = 'VALOR TOTAL';
-            }
-            else{
-              return response()->view('errors.relatorio_erro');
-            }
-        } else {
-            $registros = DB::table('atendimentos')
-                          ->leftJoin('empresas', 'atendimentos.empresa_id', '=', 'empresas.id')
-                          ->leftJoin('atendimento_servicos', 'atendimentos.id', '=', 'atendimento_servicos.atendimento_id')
-                          ->leftJoin('servicos', 'atendimento_servicos.servico_id', '=', 'servicos.id')
-                          ->where('atendimento_servicos.servico_id', '=', $id_servico)
-                          ->whereRaw('CAST(atendimentos.data AS DATE) BETWEEN ? AND ?', [$ini, $fim])
-                          ->get();
-
-            if (!empty($registros->first())) {
-                $servico = $registros->first()->descricao;
-                foreach ($registros as $key => $value) {
-                    $temp = $html_linha_tabela_todos;
-                    $temp = str_replace('#####CNPJ#####', $value->cnpj, $temp);
-                    $temp = str_replace('#####DESCRICAO#####', $value->observacao, $temp);
-                    $conteudo .= $temp;
-                    $tot++;
-                }
-            }
-            else{
-              return response()->view('errors.relatorio_erro');
+            $linhaExame = '<strong>Valor de Referência</strong><br>';
+            foreach ($exames_linha as $value_linha) {
+                $linhaExame .=  $value_linha->grupo_nome . ': ' . $value_linha->descricao . ' ' .
+                                ($value_linha->valor_min != null && $value_linha->valor_max != null ? $value_linha->valor_min . ' a ' . $value_linha->valor_max : $value_linha->valor_min) .
+                                '     ' . $value_linha->unidade . '<br>';
             }
 
-            $tabela = str_replace('#####LINHAS#####', $conteudo, $html_linha_header_todos);
-            $rodape_label = 'TOTAL';
+            $temp = $html_linha_tabela_todos;
+            $temp = str_replace('#####EXAME#####', '<hr><strong>' . $value->nome_exame . '</strong>' .
+                                                '<br><br>' .
+                                                'Material: ' . $value->nome_material . '<br>' .
+                                                'Método: ' . $value->nome_metodo . '<br><br>' .
+                                                'Resultado: ' . $value->val_resultado . '<br>', $temp);
+            $temp = str_replace('#####REFERENCIA#####', $linhaExame, $temp);
+            $conteudo .= $temp;
         }
 
-        $html = str_replace('#####CONTEUDO#####', $tabela, AcompanhamentoController::html_servico);
-        $html = str_replace('#####TITULO#####', 'Empresa X Setor', $html);
-        $html = str_replace('#####TOTAL#####', $tot, $html);
-        $html = str_replace('#####INI#####', $ini, $html);
-        $html = str_replace('#####FIM#####', $fim, $html);
-        $html = str_replace('#####RODAPE#####', $rodape_label, $html);
+        $tabela = str_replace('#####LINHAS#####', $conteudo, $html_linha_header_todos);
+        $html = str_replace('#####CONTEUDO#####', $tabela, AcompanhamentoController::html_relatorio);
+        $html = str_replace('#####TITULO#####', 'Exames', $html);
+        $html = str_replace('#####RODAPE#####', $observacao . $paciente . $profissional , $html);
+        $html = str_replace('#####DATA#####', date('d/m/Y', strtotime($solicitacoes_exames->created_at)), $html);
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->WriteHTML($html);
         $mpdf->Output();
-        */
     }
 
     public function printreceita($id)
@@ -437,7 +406,6 @@ class AcompanhamentoController extends Controller
         $tabela = str_replace('#####LINHAS#####', $conteudo, $html_linha_header_todos);
         $html = str_replace('#####CONTEUDO#####', $tabela, AcompanhamentoController::html_relatorio);
         $html = str_replace('#####TITULO#####', 'Receita', $html);
-        //$html = str_replace('#####CORPOTOPO#####', $inicio, $html);
         $html = str_replace('#####RODAPE#####', $observacao . $paciente . $profissional , $html);
         $html = str_replace('#####DATA#####', date('d/m/Y', strtotime($receita->created_at)), $html);
         $mpdf = new \Mpdf\Mpdf();

@@ -236,8 +236,8 @@ return [
                     'url'  => 'atendimento/agendamento-consulta',
                 ],
                 [
-                    'text' => 'Agendar Exame',
-                    'url'  => 'atendimento/agendamento-exame',
+                    'text' => 'Resultado Exame',
+                    'url'  => 'atendimento/resultado-exame',
                 ],
             ],
         ],

@@ -179,3 +179,11 @@ Route::get('medico/acompanhamento/listarmedicamentos', ['as' => 'medico.acompanh
 Route::post('medico/acompanhamento/store', ['as' => 'medico.acompanhamento.store', 'uses' => 'Medico\AcompanhamentoController@store']);
 Route::get('medico/acompanhamento/historico/{id}', ['as' => 'medico.acompanhamento.historico', 'uses' => 'Medico\AcompanhamentoController@historico']);
 Route::get('medico/acompanhamento/printreceita/{id}', ['as' => 'medico.acompanhamento.printreceita', 'uses' => 'Medico\AcompanhamentoController@printreceita']);
+Route::get('medico/acompanhamento/printexame/{id}', ['as' => 'medico.acompanhamento.printexame', 'uses' => 'Medico\AcompanhamentoController@printexame']);
+
+//Resultado Exames
+Route::get('atendimento/resultado-exame', ['as' => 'atendimento.resultado-exame', 'uses' => 'Atendimento\ResultadoExameController@index']);
+Route::get('atendimento/resultado-exame/create', ['as' => 'atendimento.resultado-exame.create', 'uses' => 'Atendimento\ResultadoExameController@create']);
+Route::post('atendimento/resultado-exame/store', ['as' => 'atendimento.resultado-exame.store', 'uses' => 'Atendimento\ResultadoExameController@store']);
+Route::get('atendimento/resultado-exame/listarsolicitacoes', ['as' => 'atendimento.resultado-exame.listarsolicitacoes', 'uses' => 'Atendimento\ResultadoExameController@listarsolicitacoes']);
+

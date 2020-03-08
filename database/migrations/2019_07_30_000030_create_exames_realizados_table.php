@@ -19,6 +19,8 @@ class CreateExamesRealizadosTable extends Migration
             $table->foreign('solicitacao_exame_id')->references('id')->on('solicitacoes_exames');
             $table->unsignedBigInteger('solicitacao_exame_linha_id');
             $table->foreign('solicitacao_exame_linha_id')->references('id')->on('solicitacoes_exames_linha');
+            $table->unsignedBigInteger('profissional_id');
+            $table->foreign('profissional_id')->references('id')->on('profissionais');
             $table->string('val_resultado', 300);
             $table->timestamps();
         });

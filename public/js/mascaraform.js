@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $('.data').mask('00/00/0000');
     $('.ano').mask('0000');
+    $('.numero').mask('#############0');
     $('.hora').mask('00:00');
     $('.hora-completa').mask('00:00');
     $(".cpf").mask("999.999.999-99");
