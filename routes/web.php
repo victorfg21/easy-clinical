@@ -183,7 +183,7 @@ Route::get('medico/acompanhamento/printexame/{id}', ['as' => 'medico.acompanhame
 
 //Resultado Exames
 Route::get('atendimento/resultado-exame', ['as' => 'atendimento.resultado-exame', 'uses' => 'Atendimento\ResultadoExameController@index']);
-Route::get('atendimento/resultado-exame/create', ['as' => 'atendimento.resultado-exame.create', 'uses' => 'Atendimento\ResultadoExameController@create']);
+Route::get('atendimento/resultado-exame/create/{id}', ['as' => 'atendimento.resultado-exame.create', 'uses' => 'Atendimento\ResultadoExameController@create']);
 Route::post('atendimento/resultado-exame/store', ['as' => 'atendimento.resultado-exame.store', 'uses' => 'Atendimento\ResultadoExameController@store']);
 Route::get('atendimento/resultado-exame/listarsolicitacoes', ['as' => 'atendimento.resultado-exame.listarsolicitacoes', 'uses' => 'Atendimento\ResultadoExameController@listarsolicitacoes']);
 

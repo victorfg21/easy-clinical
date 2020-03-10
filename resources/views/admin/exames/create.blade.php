@@ -26,20 +26,22 @@
         $("#tblExameLinha tbody tr").each(function () {
             id = $(this).find("td:nth-child(1)").text();
             descricao = $(this).find("td:nth-child(2)>input").val();
-            minimo = $(this).find("td:nth-child(3)>input").val();
-            maximo = $(this).find("td:nth-child(4)>input").val();
-            unidade = $(this).find("td:nth-child(5)>input").val();
+            grupo = $(this).find("td:nth-child(3)>select option:selected").val();
+            minimo = $(this).find("td:nth-child(4)>input").val();
+            maximo = $(this).find("td:nth-child(5)>input").val();
+            unidade = $(this).find("td:nth-child(6)>input").val();
 
             exameLinha.push({
                 "id": id,
                 "descricao": descricao,
+                "grupo": grupo,
                 "minimo": minimo,
                 "maximo": maximo,
                 "unidade": unidade
             });
         });
         exameLinha = JSON.stringify(exameLinha);
-
+        console.log(exameLinha);
         form = form + "&exameLinha=" + exameLinha;
 
         $.ajax({

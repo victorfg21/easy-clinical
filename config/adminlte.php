@@ -113,12 +113,6 @@ return [
             'url'  => 'home',
             'icon' => 'home',
         ],
-        'CONFIGURAÇÔES',
-        [
-            'text' => 'Receita',
-            'url'  => 'config/receita',
-            'icon' => 'book',
-        ],
         'CADASTROS',
         [//Usuários
             'text' => 'Usuários',

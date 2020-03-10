@@ -51,12 +51,10 @@ $(document).ready(function() {
 
                 case 3:
                     newCell.innerHTML = '<input for="minimo" class="form-control peso" type="text" name="minimo" value="" />';
-                    $('.peso').mask("#.##0,00", { reverse: true });
                     break;
 
                 case 4:
                     newCell.innerHTML = '<input for="maximo" class="form-control peso" type="text" name="maximo" value="" />';
-                    $('.peso').mask("#.##0,00", { reverse: true });
                     break;
 
                 case 5:

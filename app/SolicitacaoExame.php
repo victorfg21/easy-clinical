@@ -22,111 +22,81 @@ class SolicitacaoExame extends Model
         return $this->hasOne(Consulta::class, 'id', 'consulta_id');
     }
 
-    //Listar as solicitações no DataTable da página Index
     public function ListarSolicitacoes(Request $request)
     {
         $profissional_id = $request->profissional_id;
         $solicitacao_id = $request->solicitacao_id;
         $solicitacao_data = date('Y-m-d', strtotime($request->solicitacao_data));
 
-        $columns = [
+        $columns = array(
             0 => 'id',
             1 => 'data',
             2 => 'paciente_nome',
-            3 => 'profissional_nome'
-        ];
+            3 => 'profissional_nome',
+        );
 
-        $solicitacoes = null;
-        $data = [];
-        $totalData = 0;
+        $totalData = $this->count();
         $limit = $request->input('length');
         $start = $request->input('start');
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        if (!isset($profissional_id) && !isset($solicitacao_id)) {
-            $json_data = [
-                'draw' => intval($request->input('draw')),
-                'recordsTotal' => intval($totalData),
-                'recordsFiltered' => intval($totalData),
-                'style' => '',
-                'data' => $data,
-            ];
-
-            return json_encode($json_data);
-        }
-        if (isset($profissional_id)) {
-            $this->{$solicitacoes} = DB::table('solicitacoes_exames')
-                ->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
-                ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
-                ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
-                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome')
-                ->where('profissional_id', '=', $profissional_id)
-                ->get()
-            ;
-        }
-
-        if (isset($solicitacao_id)) {
-            $this->{$solicitacoes} = DB::table('solicitacoes_exames')
-                ->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
-                ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
-                ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
-                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome')
-                ->where('solicitacoes_exames.id', '=', $solicitacao_id)
-                ->get()
-            ;
-        }
-
-        if (isset($solicitacao_data)) {
-            $this->{$solicitacoes} = DB::table('solicitacoes_exames')
-                ->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
-                ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
-                ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
-                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome')
-                ->where('solicitacoes_exames.created_at', '=', $solicitacao_data)
-                ->get()
-            ;
-        }
-
-        $totalData = 0;$this->{$solicitacoes}->count();
         if(empty($request->input('search.value')))
         {
-            $solicitacoes = $this;
-            $totalFiltered = $this;
+            $solicitacoes = $this->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
+                                ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
+                                ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
+                                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome');
+            $totalFiltered = $this->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
+                                ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
+                                ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
+                                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome');
         }
         else {
             $search = $request->input('search.value');
-            $solicitacoes =  $this->where('nome','LIKE',"%{$search}%");
-            $totalFiltered = $this->where('nome','LIKE',"%{$search}%");
+            $solicitacoes =  $this->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
+                                ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
+                                ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
+                                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome')
+                                ->orWhere('solicitacoes_exames.created_at', '=', 'LIKE',"%{$search}%")
+                                ->orWhere('profissionais.nome', '=', 'LIKE',"%{$search}%")
+                                ->orWhere('solicitacoes_exames.id', '=', 'LIKE',"%{$search}%");
+            $totalFiltered = $this->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
+                            ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
+                            ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
+                            ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome')
+                            ->orWhere('solicitacoes_exames.created_at', '=', 'LIKE',"%{$search}%")
+                            ->orWhere('profissionais.nome', '=', 'LIKE',"%{$search}%")
+                            ->orWhere('solicitacoes_exames.id', '=', 'LIKE',"%{$search}%");
         }
-
+        $data = array();
         if(!empty($solicitacoes))
         {
             $solicitacoes = $solicitacoes->offset($start)
-                                 ->limit($limit)
-                                 ->orderBy($order,$dir)
-                                 ->get();
+                                        ->limit($limit)
+                                        ->orderBy($order,$dir)
+                                        ->get();
             foreach ($solicitacoes as $solicitacao)
             {
                 $create =  route('atendimento.resultado-exame.create', $solicitacao->id);
 
                 $nestedData['id'] = $solicitacao->id;
-                $nestedData['data'] = $solicitacao->created_at;
+                $nestedData['data'] = date('d/m/Y', strtotime($solicitacao->created_at));
                 $nestedData['paciente_nome'] = $solicitacao->paciente_nome;
                 $nestedData['profissional_nome'] = $solicitacao->profissional_nome;
                 $nestedData['action'] = "<a href='#' title='Lançar Resultado'
-                                          onclick=\"modalBootstrap('{$create}', 'Lançar Resultado', '#modal_CRUD', '', 'true', 'true', 'false', 'Salvar', 'Fechar')\"><span class='glyphicon glyphicon-save'></span></a>";
+                                          onclick=\"modalBootstrap('{$create}', 'Lançar Resultado', '#modal_Large', '', 'true', 'true', 'false', 'Salvar', 'Fechar')\"><span class='glyphicon glyphicon-check'></span></a>";
                 $data[] = $nestedData;
             }
         }
 
-        $json_data = [
-            'draw' => intval($request->input('draw')),
-            'recordsTotal' => intval($totalData),
-            'recordsFiltered' => intval($totalData),
-            'style' => '',
-            'data' => $data,
-        ];
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered->count()),
+            "style"           => '',
+            "data"            => $data
+            );
 
         return json_encode($json_data);
     }

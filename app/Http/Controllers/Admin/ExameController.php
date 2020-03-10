@@ -77,11 +77,11 @@ class ExameController extends Controller
             $linhasExame = json_decode($req->input('exameLinha'));
             foreach ($linhasExame as $linha) {
                 $dadosLinha = new ExameLinha();
-                $dadosLinha->descricao = $req->input('descricao');
-                $dadosLinha->exame_grupo_id = '1'; //$req->input('exame_grupo_id');
-                $dadosLinha->valor_min = $req->input('minimo');
-                $dadosLinha->valor_max = $req->input('maximo');
-                $dadosLinha->unidade = $req->input('unidade');
+                $dadosLinha->descricao =  $linha->descricao;
+                $dadosLinha->exame_grupo_id = $linha->grupo;
+                $dadosLinha->valor_min = $linha->minimo;
+                $dadosLinha->valor_max = $linha->maximo;
+                $dadosLinha->unidade = $linha->unidade;
 
                 $dadosLinha->exame_id = $dados->id;
                 $dadosLinha->save();

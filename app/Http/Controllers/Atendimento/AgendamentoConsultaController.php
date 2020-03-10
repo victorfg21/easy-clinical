@@ -46,9 +46,6 @@ class AgendamentoConsultaController extends Controller
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        /*$consultas = new Consulta();
-        return $consultas->ListarConsultas($request);
-        */
         $profissional_id = $request->profissional_id;
         $especialidade_id = $request->especialidade_id;
         $area_atuacao_id = $request->area_atuacao_id;
@@ -198,7 +195,7 @@ class AgendamentoConsultaController extends Controller
             ];*/
 
             /*$users = User::where('tipo_cadastro', '=', Config::get('constants.options.administrativo'))->get();
-            
+
             Notification::send($users, new ReservaHorarioNotification($reservaConsulta));
             //$reserva->notify(new ReservaHorarioNotification($reserva));
 */

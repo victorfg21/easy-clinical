@@ -1,6 +1,6 @@
-<form id="frmExames">
+<form id="frmResultado">
     {{ csrf_field() }}
-    @include('admin.exames._form')
+    @include('atendimento.resultado-exame._form')
     <!-- DIV ERROS -->
     <div class="alert alert-danger print-error-msg" style="display:none">
         <ul></ul>
@@ -12,8 +12,8 @@
 <script>
     $("#btnSaveLarge").unbind("click").click(function (e) {
         e.preventDefault();
-        var form = $("#frmExames").serialize();
-        var exameLinha = [];
+        var form = $("#frmResultado").serialize();
+        var resultadoLinha = [];
         var id = "";
         var descricao = "";
         var minimo = "";
@@ -23,32 +23,25 @@
         $("#btnSaveLarge").css("pointer-events", "none");
         $("#btnCloseLarge").css("pointer-events", "none");
 
-        $("#tblExameLinha tbody tr").each(function () {
+        $("#tblResultadoLinha tbody tr").each(function () {
             id = $(this).find("td:nth-child(1)").text();
-            descricao = $(this).find("td:nth-child(2)>input").val();
-            minimo = $(this).find("td:nth-child(3)>input").val();
-            maximo = $(this).find("td:nth-child(4)>input").val();
-            unidade = $(this).find("td:nth-child(5)>input").val();
+            val_resultado = $(this).find("td:nth-child(3)>input").val();
 
-            exameLinha.push({
+            resultadoLinha.push({
                 "id": id,
-                "descricao": descricao,
-                "minimo": minimo,
-                "maximo": maximo,
-                "unidade": unidade
+                "val_resultado": val_resultado
             });
         });
-        exameLinha = JSON.stringify(exameLinha);
+        resultadoLinha = JSON.stringify(resultadoLinha);
 
-        form = form + "&exameLinha=" + exameLinha;
+        form = form + "&resultadoLinha=" + resultadoLinha;
 
         $.ajax({
             type: "POST",
-            url: "{{ route('admin.exames.store') }}",
+            url: "{{ route('atendimento.resultado-exame.store') }}",
             data: form,
             success: function (data) {
-
-                if (data == "Cadastrado com sucesso!") {
+                if (data == "Resultado lançado com sucesso!") {
                    Swal.fire({
                         position: 'center ',
                         type: 'success',
@@ -68,21 +61,21 @@
                 $("#btnCloseLarge").css("pointer-events", "");
             }
         }).fail(function (response){
-            associate_errors(response['responseJSON']['errors'], $("#frmExames"));
+            associate_errors(response['responseJSON']['errors'], $("#frmResultado"));
             $("#btnSaveLarge").css("pointer-events", "");
             $("#btnCloseLarge").css("pointer-events", "");
 
             Swal.fire({
                 position: 'center',
                 type: 'error',
-                title: "Erro ao cadastrar exame",
+                title: "Erro ao lançar resultado de exame",
                 showConfirmButton: false,
                 timer: 1500
             })
         });
     });
     $('#modal_Large').unbind("hide.bs.modal").on('hide.bs.modal', function () {
-        $("#tblExames").DataTable().ajax.reload();
+        $("#tblResultado").DataTable().ajax.reload();
     });
     function associate_errors(errors, $form)
     {
