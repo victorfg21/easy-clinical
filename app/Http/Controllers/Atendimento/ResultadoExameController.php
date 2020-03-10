@@ -76,7 +76,7 @@ class ResultadoExameController extends Controller
 
             $resultadoLinha = json_decode($req->input('resultadoLinha'));
             foreach ($resultadoLinha as $linha) {
-                //DB::beginTransaction();
+                DB::beginTransaction();
                 $dados = new ExameRealizado();
                 $dados->solicitacao_exame_id = $req->input('solicitacao_exame_id');
                 $dados->profissional_id = $req->input('profissional_id');
@@ -84,15 +84,15 @@ class ResultadoExameController extends Controller
                 $dados->val_resultado = $linha->val_resultado;
                 $dados->save();
 
-                $dados = SolicitacaoExameLinha::find($req->input('solicitacao_exame_linha_id'));
+                $dados = SolicitacaoExameLinha::find($linha->id);
                 $dados->realizado = 1;
                 $dados->update();
-                //DB::commit();
+                DB::commit();
             }
 
             return 'Resultado lançado com sucesso!';
         } catch (Exception $e) {
-            //DB::rollback();
+            DB::rollback();
 
             return 'Ocorreu um erro ao lançar o resultado!';
         }

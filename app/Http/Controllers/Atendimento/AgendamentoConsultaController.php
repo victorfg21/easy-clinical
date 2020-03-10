@@ -172,12 +172,6 @@ class AgendamentoConsultaController extends Controller
             $profissional_list = Profissional::orderBy('nome')->get();
             $paciente_list = Paciente::orderBy('nome')->get();
 
-            /*$registro = new Consulta();
-            $registro->profissional_id = $request->input('profissional_id');
-            $registro->data_consulta = date('Y-m-d', strtotime($request->input('data')));
-            $registro->horario_consulta = $request->input('hora');
-            */
-
             $registro = new ReservaMarcacaoConsulta();
             $registro->profissional_id = $request->input('profissional_id');
             $registro->data_consulta = date('Y-m-d', strtotime($request->input('data')));
@@ -186,19 +180,6 @@ class AgendamentoConsultaController extends Controller
             $registro->save();
 
             DB::commit();
-
-            /*$reservaConsulta = [
-                'profissional_id' => $registro->profissional_id,
-                'data_consulta' => $registro->data_consulta,
-                'horario_consulta' => $registro->horario_consulta
-
-            ];*/
-
-            /*$users = User::where('tipo_cadastro', '=', Config::get('constants.options.administrativo'))->get();
-
-            Notification::send($users, new ReservaHorarioNotification($reservaConsulta));
-            //$reserva->notify(new ReservaHorarioNotification($reserva));
-*/
 
             return view('atendimento.agendamento-consulta.create', [
                 'profissional_list' => $profissional_list,

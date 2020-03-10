@@ -19,8 +19,8 @@
                     <tr>
                         <th class="col-xs-1">ID</th>
                         <th class="col-xs-2 data-table">Data</th>
-                        <th class="col-xs-4">Profissional</th>
                         <th class="col-xs-4">Paciente</th>
+                        <th class="col-xs-4">Profissional</th>
                         <th class="col-xs-1"></th>
                     </tr>
                 </thead>
@@ -56,19 +56,19 @@ var tblResultado = $('#tblResultado').DataTable({
         },
     "columns": [
         { "data": "id", "className": "id", "width": "5%" },
-            { "data": "data", "className": "data", "width": "5%" },
-            { "data": "paciente_nome", "className": "paciente_nome", "width": "30%", "visible": false },
+            { "data": "data", "className": "data", "width": "10%" },
+            { "data": "paciente_nome", "className": "paciente_nome", "width": "30%" },
             { "data": "profissional_nome", "className": "profissional_nome", "width": "30%" },
             {"render": function (data, type, full, meta) {
                     return full.action;
-            }, "width": "10%"},
+            }, "width": "5%"},
     ],
     columnDefs: [
         { responsivePriority: 1, targets: 0 },
-        { responsivePriority: 4, targets: 1 },
-        { responsivePriority: 2, targets: 2 },
-        { responsivePriority: 3, targets: 3 },
-        { responsivePriority: 5, targets: 3 },
+        { responsivePriority: 2, targets: 1 },
+        { responsivePriority: 3, targets: 2 },
+        { responsivePriority: 4, targets: 3 },
+        { responsivePriority: 5, targets: 4 },
         {
             "targets": [1],
             "orderable": false

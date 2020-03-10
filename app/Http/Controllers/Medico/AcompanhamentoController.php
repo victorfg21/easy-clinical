@@ -289,18 +289,13 @@ class AcompanhamentoController extends Controller
                         ->first();
 
         $solicitacoes_exames_linha = DB::table('solicitacoes_exames_linha')
-                                        ->leftJoin('exames_realizados', function ($join) {
-                                            $join->on('exames_realizados.solicitacao_exame_id', '=', 'solicitacoes_exames_linha.solicitacao_exame_id')
-                                                ->orOn('exames_realizados.solicitacao_exame_linha_id', '=', 'solicitacoes_exames_linha.id');
-                                        })
                                         ->leftJoin('exames', 'solicitacoes_exames_linha.exame_id', 'exames.id')
                                         ->leftJoin('exame_materiais', 'exames.exame_material_id', 'exame_materiais.id')
                                         ->leftJoin('exame_metodos', 'exames.exame_metodo_id', 'exame_metodos.id')
                                         ->select('exames.id AS exame_id',
                                                  'exames.nome AS nome_exame',
                                                  'exame_materiais.nome AS nome_material',
-                                                 'exame_metodos.nome AS nome_metodo',
-                                                 'exames_realizados.val_resultado')
+                                                 'exame_metodos.nome AS nome_metodo')
                                         ->where('solicitacoes_exames_linha.solicitacao_exame_id', '=', $id)
                                         ->distinct()
                                         ->get();
@@ -324,6 +319,14 @@ class AcompanhamentoController extends Controller
         $tabela = '';
 
         foreach ($solicitacoes_exames_linha as $value) {
+            //fAZER CONSULTA PARA BUSCA O RESULTADO NA TABELA EXAME RESULTADO
+            /*->leftJoin('exames_realizados', function ($join) {
+                $join->on('exames_realizados.solicitacao_exame_id', '=', 'solicitacoes_exames_linha.solicitacao_exame_id')
+                    ->orOn('exames_realizados.solicitacao_exame_linha_id', '=', 'solicitacoes_exames_linha.id');
+            })*/
+
+            /*'exames_realizados.val_resultado'*/
+
             $exames_linha = DB::table('exames_linha')
                                 ->leftJoin('exame_grupos', 'exames_linha.exame_grupo_id', 'exame_grupos.id')
                                 ->select('exame_grupos.nome AS grupo_nome',
@@ -347,7 +350,7 @@ class AcompanhamentoController extends Controller
                                                 '<br><br>' .
                                                 'Material: ' . $value->nome_material . '<br>' .
                                                 'Método: ' . $value->nome_metodo . '<br><br>' .
-                                                'Resultado: ' . $value->val_resultado . '<br>', $temp);
+                                                'Resultado: ' . /*$value->val_resultado .*/ '<br>', $temp);
             $temp = str_replace('#####REFERENCIA#####', $linhaExame, $temp);
             $conteudo .= $temp;
         }
