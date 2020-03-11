@@ -23,7 +23,10 @@ class ResultadoExameController extends Controller
     {
         //if (Auth::user()->authorizeRoles() == false)
         //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        $solicitacao_list = SolicitacaoExame::orderBy('created_at')->get();
+        $solicitacao_list = SolicitacaoExame::orWhere('realizado', '=', '0')
+                                            ->orWhereNull('realizado')
+                                            ->orderBy('created_at')
+                                            ->get();
         $profissional_list = Profissional::orderBy('nome')->get();
 
         return view('atendimento.resultado-exame.index', [
@@ -50,20 +53,16 @@ class ResultadoExameController extends Controller
                         ->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
                         ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
                         ->join('exames', 'solicitacoes_exames_linha.exame_id', 'exames.id')
-                        //->where('solicitacoes_exames_linha.realizado', '<>', '1')
+                        ->where('solicitacoes_exames.id', '=', $id)
                         ->select('solicitacoes_exames_linha.*', 'pacientes.nome AS paciente_nome', 'exames.nome AS exame_nome')
                         ->get();
 
-        //dd($registro);
-
         $paciente = $registro->first()->paciente_nome;
-        $solicitacao_exame_id = $registro->first()->solicitacao_exame_id;
         $profissional_list = Profissional::orderBy('nome')->get();
-
         return view('atendimento.resultado-exame.create', [
             'registro' => $registro,
             'paciente' => $paciente,
-            'solicitacao_exame_id' => $solicitacao_exame_id,
+            'solicitacao_exame_id' => $id,
             'profissional_list' => $profissional_list,
         ]);
     }
@@ -73,18 +72,18 @@ class ResultadoExameController extends Controller
         try {
             //if (Auth::user()->authorizeRoles() == false)
             //    abort(403, 'Você não possui autorização para realizar essa ação.');
-
+            $id_solicitacao = $req->input('solicitacao_exame_id');
             $resultadoLinha = json_decode($req->input('resultadoLinha'));
             foreach ($resultadoLinha as $linha) {
                 DB::beginTransaction();
                 $dados = new ExameRealizado();
-                $dados->solicitacao_exame_id = $req->input('solicitacao_exame_id');
+                $dados->solicitacao_exame_id = $id_solicitacao;
                 $dados->profissional_id = $req->input('profissional_id');
                 $dados->solicitacao_exame_linha_id = $linha->id;
                 $dados->val_resultado = $linha->val_resultado;
                 $dados->save();
 
-                $dados = SolicitacaoExameLinha::find($linha->id);
+                $dados = SolicitacaoExame::find($id_solicitacao);
                 $dados->realizado = 1;
                 $dados->update();
                 DB::commit();

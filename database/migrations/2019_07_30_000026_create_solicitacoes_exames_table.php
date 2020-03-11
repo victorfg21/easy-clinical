@@ -18,6 +18,7 @@ class CreateSolicitacoesExamesTable extends Migration
             $table->unsignedBigInteger('consulta_id');
             $table->foreign('consulta_id')->references('id')->on('consultas');
             $table->text('observacao');
+            $table->boolean('realizado')->nullable();
             $table->timestamps();
         });
     }

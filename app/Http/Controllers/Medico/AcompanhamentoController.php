@@ -211,27 +211,27 @@ class AcompanhamentoController extends Controller
             $solicitacaoExame = new SolicitacaoExame();
             $solicitacaoExame->observacao = $req->input('observacaoSolic');
             $solicitacaoExame->consulta_id = $req->input('id');
-            $idSolicitacao = $solicitacaoExame->save();
+            $solicitacaoExame->save();
 
             $linhasSolicitacao = json_decode($req->input('exameLinha'));
             foreach ($linhasSolicitacao as $linha) {
                 $dadosLinha = new SolicitacaoExameLinha();
                 $dadosLinha->exame_id = $linha->exame_id;
-                $dadosLinha->solicitacao_exame_id = $idSolicitacao;
+                $dadosLinha->solicitacao_exame_id = $solicitacaoExame->id;
                 $dadosLinha->save();
             }
 
             $receita = new Receita();
             $receita->observacao = $req->input('observacaoReceita');
             $receita->consulta_id = $req->input('id');
-            $idReceita = $receita->save();
+            $receita->save();
 
             $linhasReceita = json_decode($req->input('receitaLinha'));
             foreach ($linhasReceita as $linha) {
                 $dadosLinha = new ReceitaLinha();
                 $dadosLinha->medicamento_id = $linha->medicamento_id;
                 $dadosLinha->dosagem = $linha->dosagem;
-                $dadosLinha->receita_id = $idReceita;
+                $dadosLinha->receita_id = $receita->id;
                 $dadosLinha->save();
             }
 
@@ -255,7 +255,8 @@ class AcompanhamentoController extends Controller
             ->join('solicitacoes_exames_linha', 'solicitacoes_exames_linha.solicitacao_exame_id', 'solicitacoes_exames.id')
             ->select('solicitacoes_exames.*')
             ->where('consultas.paciente_id', '=', $id)
-            ->where('solicitacoes_exames_linha.realizado', '=', 1)
+            ->orWhere('solicitacoes_exames.realizado', '=', '0')
+            ->orWhereNull('solicitacoes_exames.realizado')
             ->distinct()
             ->get()
         ;
@@ -277,10 +278,6 @@ class AcompanhamentoController extends Controller
     {
         $solicitacoes_exames = DB::table('solicitacoes_exames')
                         ->leftJoin('solicitacoes_exames_linha', 'solicitacoes_exames.id', 'solicitacoes_exames_linha.solicitacao_exame_id')
-                        ->leftJoin('exames_realizados', function ($join) {
-                            $join->on('exames_realizados.solicitacao_exame_id', '=', 'solicitacoes_exames_linha.solicitacao_exame_id')
-                                 ->orOn('exames_realizados.solicitacao_exame_linha_id', '=', 'solicitacoes_exames_linha.id');
-                        })
                         ->leftJoin('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
                         ->leftJoin('profissionais', 'consultas.profissional_id', 'profissionais.id')
                         ->leftJoin('pacientes', 'consultas.paciente_id', 'pacientes.id')
@@ -295,7 +292,8 @@ class AcompanhamentoController extends Controller
                                         ->select('exames.id AS exame_id',
                                                  'exames.nome AS nome_exame',
                                                  'exame_materiais.nome AS nome_material',
-                                                 'exame_metodos.nome AS nome_metodo')
+                                                 'exame_metodos.nome AS nome_metodo',
+                                                 'solicitacoes_exames_linha.id AS solicitacao_exame_linha_id')
                                         ->where('solicitacoes_exames_linha.solicitacao_exame_id', '=', $id)
                                         ->distinct()
                                         ->get();
@@ -319,13 +317,6 @@ class AcompanhamentoController extends Controller
         $tabela = '';
 
         foreach ($solicitacoes_exames_linha as $value) {
-            //fAZER CONSULTA PARA BUSCA O RESULTADO NA TABELA EXAME RESULTADO
-            /*->leftJoin('exames_realizados', function ($join) {
-                $join->on('exames_realizados.solicitacao_exame_id', '=', 'solicitacoes_exames_linha.solicitacao_exame_id')
-                    ->orOn('exames_realizados.solicitacao_exame_linha_id', '=', 'solicitacoes_exames_linha.id');
-            })*/
-
-            /*'exames_realizados.val_resultado'*/
 
             $exames_linha = DB::table('exames_linha')
                                 ->leftJoin('exame_grupos', 'exames_linha.exame_grupo_id', 'exame_grupos.id')
@@ -337,6 +328,12 @@ class AcompanhamentoController extends Controller
                                 ->where('exames_linha.exame_id', '=', $value->exame_id)
                                 ->distinct()
                                 ->get();
+
+            $resultado = DB::table('exames_realizados')
+                                ->select('exames_realizados.val_resultado')
+                                ->where('exames_realizados.solicitacao_exame_id', '=', $id)
+                                ->where('exames_realizados.solicitacao_exame_linha_id', '=', $value->solicitacao_exame_linha_id)
+                                ->first();
 
             $linhaExame = '<strong>Valor de Referência</strong><br>';
             foreach ($exames_linha as $value_linha) {
@@ -350,7 +347,7 @@ class AcompanhamentoController extends Controller
                                                 '<br><br>' .
                                                 'Material: ' . $value->nome_material . '<br>' .
                                                 'Método: ' . $value->nome_metodo . '<br><br>' .
-                                                'Resultado: ' . /*$value->val_resultado .*/ '<br>', $temp);
+                                                'Resultado: ' . $resultado->val_resultado . '<br>', $temp);
             $temp = str_replace('#####REFERENCIA#####', $linhaExame, $temp);
             $conteudo .= $temp;
         }

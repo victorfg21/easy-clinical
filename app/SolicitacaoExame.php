@@ -46,11 +46,17 @@ class SolicitacaoExame extends Model
             $solicitacoes = $this->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
                                 ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
                                 ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
-                                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome');
+                                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome')
+                                ->orWhere('solicitacoes_exames.realizado', '=', '0')
+                                ->orWhereNull('solicitacoes_exames.realizado')
+                                ->orderBy('created_at');
             $totalFiltered = $this->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
                                 ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
                                 ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
-                                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome');
+                                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome')
+                                ->orWhere('solicitacoes_exames.realizado', '=', '0')
+                                ->orWhereNull('solicitacoes_exames.realizado')
+                                ->orderBy('created_at');
         }
         else {
             $search = $request->input('search.value');
@@ -60,14 +66,20 @@ class SolicitacaoExame extends Model
                                 ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome')
                                 ->orWhere('solicitacoes_exames.created_at', '=', 'LIKE',"%{$search}%")
                                 ->orWhere('profissionais.nome', '=', 'LIKE',"%{$search}%")
-                                ->orWhere('solicitacoes_exames.id', '=', 'LIKE',"%{$search}%");
+                                ->orWhere('solicitacoes_exames.id', '=', 'LIKE',"%{$search}%")
+                                ->orWhere('solicitacoes_exames.realizado', '=', '0')
+                                ->orWhereNull('solicitacoes_exames.realizado')
+                                ->orderBy('created_at');
             $totalFiltered = $this->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
-                            ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
-                            ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
-                            ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome')
-                            ->orWhere('solicitacoes_exames.created_at', '=', 'LIKE',"%{$search}%")
-                            ->orWhere('profissionais.nome', '=', 'LIKE',"%{$search}%")
-                            ->orWhere('solicitacoes_exames.id', '=', 'LIKE',"%{$search}%");
+                                ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
+                                ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
+                                ->select('solicitacoes_exames.*', 'profissionais.nome AS profissional_nome', 'pacientes.nome AS paciente_nome')
+                                ->orWhere('solicitacoes_exames.created_at', '=', 'LIKE',"%{$search}%")
+                                ->orWhere('profissionais.nome', '=', 'LIKE',"%{$search}%")
+                                ->orWhere('solicitacoes_exames.id', '=', 'LIKE',"%{$search}%")
+                                ->orWhere('solicitacoes_exames.realizado', '=', '0')
+                                ->orWhereNull('solicitacoes_exames.realizado')
+                                ->orderBy('created_at');
         }
         $data = array();
         if(!empty($solicitacoes))

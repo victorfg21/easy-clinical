@@ -170,10 +170,21 @@ return [
             ],
         ],
         [//Paciente
-            'text' => 'Paciente',
+            'text' => 'Pacientes',
             'icon' => 'ambulance',
             'role'    => 'superadministrator',
-            'url'  => 'admin/pacientes',
+            'submenu' => [
+                [
+                    'text' => 'Paciente',
+                    'url'  => 'admin/pacientes',
+                    'icon' => 'address-card'
+                ],
+                [
+                    'text' => 'Histórico Paciente',
+                    'url'  => 'admin/historico-paciente',
+                    'icon' => 'history'
+                ],
+            ]
         ],
         [//Exame
             'text' => 'Exames',
@@ -243,10 +254,6 @@ return [
                 [
                     'text' => 'Acompanhamento Médico',
                     'url'  => 'medico/acompanhamento',
-                ],
-                [
-                    'text' => 'Histórico Paciente',
-                    'url'  => 'medico/historico-paciente',
                 ],
             ],
         ],

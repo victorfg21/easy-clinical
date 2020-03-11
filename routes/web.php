@@ -50,6 +50,10 @@ Route::get('admin/pacientes/edit/{id}', ['as' => 'admin.pacientes.edit', 'uses' 
 Route::put('admin/pacientes/update/{id}', ['as' => 'admin.pacientes.update', 'uses' => 'Admin\PacienteController@update']);
 Route::get('admin/pacientes/listarpacientes', ['as' => 'admin.pacientes.listarpacientes', 'uses' => 'Admin\PacienteController@listarpacientes']);
 
+//Historico
+Route::get('admin/historico-paciente', ['as' => 'admin.historico-paciente', 'uses' => 'Admin\HistoricoPacienteController@index']);
+Route::get('admin/historico-paciente/listarpacienteshistorico', ['as' => 'admin.historico-paciente.listarpacienteshistorico', 'uses' => 'Admin\HistoricoPacienteController@listarpacienteshistorico']);
+
 //Profissionais
 Route::get('admin/profissionais', ['as' => 'admin.profissionais', 'uses' => 'Admin\ProfissionalController@index']);
 Route::get('admin/profissionais/create', ['as' => 'admin.profissionais.create', 'uses' => 'Admin\ProfissionalController@create']);
