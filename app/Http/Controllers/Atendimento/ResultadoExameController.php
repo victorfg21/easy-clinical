@@ -6,10 +6,9 @@ use App\ExameRealizado;
 use App\Http\Controllers\Controller;
 use App\SolicitacaoExame;
 use App\Profissional;
-use App\SolicitacaoExameLinha;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use SebastianBergmann\Environment\Console;
 
 class ResultadoExameController extends Controller
 {
@@ -19,10 +18,12 @@ class ResultadoExameController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('atendente') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $solicitacao_list = SolicitacaoExame::orWhere('realizado', '=', '0')
                                             ->orWhereNull('realizado')
                                             ->orderBy('created_at')
@@ -38,16 +39,20 @@ class ResultadoExameController extends Controller
     //Método que lista todos os usuarios no DataTable da Tela
     public function listarsolicitacoes(Request $request)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('atendente') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $exames = new SolicitacaoExame();
         return $exames->ListarSolicitacoes($request);
     }
 
-    public function create($id)
+    public function create(Request $request, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('atendente') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = DB::table('solicitacoes_exames_linha')
                         ->join('solicitacoes_exames', 'solicitacoes_exames_linha.solicitacao_exame_id', 'solicitacoes_exames.id')
                         ->join('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
@@ -67,18 +72,20 @@ class ResultadoExameController extends Controller
         ]);
     }
 
-    public function store(Request $req)
+    public function store(Request $request)
     {
         try {
-            //if (Auth::user()->authorizeRoles() == false)
-            //    abort(403, 'Você não possui autorização para realizar essa ação.');
-            $id_solicitacao = $req->input('solicitacao_exame_id');
-            $resultadoLinha = json_decode($req->input('resultadoLinha'));
+            if ($request->user()->authorizeRoles('superadministrator') == false &&
+                    $request->user()->authorizeRoles('atendente') == false)
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
+            $id_solicitacao = $request->input('solicitacao_exame_id');
+            $resultadoLinha = json_decode($request->input('resultadoLinha'));
             foreach ($resultadoLinha as $linha) {
                 DB::beginTransaction();
                 $dados = new ExameRealizado();
                 $dados->solicitacao_exame_id = $id_solicitacao;
-                $dados->profissional_id = $req->input('profissional_id');
+                $dados->profissional_id = $request->input('profissional_id');
                 $dados->solicitacao_exame_linha_id = $linha->id;
                 $dados->val_resultado = $linha->val_resultado;
                 $dados->save();

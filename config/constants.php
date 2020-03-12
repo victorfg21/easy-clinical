@@ -22,7 +22,7 @@ return [
         'sabado' => '6',
 
         //TIPO CADASTRO
-        'proissional' => '1',
+        'profissional' => '1',
         'paciente' => '2',
         'administrativo' => '3',
         'atendente' => '4',

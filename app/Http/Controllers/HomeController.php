@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -22,8 +23,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        /*if (Auth::user()->authorizeRoles('superadministrator') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');*/
+
         $dados_consultas = DB::table('consultas')
                         ->leftJoin('profissionais', 'consultas.profissional_id', '=', 'profissionais.id')
                         ->groupby('profissionais.nome')

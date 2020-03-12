@@ -246,10 +246,36 @@ return [
                 ],
             ],
         ],
+        [//Atendimento
+            'text' => 'Atendimento',
+            'icon' => 'phone',
+            'role'    => 'superadministrator',
+            'submenu' => [
+                [
+                    'text' => 'Agendar Consulta/Retorno',
+                    'url'  => 'atendimento/agendamento-consulta',
+                ],
+                [
+                    'text' => 'Resultado Exame',
+                    'url'  => 'atendimento/resultado-exame',
+                ],
+            ],
+        ],
         [//Médico
             'text' => 'Espaço Médico',
             'icon' => 'stethoscope',
-            'role'    => 'medico',
+            'role'    => 'profissional',
+            'submenu' => [
+                [
+                    'text' => 'Acompanhamento Médico',
+                    'url'  => 'medico/acompanhamento',
+                ],
+            ],
+        ],
+        [//Médico
+            'text' => 'Espaço Médico',
+            'icon' => 'stethoscope',
+            'role'    => 'superadministrator',
             'submenu' => [
                 [
                     'text' => 'Acompanhamento Médico',
@@ -277,7 +303,7 @@ return [
         JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
-        //App\Filters\MenuFilter::class,
+        App\Filters\MenuFilter::class,
     ],
 
     /*

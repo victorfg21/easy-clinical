@@ -11,10 +11,10 @@ use App\Http\Requests\ConsultaRequest;
 use App\Paciente;
 use App\Profissional;
 use App\ReservaMarcacaoConsulta;
-use App\User;
 use Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class AgendamentoConsultaController extends Controller
 {
@@ -24,11 +24,11 @@ class AgendamentoConsultaController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        //$agendas = Agenda::all();
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('atendente') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $profissional_list = Profissional::orderBy('nome')->get();
         $especialidade_list = Especialidade::orderBy('nome')->get();
@@ -44,8 +44,9 @@ class AgendamentoConsultaController extends Controller
     //Método que lista todos os usuarios no DataTable da Tela
     public function listarconsultas(Request $request)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $profissional_id = $request->profissional_id;
         $especialidade_id = $request->especialidade_id;
         $area_atuacao_id = $request->area_atuacao_id;
@@ -155,10 +156,11 @@ class AgendamentoConsultaController extends Controller
     public function create(Request $request)
     {
         try {
-            DB::beginTransaction();
+            if ($request->user()->authorizeRoles('superadministrator') == false &&
+                    $request->user()->authorizeRoles('atendente') == false)
+                abort(403, 'Você não possui autorização para realizar essa ação.');
 
-            //if (Auth::user()->authorizeRoles() == false)
-            //    abort(403, 'Você não possui autorização para realizar essa ação.');
+            DB::beginTransaction();
 
             $reserva = ReservaMarcacaoConsulta::where('data_consulta', '=', date('Y-m-d', strtotime($request->input('data'))))
                 ->where('horario_consulta', '=', date('H:i', strtotime($request->input('hora'))))
@@ -196,6 +198,10 @@ class AgendamentoConsultaController extends Controller
     public function store(ConsultaRequest $request)
     {
         try {
+            if ($request->user()->authorizeRoles('superadministrator') == false &&
+                    $request->user()->authorizeRoles('atendente') == false)
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
 
             $dados = new Consulta();
@@ -222,10 +228,11 @@ class AgendamentoConsultaController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('atendente') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $registro = Consulta::find($id);
         $profissional_list = Profissional::orderBy('nome')->get();
@@ -240,8 +247,10 @@ class AgendamentoConsultaController extends Controller
 
     public function cancel(Request $request, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('atendente') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $consulta = Consulta::find($id);
 
         return view('atendimento.agendamento-consulta.cancel', compact('consulta'));
@@ -249,16 +258,22 @@ class AgendamentoConsultaController extends Controller
 
     public function transfer(Request $request, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('atendente') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $consulta = Consulta::find($id);
 
         return view('atendimento.agendamento-consulta.cancel', compact('consulta'));
     }
 
-    public function confirmarcancel($id)
+    public function confirmarcancel(Request $request, $id)
     {
         try {
+            if ($request->user()->authorizeRoles('superadministrator') == false &&
+                    $request->user()->authorizeRoles('atendente') == false)
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
 
             $consulta = Consulta::find($id);
@@ -278,6 +293,9 @@ class AgendamentoConsultaController extends Controller
     public function reservaconsultacancel(Request $request)
     {
         try {
+            if ($request->user()->authorizeRoles('superadministrator') == false)
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
 
             $data_consulta = date('Y-m-d H:i:s', strtotime($request->input('data_consulta')));

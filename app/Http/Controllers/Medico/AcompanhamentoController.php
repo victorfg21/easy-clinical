@@ -126,10 +126,11 @@ class AcompanhamentoController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                    $request->user()->authorizeRoles('profissional') == false)
+                abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $user = Auth::id();
         $data = date('Y-m-d');
@@ -166,12 +167,12 @@ class AcompanhamentoController extends Controller
         ]);
     }
 
-    public function realizar($id)
+    public function realizar(Request $request, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('profissional') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
 
-        $user = Auth::id();
         $consulta = DB::table('consultas')
             ->join('pacientes', 'consultas.paciente_id', 'pacientes.id')
             ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')
@@ -187,33 +188,41 @@ class AcompanhamentoController extends Controller
 
     public function listarexames(Request $request)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('profissional') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         return Exame::orderBy('nome')->get()->toJson();
     }
 
     public function listarmedicamentos(Request $request)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('profissional') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         return Medicamento::orderBy('nome_fabrica')->get()->toJson();
     }
 
-    public function store(Request $req)
+    public function store(Request $request)
     {
         try {
+            if ($request->user()->authorizeRoles('superadministrator') == false &&
+                    $request->user()->authorizeRoles('profissional') == false)
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
-            $registro = Consulta::find($req->input('id'));
-            $registro->anotacao = $req->input('observacao');
+            $registro = Consulta::find($request->input('id'));
+            $registro->anotacao = $request->input('observacao');
             $registro->realizado = true;
             $registro->update();
 
             $solicitacaoExame = new SolicitacaoExame();
-            $solicitacaoExame->observacao = $req->input('observacaoSolic');
-            $solicitacaoExame->consulta_id = $req->input('id');
+            $solicitacaoExame->observacao = $request->input('observacaoSolic');
+            $solicitacaoExame->consulta_id = $request->input('id');
             $solicitacaoExame->save();
 
-            $linhasSolicitacao = json_decode($req->input('exameLinha'));
+            $linhasSolicitacao = json_decode($request->input('exameLinha'));
             foreach ($linhasSolicitacao as $linha) {
                 $dadosLinha = new SolicitacaoExameLinha();
                 $dadosLinha->exame_id = $linha->exame_id;
@@ -222,11 +231,11 @@ class AcompanhamentoController extends Controller
             }
 
             $receita = new Receita();
-            $receita->observacao = $req->input('observacaoReceita');
-            $receita->consulta_id = $req->input('id');
+            $receita->observacao = $request->input('observacaoReceita');
+            $receita->consulta_id = $request->input('id');
             $receita->save();
 
-            $linhasReceita = json_decode($req->input('receitaLinha'));
+            $linhasReceita = json_decode($request->input('receitaLinha'));
             foreach ($linhasReceita as $linha) {
                 $dadosLinha = new ReceitaLinha();
                 $dadosLinha->medicamento_id = $linha->medicamento_id;
@@ -245,11 +254,12 @@ class AcompanhamentoController extends Controller
         }
     }
 
-    public function historico($id)
+    public function historico(Request $request, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        $user = Auth::id();
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('profissional') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $solicitacoes_exames = DB::table('consultas')
             ->join('solicitacoes_exames', 'consultas.id', 'solicitacoes_exames.consulta_id')
             ->join('solicitacoes_exames_linha', 'solicitacoes_exames_linha.solicitacao_exame_id', 'solicitacoes_exames.id')
@@ -274,8 +284,12 @@ class AcompanhamentoController extends Controller
         ]);
     }
 
-    public function printexame($id)
+    public function printexame(Request $request, $id)
     {
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('profissional') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $solicitacoes_exames = DB::table('solicitacoes_exames')
                         ->leftJoin('solicitacoes_exames_linha', 'solicitacoes_exames.id', 'solicitacoes_exames_linha.solicitacao_exame_id')
                         ->leftJoin('consultas', 'solicitacoes_exames.consulta_id', 'consultas.id')
@@ -362,8 +376,12 @@ class AcompanhamentoController extends Controller
         $mpdf->Output();
     }
 
-    public function printreceita($id)
+    public function printreceita(Request $request, $id)
     {
+        if ($request->user()->authorizeRoles('superadministrator') == false &&
+                $request->user()->authorizeRoles('profissional') == false)
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $receita = DB::table('receitas')
                         ->join('consultas', 'receitas.consulta_id', 'consultas.id')
                         ->join('profissionais', 'consultas.profissional_id', 'profissionais.id')

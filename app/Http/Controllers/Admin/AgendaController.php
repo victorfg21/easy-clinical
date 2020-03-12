@@ -17,27 +17,29 @@ class AgendaController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $agendas = Agenda::all();
         return view('admin.agendas.index', compact('agendas'));
     }
 
     //Método que lista todos os usuarios no DataTable da Tela
-    public function listaragendas(Request $request)
+    public function listaragendas(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $agendas = new Agenda;
-        return $agendas->ListarAgendas($request);
+        return $agendas->ListarAgendas($req);
     }
 
-    public function create()
+    public function create(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $profissional_list = Profissional::orderBy('nome')->get();
         return view('admin.agendas.create', [
@@ -48,6 +50,9 @@ class AgendaController extends Controller
     public function store(AgendaRequest $req)
     {
         try {
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
 
             $dados = new Agenda;
@@ -79,18 +84,18 @@ class AgendaController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
         $registro = Agenda::find($id);
         return view('admin.agendas.show', compact('registro'));
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
         $registro = Agenda::find($id);
         $profissional_list = Profissional::orderBy('nome')->get();
         return view('admin.agendas.edit', [
@@ -102,6 +107,9 @@ class AgendaController extends Controller
     public function update(AgendaRequest $req, $id)
     {
         try {
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
 
             $dados = Agenda::find($id);
