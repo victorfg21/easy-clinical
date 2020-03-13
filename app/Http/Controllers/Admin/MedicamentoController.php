@@ -17,26 +17,29 @@ class MedicamentoController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $medicamentos = Medicamento::orderBy('nome_generico')->get();
         return view('admin.medicamentos.index', compact('medicamentos'));
     }
     //Método que lista todos os usuarios no DataTable da Tela
-    public function listarmedicamentos(Request $request)
+    public function listarmedicamentos(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $medicamentos = new Medicamento;
-        return $medicamentos->ListarMedicamentos($request);
+        return $medicamentos->ListarMedicamentos($req);
     }
 
-    public function create()
+    public function create(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $fabricante_list = Fabricante::orderBy('nome')->get();
         return view('admin.medicamentos.create', [
             'fabricante_list' => $fabricante_list
@@ -45,6 +48,9 @@ class MedicamentoController extends Controller
 
     public function store(MedicamentoRequest $req)
     {
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $dados = new Medicamento;
         $dados->nome_generico = $req->input('nome_generico');
         $dados->nome_fabrica = $req->input('nome_fabrica');
@@ -53,10 +59,11 @@ class MedicamentoController extends Controller
         return "Cadastrado com sucesso!";
     }
 
-    public function show($id)
+    public function show(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = Medicamento::find($id);
         $fabricante_list = Fabricante::orderBy('nome')->get();
         return view('admin.medicamentos.show', [
@@ -65,10 +72,11 @@ class MedicamentoController extends Controller
         ]);
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = Medicamento::find($id);
         $fabricante_list = Fabricante::orderBy('nome')->get();
         return view('admin.medicamentos.edit', [
@@ -80,8 +88,8 @@ class MedicamentoController extends Controller
     public function update(MedicamentoRequest $req, $id)
     {
         try {
-            //if (Auth::user()->authorizeRoles() == false)
-            //    abort(403, 'Você não possui autorização para realizar essa ação.');
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
 
             $dados = Medicamento::find($id);
             $dados->nome_generico = $req->input('nome_generico');
@@ -95,17 +103,21 @@ class MedicamentoController extends Controller
         }
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $medicamento = Medicamento::find($id);
         return view('admin.medicamentos.delete', compact('medicamento'));
     }
 
-    public function confirmardelete($id)
+    public function confirmardelete(Request $req, $id)
     {
         try {
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
             $medicamento = Medicamento::where('id', '=', $id)->delete();
             DB::commit();

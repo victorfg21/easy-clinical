@@ -16,26 +16,29 @@ class AreaAtuacaoController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $areasAtuacao = AreaAtuacao::orderBy('nome')->get();
         return view('admin.areas-atuacao.index', compact('areasAtuacao'));
     }
     //Método que lista todos os usuarios no DataTable da Tela
-    public function listarareasatuacao(Request $request)
+    public function listarareasatuacao(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $areasAtuacao = new AreaAtuacao;
-        return $areasAtuacao->ListarAreasAtuacao($request);
+        return $areasAtuacao->ListarAreasAtuacao($req);
     }
 
-    public function create()
+    public function create(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         return view('admin.areas-atuacao.create');
     }
 
@@ -47,18 +50,20 @@ class AreaAtuacaoController extends Controller
         return "Cadastrado com sucesso!";
     }
 
-    public function show($id)
+    public function show(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = AreaAtuacao::find($id);
         return view('admin.areas-atuacao.show', compact('registro'));
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = AreaAtuacao::find($id);
         return view('admin.areas-atuacao.edit', compact('registro'));
     }
@@ -67,8 +72,8 @@ class AreaAtuacaoController extends Controller
     {
         try
         {
-            //if (Auth::user()->authorizeRoles() == false)
-            //    abort(403, 'Você não possui autorização para realizar essa ação.');
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
 
             $dados = AreaAtuacao::find($id);
             $dados->nome = $req->input('nome');
@@ -82,18 +87,22 @@ class AreaAtuacaoController extends Controller
         }
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $areaAtuacao = AreaAtuacao::find($id);
         return view ('admin.areas-atuacao.delete', compact('areaAtuacao'));
     }
 
-    public function confirmardelete($id)
+    public function confirmardelete(Request $req, $id)
     {
         try
         {
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
             $areaAtuacao = AreaAtuacao::where('id', '=', $id)->delete();
             DB::commit();

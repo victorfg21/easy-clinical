@@ -88,6 +88,7 @@ class AgendaController extends Controller
     {
         if (!$req->user()->authorizeRoles('superadministrator'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = Agenda::find($id);
         return view('admin.agendas.show', compact('registro'));
     }
@@ -96,6 +97,7 @@ class AgendaController extends Controller
     {
         if (!$req->user()->authorizeRoles('superadministrator'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
+            
         $registro = Agenda::find($id);
         $profissional_list = Profissional::orderBy('nome')->get();
         return view('admin.agendas.edit', [

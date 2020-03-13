@@ -2,10 +2,9 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -19,7 +18,7 @@ class User extends Authenticatable
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'email', 'password', 'tipo_cadastro'
+        'name', 'email', 'password',
     ];
 
     /**
@@ -28,7 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token'
+        'password', 'remember_token',
     ];
 
     /**
@@ -46,32 +45,32 @@ class User extends Authenticatable
     }
 
     /**
-    * @param string|array $roles
-    */
+     * @param array|string $roles
+     */
     public function authorizeRoles($roles)
     {
         if (is_array($roles)) {
-            return $this->hasAnyRole($roles) ||
-             abort(401, 'Ação não autorizada.');
+            return false;
         }
 
-        return $this->hasRole($roles) ||
-         abort(401, 'Ação não autorizada.');
+        return true;
     }
 
     /**
-    * Check multiple roles
-    * @param array $roles
-    */
+     * Check multiple roles.
+     *
+     * @param array $roles
+     */
     public function hasAnyRole($roles)
     {
         return null !== $this->roles()->whereIn('name', $roles)->first();
     }
 
     /**
-    * Check one role
-    * @param string $role
-    */
+     * Check one role.
+     *
+     * @param string $role
+     */
     public function hasRole($role)
     {
         return null !== $this->roles()->where('name', $role)->first();
@@ -80,10 +79,10 @@ class User extends Authenticatable
     //Listar os usuários no DataTable da página Index
     public function ListarUsuarios(Request $request)
     {
-        $columns = array(
+        $columns = [
             0 => 'name',
             1 => 'email',
-        );
+        ];
 
         $totalData = $this->count();
         $limit = $request->input('length');
@@ -91,28 +90,27 @@ class User extends Authenticatable
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        if(empty($request->input('search.value')))
-        {
+        if (empty($request->input('search.value'))) {
             $users = $this;
             $totalFiltered = $this;
-        }
-        else {
+        } else {
             $search = $request->input('search.value');
-            $users =  $this->where('name','LIKE',"%{$search}%")
-                                 ->orWhere('email','LIKE',"%{$search}%");
-            $totalFiltered = $this->where('nome','LIKE',"%{$search}%")
-                                  ->orWhere('email','LIKE',"%{$search}%");
+            $users = $this->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+            ;
+            $totalFiltered = $this->where('nome', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+            ;
         }
-        $data = array();
-        if(!empty($users))
-        {
+        $data = [];
+        if (!empty($users)) {
             $users = $users->offset($start)
-                                 ->limit($limit)
-                                 ->orderBy($order,$dir)
-                                 ->get();
-            foreach ($users as $user)
-            {
-                $edit =  route('admin.usuarios.edit', $user->id);
+                ->limit($limit)
+                ->orderBy($order, $dir)
+                ->get()
+            ;
+            foreach ($users as $user) {
+                $edit = route('admin.usuarios.edit', $user->id);
 
                 $nestedData['name'] = $user->name;
                 $nestedData['email'] = $user->email;
@@ -123,13 +121,13 @@ class User extends Authenticatable
             }
         }
 
-        $json_data = array(
-                    "draw"            => intval($request->input('draw')),
-                    "recordsTotal"    => intval($totalData),
-                    "recordsFiltered" => intval($totalFiltered->count()),
-                    "style"           => '',
-                    "data"            => $data
-                    );
+        $json_data = [
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => intval($totalData),
+            'recordsFiltered' => intval($totalFiltered->count()),
+            'style' => '',
+            'data' => $data,
+        ];
 
         return json_encode($json_data);
     }

@@ -19,9 +19,6 @@ class UserTableSeeder extends Seeder
         $role_paciente = Role::where('name', 'paciente')->first();
         $role_atendente  = Role::where('name', 'atendente')->first();
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('users')->delete();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $manager = new User();
         $manager->name = 'Administrador';
         $manager->email = 'admin@mail.com';

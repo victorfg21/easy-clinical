@@ -16,27 +16,30 @@ class ExameGrupoController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $exameGrupos = ExameGrupo::orderBy('nome')->get();
         return view('admin.exame-grupos.index', compact('exameGrupos'));
     }
-    
+
     //Método que lista todos os usuarios no DataTable da Tela
-    public function listarexamegrupos(Request $request)
+    public function listarexamegrupos(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $exameGrupos = new ExameGrupo;
-        return $exameGrupos->ListarExameGrupos($request);
+        return $exameGrupos->ListarExameGrupos($req);
     }
 
-    public function create()
+    public function create(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         return view('admin.exame-grupos.create');
     }
 
@@ -48,18 +51,20 @@ class ExameGrupoController extends Controller
         return "Cadastrado com sucesso!";
     }
 
-    public function show($id)
+    public function show(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = ExameGrupo::find($id);
         return view('admin.exame-grupos.show', compact('registro'));
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = ExameGrupo::find($id);
         return view('admin.exame-grupos.edit', compact('registro'));
     }
@@ -68,8 +73,8 @@ class ExameGrupoController extends Controller
     {
         try
         {
-            //if (Auth::user()->authorizeRoles() == false)
-            //    abort(403, 'Você não possui autorização para realizar essa ação.');
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
 
             $dados = ExameGrupo::find($id);
             $dados->nome = $req->input('nome');
@@ -83,18 +88,22 @@ class ExameGrupoController extends Controller
         }
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
-        $exameMetodo = ExameGrupo::find($id);
-        return view ('admin.exame-grupos.delete', compact('exameMetodo'));
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
+        $exameGrupo = ExameGrupo::find($id);
+        return view ('admin.exame-grupos.delete', compact('exameGrupo'));
     }
 
-    public function confirmardelete($id)
+    public function confirmardelete(Request $req, $id)
     {
         try
         {
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
             $exameMetodo = ExameGrupo::where('id', '=', $id)->delete();
             DB::commit();

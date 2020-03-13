@@ -16,49 +16,57 @@ class EspecialidadeController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $especialidades = Especialidade::orderBy('nome')->get();
         return view('admin.especialidades.index', compact('especialidades'));
     }
     //Método que lista todos os usuarios no DataTable da Tela
-    public function listarespecialidades(Request $request)
+    public function listarespecialidades(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $especialidades = new Especialidade;
-        return $especialidades->ListarEspecialidades($request);
+        return $especialidades->ListarEspecialidades($req);
     }
 
-    public function create()
+    public function create(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         return view('admin.especialidades.create');
     }
 
     public function store(EspecialidadeRequest $req)
     {
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $dados = new Especialidade;
         $dados->nome = $req->input('nome');
         $dados->save();
         return "Cadastrado com sucesso!";
     }
 
-    public function show($id)
+    public function show(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = Especialidade::find($id);
         return view('admin.especialidades.show', compact('registro'));
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = Especialidade::find($id);
         return view('admin.especialidades.edit', compact('registro'));
     }
@@ -67,8 +75,8 @@ class EspecialidadeController extends Controller
     {
         try
         {
-            //if (Auth::user()->authorizeRoles() == false)
-            //    abort(403, 'Você não possui autorização para realizar essa ação.');
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
 
             $dados = Especialidade::find($id);
             $dados->nome = $req->input('nome');
@@ -82,18 +90,22 @@ class EspecialidadeController extends Controller
         }
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $especialidade = Especialidade::find($id);
         return view ('admin.especialidades.delete', compact('especialidade'));
     }
 
-    public function confirmardelete($id)
+    public function confirmardelete(Request $req, $id)
     {
         try
         {
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
             $especialidade = Especialidade::where('id', '=', $id)->delete();
             DB::commit();

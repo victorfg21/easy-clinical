@@ -14,21 +14,23 @@ class HistoricoPacienteController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator') && !$req->user()->authorizeRoles('profissional'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $paciente_list = Paciente::orderBy('nome')->get();
 
         return view('admin.historico-paciente.index', compact('paciente_list'));
     }
 
     //Método que lista todos os usuarios no DataTable da Tela
-    public function listarpacienteshistorico(Request $request)
+    public function listarpacienteshistorico(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator') && !$req->user()->authorizeRoles('profissional'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $pacientes = new Paciente;
-        return $pacientes->ListarPacientesHistorico($request);
+        return $pacientes->ListarPacientesHistorico($req);
     }
 }

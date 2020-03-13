@@ -16,49 +16,57 @@ class ExameMaterialController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $exameMateriais = ExameMaterial::orderBy('nome')->get();
         return view('admin.exame-materiais.index', compact('exameMateriais'));
     }
     //Método que lista todos os usuarios no DataTable da Tela
-    public function listarexamemateriais(Request $request)
+    public function listarexamemateriais(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $exameMateriais = new ExameMaterial;
-        return $exameMateriais->ListarExameMateriais($request);
+        return $exameMateriais->ListarExameMateriais($req);
     }
 
-    public function create()
+    public function create(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         return view('admin.exame-materiais.create');
     }
 
     public function store(ExameMaterialRequest $req)
     {
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $dados = new ExameMaterial;
         $dados->nome = $req->input('nome');
         $dados->save();
         return "Cadastrado com sucesso!";
     }
 
-    public function show($id)
+    public function show(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = ExameMaterial::find($id);
         return view('admin.exame-materiais.show', compact('registro'));
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = ExameMaterial::find($id);
         return view('admin.exame-materiais.edit', compact('registro'));
     }
@@ -67,8 +75,8 @@ class ExameMaterialController extends Controller
     {
         try
         {
-            //if (Auth::user()->authorizeRoles() == false)
-            //    abort(403, 'Você não possui autorização para realizar essa ação.');
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
 
             $dados = ExameMaterial::find($id);
             $dados->nome = $req->input('nome');
@@ -82,18 +90,22 @@ class ExameMaterialController extends Controller
         }
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $exameMaterial = ExameMaterial::find($id);
         return view ('admin.exame-materiais.delete', compact('exameMaterial'));
     }
 
-    public function confirmardelete($id)
+    public function confirmardelete(Request $req, $id)
     {
         try
         {
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             DB::beginTransaction();
             $exameMaterial = ExameMaterial::where('id', '=', $id)->delete();
             DB::commit();

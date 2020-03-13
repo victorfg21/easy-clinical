@@ -128,8 +128,7 @@ class AcompanhamentoController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->user()->authorizeRoles('superadministrator') == false &&
-                    $request->user()->authorizeRoles('profissional') == false)
+        if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('profissional'))
                 abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $user = Auth::id();
@@ -169,8 +168,7 @@ class AcompanhamentoController extends Controller
 
     public function realizar(Request $request, $id)
     {
-        if ($request->user()->authorizeRoles('superadministrator') == false &&
-                $request->user()->authorizeRoles('profissional') == false)
+        if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('profissional'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $consulta = DB::table('consultas')
@@ -188,8 +186,7 @@ class AcompanhamentoController extends Controller
 
     public function listarexames(Request $request)
     {
-        if ($request->user()->authorizeRoles('superadministrator') == false &&
-                $request->user()->authorizeRoles('profissional') == false)
+        if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('profissional'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         return Exame::orderBy('nome')->get()->toJson();
@@ -197,8 +194,7 @@ class AcompanhamentoController extends Controller
 
     public function listarmedicamentos(Request $request)
     {
-        if ($request->user()->authorizeRoles('superadministrator') == false &&
-                $request->user()->authorizeRoles('profissional') == false)
+        if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('profissional'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         return Medicamento::orderBy('nome_fabrica')->get()->toJson();
@@ -207,8 +203,7 @@ class AcompanhamentoController extends Controller
     public function store(Request $request)
     {
         try {
-            if ($request->user()->authorizeRoles('superadministrator') == false &&
-                    $request->user()->authorizeRoles('profissional') == false)
+            if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('profissional'))
                 abort(403, 'Você não possui autorização para realizar essa ação.');
 
             DB::beginTransaction();
@@ -256,8 +251,7 @@ class AcompanhamentoController extends Controller
 
     public function historico(Request $request, $id)
     {
-        if ($request->user()->authorizeRoles('superadministrator') == false &&
-                $request->user()->authorizeRoles('profissional') == false)
+        if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('profissional'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $solicitacoes_exames = DB::table('consultas')
@@ -286,8 +280,7 @@ class AcompanhamentoController extends Controller
 
     public function printexame(Request $request, $id)
     {
-        if ($request->user()->authorizeRoles('superadministrator') == false &&
-                $request->user()->authorizeRoles('profissional') == false)
+        if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('profissional'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $solicitacoes_exames = DB::table('solicitacoes_exames')
@@ -378,8 +371,7 @@ class AcompanhamentoController extends Controller
 
     public function printreceita(Request $request, $id)
     {
-        if ($request->user()->authorizeRoles('superadministrator') == false &&
-                $request->user()->authorizeRoles('profissional') == false)
+        if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('profissional'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $receita = DB::table('receitas')

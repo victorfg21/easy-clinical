@@ -21,20 +21,14 @@ class FabricanteRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome_generico' => 'required|max:150',
-            'nome_fabricante' => 'required|max:150',
-            'id_fabricante' => 'required',
+            'nome' => 'required|max:150'
         ];
     }
 
     public function messages()
     {
         return [
-            'nome_generico.required'=> 'Descrição é um campo obrigatório',
-            'nome_generico.max' => 'Descrição deve conter até :max caracteres',
-            'nome_fabricante.required'=> 'Descrição é um campo obrigatório',
-            'nome_fabricante.max' => 'Descrição deve conter até :max caracteres',
-            'id_fabricante.required'=> 'Descrição é um campo obrigatório'
+            'nome.required'=> 'Descrição é um campo obrigatório'
         ];
     }
 }

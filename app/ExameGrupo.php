@@ -45,8 +45,8 @@ class ExameGrupo extends Model
                                  ->get();
             foreach ($exameGrupos as $exameGrupo)
             {
-                $edit =  route('admin.exame-metodos.edit', $exameGrupo->id);
-                $delete =  route('admin.exame-metodos.delete', $exameGrupo->id);
+                $edit =  route('admin.exame-grupos.edit', $exameGrupo->id);
+                $delete =  route('admin.exame-grupos.delete', $exameGrupo->id);
 
                 $nestedData['nome'] = $exameGrupo->nome;
                 $nestedData['action'] = "<a href='#' title='Editar Grupo'

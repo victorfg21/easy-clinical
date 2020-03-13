@@ -7,6 +7,7 @@ use App\Http\Requests\ProfissionalRequest;
 use App\Http\Controllers\Controller;
 use App\Profissional;
 use App\User;
+use App\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Especialidade;
@@ -21,27 +22,30 @@ class ProfissionalController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $profissionais = Profissional::orderBy('nome')->get();
         return view('admin.profissionais.index', compact('profissionais'));
     }
 
     //Método que lista todos os usuarios no DataTable da Tela
-    public function listarprofissionais(Request $request)
+    public function listarprofissionais(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $profissionais = new Profissional;
-        return $profissionais->ListarProfissionais($request);
+        return $profissionais->ListarProfissionais($req);
     }
 
-    public function create()
+    public function create(Request $req)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $especialidade_list = Especialidade::orderBy('nome')->get();
         $areaAtuacao_list = AreaAtuacao::orderBy('nome')->get();
 
@@ -54,6 +58,9 @@ class ProfissionalController extends Controller
     public function store(ProfissionalRequest $req)
     {
         try {
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             $dados = new Profissional;
             $dados->nome = $req->input('nome');
             $dados->rg = $req->input('rg');
@@ -76,6 +83,7 @@ class ProfissionalController extends Controller
             $dados->cpf = str_replace(".", "", str_replace("-", "", $dados->cpf));
             $dados->celular = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->celular))));
             $dados->telefone = str_replace(" ", "", str_replace("-", "", str_replace(")", "", str_replace("(", "", $dados->telefone))));
+            $dados->save();
 
             $especialidades = json_decode($req->input('especialidades'));
             $areasAtuacao = json_decode($req->input('areasAtuacao'));
@@ -99,30 +107,34 @@ class ProfissionalController extends Controller
             $usuario = new User;
             $usuario->name = $req->input('nome');
             $usuario->email = $req->input('email');
-            $usuario->tipo_cadastro = Config::get('constants.options.profissional');
             $usuario->password = Hash::make($dados->cpf);
             $usuario->save();
 
-            $dados->user_id = DB::table('users')->where('email', '=', $usuario->email)->max('id');
-            $dados->save();
+            $role_profissional = Role::where('name', 'profissional')->first();
+            $usuario->roles()->attach($role_profissional);
+
+            $dados->user_id = $usuario->id;
+            $dados->update();
             return "Cadastrado com sucesso!";
         } catch (Exception $e) {
             return "Ocorreu um erro ao remover.";
         }
     }
 
-    public function show($id)
+    public function show(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = Profissional::find($id);
         return view('admin.profissionais.show', compact('registro'));
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
-        //if (Auth::user()->authorizeRoles() == false)
-        //    abort(403, 'Você não possui autorização para realizar essa ação.');
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
         $registro = Profissional::find($id);
         $user = User::find($registro->user_id);
 
@@ -151,8 +163,9 @@ class ProfissionalController extends Controller
     public function update(ProfissionalRequest $req, $id)
     {
         try {
-            //if (Auth::user()->authorizeRoles() == false)
-            //    abort(403, 'Você não possui autorização para realizar essa ação.');
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
             $dados = Profissional::find($id);
             $dados->nome = $req->input('nome');
             $dados->rg = $req->input('rg');

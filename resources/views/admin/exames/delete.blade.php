@@ -6,7 +6,7 @@
         <input type="hidden" value="{{ $exame->id }}" name="id">
 
         <div class="alert alert-danger" role="alert">
-            Deseja realmente EXCLUIR esse Material?
+            Deseja realmente EXCLUIR esse Exame?
         </div>
 
         <div class="form-group">

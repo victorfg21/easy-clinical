@@ -58,11 +58,14 @@ class Exame extends Model
             foreach ($exames as $exame)
             {
                 $edit =  route('admin.exames.edit',$exame->id);
+                $delete =  route('admin.exames.delete', $exame->id);
 
                 $nestedData['id'] = $exame->id;
                 $nestedData['nome'] = $exame->nome;
                 $nestedData['action'] = "<a href='#' title='Editar exame'
-                                          onclick=\"modalBootstrap('{$edit}', 'Editar exame', '#modal_Large', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>";
+                                          onclick=\"modalBootstrap('{$edit}', 'Editar exame', '#modal_Large', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>
+                                          &emsp;<a href='#' title='Excluir Material'
+                                          onclick=\"modalBootstrap('{$delete}', 'Excluir Material', '#modal_CRUD', '', 'true', 'true', 'false', 'Sim', 'Não')\"><span class='glyphicon glyphicon-trash'></span></a>";
 
                 $data[] = $nestedData;
             }

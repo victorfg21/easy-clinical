@@ -26,13 +26,16 @@
         </div>
         <div class="form-group {{ $errors->has('tipo_cadastro') ? 'has-error' : '' }}">
             <label for="TipoCadastro" class="control-label">Tipo Cadastro</label>
-            <select for="TipoCadastro" class="form-control js-example-responsive" name="tipo_cadastro" disabled>
-                <option value="1" {{ isset($registro->tipo_cadastro) ? ($registro->tipo_cadastro === '1' ? 'selected' : '' ) : '' }}>Profissional</option>
-                <option value="2" {{ isset($registro->tipo_cadastro) ? ($registro->tipo_cadastro === '2' ? 'selected' : '' ) : '' }}>Paciente</option>
-                @if(isset($registro->tipo_cadastro))
-                    <option value="3" {{ isset($registro->tipo_cadastro) ? ($registro->tipo_cadastro === '3' ? 'selected' : '' ) : '' }}>Administrativo</option>
+            @if (empty($role))
+                <select for="TipoCadastro" class="form-control js-example-responsive" name="tipo_cadastro">
+                    <option value="3" selected>Administrativo</option>
+                    <option value="4">Atendente</option>
                 @else
-                    <option value="3" {{ !isset($registro->tipo_cadastro) ? 'selected' : '' }}>Administrativo</option>
+                    <select for="TipoCadastro" class="form-control js-example-responsive" name="tipo_cadastro" disabled>
+                        <option value="1" {{ isset($role) ? ($role == '1' ? 'selected' : '' ) : '' }}>Profissional</option>
+                        <option value="2" {{ isset($role) ? ($role == '2' ? 'selected' : '' ) : '' }}>Paciente</option>
+                        <option value="3" {{ isset($role) ? ($role == '3' ? 'selected' : '' ) : '' }}>Administrativo</option>
+                        <option value="4" {{ isset($role) ? ($role == '4' ? 'selected' : '' ) : '' }}>Atendente</option>
                 @endif
             </select>
             @if($errors->has('tipo_cadastro'))

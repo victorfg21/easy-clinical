@@ -20,8 +20,7 @@ class ResultadoExameController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->user()->authorizeRoles('superadministrator') == false &&
-                $request->user()->authorizeRoles('atendente') == false)
+        if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('atendente'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $solicitacao_list = SolicitacaoExame::orWhere('realizado', '=', '0')
@@ -39,8 +38,7 @@ class ResultadoExameController extends Controller
     //Método que lista todos os usuarios no DataTable da Tela
     public function listarsolicitacoes(Request $request)
     {
-        if ($request->user()->authorizeRoles('superadministrator') == false &&
-                $request->user()->authorizeRoles('atendente') == false)
+        if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('atendente'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $exames = new SolicitacaoExame();
@@ -49,8 +47,7 @@ class ResultadoExameController extends Controller
 
     public function create(Request $request, $id)
     {
-        if ($request->user()->authorizeRoles('superadministrator') == false &&
-                $request->user()->authorizeRoles('atendente') == false)
+        if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('atendente'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $registro = DB::table('solicitacoes_exames_linha')
@@ -75,8 +72,7 @@ class ResultadoExameController extends Controller
     public function store(Request $request)
     {
         try {
-            if ($request->user()->authorizeRoles('superadministrator') == false &&
-                    $request->user()->authorizeRoles('atendente') == false)
+            if (!$request->user()->authorizeRoles('superadministrator') && !$request->user()->authorizeRoles('atendente'))
                 abort(403, 'Você não possui autorização para realizar essa ação.');
 
             $id_solicitacao = $request->input('solicitacao_exame_id');
