@@ -86,7 +86,7 @@ return [
 
     'username' => env('victor.ferreira@objetivasolucao.com.br'),
 
-    'password' => env('mercado987'),
+    'password' => env('objetiva.123'),
 
     /*
     |--------------------------------------------------------------------------

@@ -48,7 +48,7 @@ class PacienteController extends Controller
     public function store(PacienteRequest $req)
     {
         try {
-            if (!$req->user()->authorizeRoles('superadministrator'))
+            if (!$req->user()->authorizeRoles('superadministrator') && !$req->user()->authorizeRoles('atendente'))
                 abort(403, 'Você não possui autorização para realizar essa ação.');
 
             $dados = new Paciente;
@@ -90,7 +90,7 @@ class PacienteController extends Controller
 
     public function show(Request $req, $id)
     {
-        if (!$req->user()->authorizeRoles('superadministrator'))
+        if (!$req->user()->authorizeRoles('superadministrator') && !$req->user()->authorizeRoles('atendente'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $registro = Paciente::find($id);
@@ -99,7 +99,7 @@ class PacienteController extends Controller
 
     public function edit(Request $req, $id)
     {
-        if (!$req->user()->authorizeRoles('superadministrator'))
+        if (!$req->user()->authorizeRoles('superadministrator') && !$req->user()->authorizeRoles('atendente'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
 
         $registro = Paciente::find($id);
@@ -114,7 +114,7 @@ class PacienteController extends Controller
     public function update(PacienteRequest $req, $id)
     {
         try {
-            if (!$req->user()->authorizeRoles('superadministrator'))
+            if (!$req->user()->authorizeRoles('superadministrator') && !$req->user()->authorizeRoles('atendente'))
                 abort(403, 'Você não possui autorização para realizar essa ação.');
 
             $dados = Paciente::find($id);

@@ -118,19 +118,7 @@ return [
             'text' => 'Usuários',
             'icon' => 'user-circle',
             'role'    => 'superadministrator',
-            'submenu' => [
-                [
-                    'text' => 'Usuario',
-                    'icon' => 'user-circle',
-                    'url'  => 'admin/usuarios',
-                ],
-                [//Permissões
-                    'text' => 'Perfil',
-                    'icon' => 'unlock',
-                    'role'    => 'superadministrator',
-                    'url'  => 'admin/usuarios',
-                ],
-            ],
+            'url'  => 'admin/usuarios',
         ],
         [//Profissional
             'text' => 'Profissionais',
@@ -183,6 +171,18 @@ return [
                     'text' => 'Histórico Paciente',
                     'url'  => 'admin/historico-paciente',
                     'icon' => 'history'
+                ],
+            ],
+        ],
+        [//Paciente
+            'text' => 'Pacientes',
+            'icon' => 'ambulance',
+            'role'    => 'atendente',
+            'submenu' => [
+                [
+                    'text' => 'Paciente',
+                    'url'  => 'admin/pacientes',
+                    'icon' => 'address-card'
                 ],
             ]
         ],
@@ -265,17 +265,6 @@ return [
             'text' => 'Espaço Médico',
             'icon' => 'stethoscope',
             'role'    => 'profissional',
-            'submenu' => [
-                [
-                    'text' => 'Acompanhamento Médico',
-                    'url'  => 'medico/acompanhamento',
-                ],
-            ],
-        ],
-        [//Médico
-            'text' => 'Espaço Médico',
-            'icon' => 'stethoscope',
-            'role'    => 'superadministrator',
             'submenu' => [
                 [
                     'text' => 'Acompanhamento Médico',
