@@ -84,7 +84,7 @@ class AgendaLivreProfissionalController extends Controller
         return view('admin.agenda-livre-profissionais.show', compact('registro'));
     }
 
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
         if (!$req->user()->authorizeRoles('superadministrator'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
