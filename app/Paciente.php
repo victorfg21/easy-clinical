@@ -137,7 +137,7 @@ class Paciente extends Model
                 $nestedData['ih'] = $paciente->ih;
 
                 $nestedData['action'] = "<a href='#' title='Histórico Paciente'
-                                          onclick=\"modalBootstrap('{$show}', 'Histórico Paciente', '#modal_Large', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='fa fa-history fa-lg'></span></a>";
+                                          onclick=\"modalBootstrap('{$show}', 'Histórico Paciente', '#modal_Large', '', 'false', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='fa fa-history fa-lg'></span></a>";
 
                 $data[] = $nestedData;
             }
