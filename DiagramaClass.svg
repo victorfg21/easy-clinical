@@ -724,8 +724,8 @@
 <path fill="none" stroke="#003049" stroke-width="1.8" d="M2217.06,-736.555C2272.47,-723.064 2358.73,-702.061 2387.94,-694.949"/>
 <polygon fill="#003049" stroke="#003049" stroke-width="1.8" points="2389.11,-698.266 2398,-692.5 2387.46,-691.465 2389.11,-698.266"/>
 <text text-anchor="middle" x="2323.5" y="-715.3" font-family="Helvetica Neue" font-size="14.00"> </text>
-<text text-anchor="middle" x="2352" y="-704.552" font-family="Helvetica Neue" font-size="14.00">BelongsToMany</text>
-<text text-anchor="middle" x="2352" y="-689.552" font-family="Helvetica Neue" font-size="14.00">ExameLinha</text>
+<text text-anchor="middle" x="2253" y="-704.552" font-family="Helvetica Neue" font-size="14.00">BelongsToMany</text>
+<text text-anchor="middle" x="2253" y="-689.552" font-family="Helvetica Neue" font-size="14.00">ExameLinha</text>
 </g>
 <!-- appexamelinha&#45;&gt;appexame -->
 <g id="edge15" class="edge"><title>appexamelinha:exame_id&#45;&gt;appexame:id</title>
@@ -1144,31 +1144,6 @@
 <text text-anchor="middle" x="1309.5" y="-870.3" font-family="Helvetica Neue" font-size="14.00"> </text>
 <text text-anchor="middle" x="1214.66" y="-865.393" font-family="Helvetica Neue" font-size="14.00">BelongsToMany</text>
 <text text-anchor="middle" x="1214.66" y="-850.393" font-family="Helvetica Neue" font-size="14.00">SolicitacaoExameLinha</text>
-</g>
-<!-- apparquivo -->
-<g id="node29" class="node"><title>apparquivo</title>
-<polygon fill="none" stroke="black" points="164,-807 0,-807 0,-548 164,-548 164,-807"/>
-<polygon fill="#d3d3d3" stroke="none" points="0,-769.5 0,-806.5 164,-806.5 164,-769.5 0,-769.5"/>
-<polygon fill="none" stroke="black" points="0,-769.5 0,-806.5 164,-806.5 164,-769.5 0,-769.5"/>
-<text text-anchor="start" x="58" y="-784.3" font-family="Helvetica Neue" font-size="14.00" fill="#333333">Arquivo</text>
-<polygon fill="#ffffff" stroke="none" points="0,-732.5 0,-769.5 164,-769.5 164,-732.5 0,-732.5"/>
-<polygon fill="none" stroke="black" points="0,-732.5 0,-769.5 164,-769.5 164,-732.5 0,-732.5"/>
-<text text-anchor="start" x="11" y="-747.3" font-family="Helvetica Neue" font-size="14.00" fill="#333333">id (bigint)</text>
-<polygon fill="#ffffff" stroke="none" points="0,-695.5 0,-732.5 164,-732.5 164,-695.5 0,-695.5"/>
-<polygon fill="none" stroke="black" points="0,-695.5 0,-732.5 164,-732.5 164,-695.5 0,-695.5"/>
-<text text-anchor="start" x="11" y="-710.3" font-family="Helvetica Neue" font-size="14.00" fill="#333333">descricao (string)</text>
-<polygon fill="#ffffff" stroke="none" points="0,-658.5 0,-695.5 164,-695.5 164,-658.5 0,-658.5"/>
-<polygon fill="none" stroke="black" points="0,-658.5 0,-695.5 164,-695.5 164,-658.5 0,-658.5"/>
-<text text-anchor="start" x="11" y="-673.3" font-family="Helvetica Neue" font-size="14.00" fill="#333333">extensao (string)</text>
-<polygon fill="#ffffff" stroke="none" points="0,-621.5 0,-658.5 164,-658.5 164,-621.5 0,-621.5"/>
-<polygon fill="none" stroke="black" points="0,-621.5 0,-658.5 164,-658.5 164,-621.5 0,-621.5"/>
-<text text-anchor="start" x="11" y="-636.3" font-family="Helvetica Neue" font-size="14.00" fill="#333333">caminho (string)</text>
-<polygon fill="#ffffff" stroke="none" points="0,-584.5 0,-621.5 164,-621.5 164,-584.5 0,-584.5"/>
-<polygon fill="none" stroke="black" points="0,-584.5 0,-621.5 164,-621.5 164,-584.5 0,-584.5"/>
-<text text-anchor="start" x="11" y="-599.3" font-family="Helvetica Neue" font-size="14.00" fill="#333333">created_at (datetime)</text>
-<polygon fill="#ffffff" stroke="none" points="0,-547.5 0,-584.5 164,-584.5 164,-547.5 0,-547.5"/>
-<polygon fill="none" stroke="black" points="0,-547.5 0,-584.5 164,-584.5 164,-547.5 0,-547.5"/>
-<text text-anchor="start" x="11" y="-562.3" font-family="Helvetica Neue" font-size="14.00" fill="#333333">updated_at (datetime)</text>
 </g>
 </g>
 </svg>
