@@ -241,6 +241,8 @@ class AcompanhamentoController extends Controller
 
             DB::commit();
 
+            route('medico.acompanhamento.printexame', $receita->id);
+
             return 'Cadastrado com sucesso!';
         } catch (Exception $e) {
             DB::rollback();

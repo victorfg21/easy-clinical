@@ -31,6 +31,8 @@ Route::post('admin/usuarios/store', ['as' => 'admin.usuarios.store', 'uses' => '
 Route::get('admin/usuarios/edit/{id}', ['as' => 'admin.usuarios.edit', 'uses' => 'Admin\UsuarioController@edit']);
 Route::put('admin/usuarios/update/{id}', ['as' => 'admin.usuarios.update', 'uses' => 'Admin\UsuarioController@update']);
 Route::get('admin/usuarios/listarusuarios', ['as' => 'admin.usuarios.listarusuarios', 'uses' => 'Admin\UsuarioController@listarusuarios']);
+Route::get('admin/usuarios/delete/{id}', ['as' => 'admin.usuarios.delete', 'uses' => 'Admin\UsuarioController@delete']);
+Route::post('admin/usuarios/confirmardelete/{id}', ['as' => 'admin.usuarios.confirmardelete', 'uses' => 'Admin\UsuarioController@confirmardelete']);
 
 //Medicamentos
 Route::get('admin/medicamentos', ['as' => 'admin.medicamentos', 'uses' => 'Admin\MedicamentoController@index']);

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -111,12 +112,24 @@ class User extends Authenticatable
             ;
             foreach ($users as $user) {
                 $edit = route('admin.usuarios.edit', $user->id);
+                $delete =  route('admin.usuarios.delete', $user->id);
+                $link = "";
+                if(DB::table('role_user')->where('user_id', '=', $user->id)->where('role_id', '=', '4')->count() > 0)
+                {
+                    $link ="<a href='#' title='Editar Usuário'
+                            onclick=\"modalBootstrap('{$edit}', 'Editar Usuário', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>
+                            &emsp;<a href='#' title='Excluir Usuário'
+                            onclick=\"modalBootstrap('{$delete}', 'Excluir Usuário', '#modal_CRUD', '', 'true', 'true', 'false', 'Sim', 'Não')\"><span class='glyphicon glyphicon-trash'></span></a>";
+                }
+                else
+                {
+                    $link = "<a href='#' title='Editar Usuário' onclick=\"modalBootstrap('{$edit}', 'Editar Usuário', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>
+                            &emsp;";
+                }
 
                 $nestedData['name'] = $user->name;
                 $nestedData['email'] = $user->email;
-                $nestedData['action'] = "<a href='#' title='Editar Usuários'
-                                        onclick=\"modalBootstrap('{$edit}', 'Editar Usuários', '#modal_CRUD', '', 'true', 'true', 'false', 'Atualizar', 'Fechar')\"><span class='glyphicon glyphicon-edit'></span></a>
-                                        &emsp;";
+                $nestedData['action'] = $link;
                 $data[] = $nestedData;
             }
         }

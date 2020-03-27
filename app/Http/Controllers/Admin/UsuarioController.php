@@ -10,6 +10,7 @@ use App\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Config;
+use App\Http\Controllers\Admin\Exception;
 
 class UsuarioController extends Controller
 {
@@ -59,7 +60,7 @@ class UsuarioController extends Controller
 
         $role_administrativo  = Role::where('name', 'superadministrator')->first();
         $role_atendente  = Role::where('name', 'atendente')->first();
-        
+
         if($req->input('tipo_cadastro') == "3")
             $dados->roles()->attach($role_administrativo);
         else if($req->input('tipo_cadastro') == "4")
@@ -114,6 +115,36 @@ class UsuarioController extends Controller
             return "Alterado com sucesso!";
         } catch (Exception $e) {
             return "Ocorreu um erro ao alterar!";
+        }
+    }
+
+    public function delete(Request $req, $id)
+    {
+        if (!$req->user()->authorizeRoles('superadministrator'))
+            abort(403, 'Você não possui autorização para realizar essa ação.');
+
+        $usuario = User::find($id);
+
+
+        return view ('admin.usuarios.delete', compact('usuario'));
+    }
+
+    public function confirmardelete(Request $req, $id)
+    {
+        try
+        {
+            if (!$req->user()->authorizeRoles('superadministrator'))
+                abort(403, 'Você não possui autorização para realizar essa ação.');
+
+            DB::beginTransaction();
+            $usuario = User::where('id', '=', $id)->delete();
+            DB::commit();
+            return "Removido com sucesso!";
+        }
+        catch(Exception $e)
+        {
+            DB::rollback();
+            return "Ocorreu um erro ao remover.";
         }
     }
 }

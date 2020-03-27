@@ -18,8 +18,8 @@
                 <thead>
                     <tr>
                         <th class="col-xs-4">Email</th>
-                        <th class="col-xs-7">Nome</th>
-                        <th class="col-xs-1"></th>
+                        <th class="col-xs-5">Nome</th>
+                        <th class="col-xs-3"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,10 +56,10 @@ var tblUsuarios = $('#tblUsuarios').DataTable({
          },
         "columns": [
               { "data": "email", "width": "40%" },
-              { "data": "name", "width": "70%" },
+              { "data": "name", "width": "40%" },
               {"render": function (data, type, full, meta) {
                         return full.action;
-                    }, "width": "10%"},
+                    }, "width": "20%"},
         ],
         columnDefs: [
             { responsivePriority: 1, targets: 0 },

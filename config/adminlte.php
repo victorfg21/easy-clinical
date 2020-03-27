@@ -252,7 +252,7 @@ return [
             'role'    => 'superadministrator',
             'submenu' => [
                 [
-                    'text' => 'Agendar Consulta/Retorno',
+                    'text' => 'Agendar Consulta',
                     'url'  => 'atendimento/agendamento-consulta',
                 ],
                 [
