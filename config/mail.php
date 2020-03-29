@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'mail.objetivasolucao.com.br'),
+    'host' => env('MAIL_HOST', 'smtp.live.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 587),
+    'port' => env('MAIL_PORT', 25),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'victor.ferreira@objetivasolucao.com.br'),
+        'address' => env('MAIL_FROM_ADDRESS', 'victorfg_judoca@hotmail.com'),
         'name' => env('MAIL_FROM_NAME', 'eClinical'),
     ],
 
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('victor.ferreira@objetivasolucao.com.br'),
+    'username' => env('victorfg_judoca@hotmail.com'),
 
-    'password' => env('objetiva.123'),
+    'password' => env('Grepolis#21'),
 
     /*
     |--------------------------------------------------------------------------
