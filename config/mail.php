@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.live.com'),
+    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 25),
+    'port' => env('MAIL_PORT', 587),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'victorfg_judoca@hotmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'victorfgdev@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'eClinical'),
     ],
 
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'encryption' => env('MAIL_ENCRYPTION', 'ssl'),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('victorfg_judoca@hotmail.com'),
+    'username' => env('victorfgdev@gmail.com'),
 
-    'password' => env('Grepolis#21'),
+    'password' => env('123@Mudar'),
 
     /*
     |--------------------------------------------------------------------------
