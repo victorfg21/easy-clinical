@@ -254,7 +254,7 @@
                         type: 'info',
                         title: 'Consulta em andamento',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 100
                     })
 
                     Clock.resume();

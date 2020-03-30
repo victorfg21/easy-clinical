@@ -104,7 +104,7 @@ class SolicitacaoExame extends Model
 
         $json_data = array(
             "draw"            => intval($request->input('draw')),
-            "recordsTotal"    => intval($totalData),
+            "recordsTotal"    => intval($totalFiltered->count()),
             "recordsFiltered" => intval($totalFiltered->count()),
             "style"           => '',
             "data"            => $data

@@ -17,10 +17,11 @@
             <table id="tblProfissionais" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="col-xs-6">Nome</th>
-                        <th class="col-xs-4">Conselho</th>
-                        <th class="col-xs-4">Nº Registro</th>
-                        <th class="col-xs-1">Editar</th>
+                        <th></th>
+                        <th>Nome</th>
+                        <th>Conselho</th>
+                        <th>Nº Registro</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +46,7 @@ var tblProfissionais = $('#tblProfissionais').DataTable({
       'info'        : true,
       'autoWidth'   : false,
       "order"       : [[ 0, "asc" ]],
+      "responsive"  : true,
       "processing"  : true,
       "serverSide"  : true,
        "language": {
@@ -56,20 +58,24 @@ var tblProfissionais = $('#tblProfissionais').DataTable({
               "type": "get"
          },
         "columns": [
-              { "data": "nome", "width": "40%" },
-              { "data": "conselho", "width": "10%" },
-              { "data": "numero_registro", "width": "20%" },
-              {"render": function (data, type, full, meta) {
-                        return full.action;
-                    }, "width": "10%"},
+            {"render": function (data, type, full, meta) {
+                    return "";
+                }, "width": "10%"},
+            { "data": "nome", "width": "40%" },
+            { "data": "conselho", "width": "20%" },
+            { "data": "numero_registro", "width": "20%" },
+            {"render": function (data, type, full, meta) {
+                    return full.action;
+                }, "width": "10%"},
         ],
         columnDefs: [
-            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 0, className: "control"},
             { responsivePriority: 2, targets: 1 },
             { responsivePriority: 3, targets: 2 },
             { responsivePriority: 4, targets: 3 },
+            { responsivePriority: 5, targets: 4 },
             {
-                "targets": [3],
+                "targets": [0, 1, 2, 3, 4],
                 "orderable": false
             }
         ]

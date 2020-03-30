@@ -17,10 +17,11 @@
             <table id="tblMedicamentos" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="col-xs-4">Nome Fábrica</th>
-                        <th class="col-xs-4">Nome Genérico</th>
-                        <th class="col-xs-4">Fabricante</th>
-                        <th class="col-xs-4"></th>
+                        <th></th>
+                        <th>Nome Fábrica</th>
+                        <th>Nome Genérico</th>
+                        <th>Fabricante</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,41 +39,46 @@
 
 <script>
 var tblMedicamentos = $('#tblMedicamentos').DataTable({
-      'paging'      : true,
-      'lengthChange': true,
-      'searching'   : true,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false,
-      "order"       : [[ 0, "asc" ]],
-      "processing"  : true,
-      "serverSide"  : true,
-       "language": {
-            "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
-        },
-      "ajax":{
-              "url": "{!! route('admin.medicamentos.listarmedicamentos') !!}",
-              "dataType": "json",
-              "type": "get"
-         },
-        "columns": [
+        'paging'      : true,
+        'lengthChange': true,
+        'searching'   : true,
+        'ordering'    : true,
+        'info'        : true,
+        'autoWidth'   : false,
+        "order"       : [[ 0, "asc" ]],
+        "responsive"  : true,
+        "processing"  : true,
+        "serverSide"  : true,
+        "language": {
+                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+            },
+        "ajax":{
+                "url": "{!! route('admin.medicamentos.listarmedicamentos') !!}",
+                "dataType": "json",
+                "type": "get"
+            },
+            "columns": [
+                {"render": function (data, type, full, meta) {
+                        return "";
+                    }, "width": "10%"},
                 { "data": "nome_fabrica", "width": "30%" },
-                { "data": "nome_generico", "width": "30%" },
-                { "data": "fabricante", "width": "25%" },
+                { "data": "nome_generico", "width": "25%" },
+                { "data": "fabricante", "width": "15%" },
                 {"render": function (data, type, full, meta) {
                         return full.action;
-                }, "width": "15%"},
-        ],
-        columnDefs: [
-            { responsivePriority: 1, targets: 0 },
-            { responsivePriority: 2, targets: 1 },
-            { responsivePriority: 3, targets: 2 },
-            { responsivePriority: 4, targets: 3 },
-            {
-                "targets": [3],
-                "orderable": false
-            }
-        ]
+                }, "width": "20%"},
+            ],
+            columnDefs: [
+                { responsivePriority: 1, targets: 0, className: "control"},
+                { responsivePriority: 2, targets: 1 },
+                { responsivePriority: 4, targets: 2 },
+                { responsivePriority: 5, targets: 3 },
+                { responsivePriority: 3, targets: 4 },
+                {
+                    "targets": [0, 1, 2, 3, 4],
+                    "orderable": false
+                }
+            ]
   });
 </script>
 

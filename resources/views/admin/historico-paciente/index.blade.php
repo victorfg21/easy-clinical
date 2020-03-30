@@ -17,11 +17,12 @@
             <table id="tblPaciente" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="col-xs-1">ID</th>
-                        <th class="col-xs-6">Nome</th>
-                        <th class="col-xs-2">IH</th>
-                        <th class="col-xs-2">CPF</th>
-                        <th class="col-xs-1">Histórico</th>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>IH</th>
+                        <th>CPF</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,6 +45,7 @@
         'info'        : true,
         'autoWidth'   : false,
         "order"       : [[ 0, "asc" ]],
+        "responsive"  : true,
         "processing"  : true,
         "serverSide"  : true,
         "language": {
@@ -55,21 +57,26 @@
                 "type": "get"
             },
         "columns": [
-                { "data": "id", "width": "5%" },
-                { "data": "nome", "width": "60%" },
-                { "data": "ih", "width": "15%" },
-                { "data": "cpf", "width": "20%" },
-                {"render": function (data, type, full, meta) {
-                        return full.action;
-                    }, "width": "10%"},
+            {"render": function (data, type, full, meta) {
+                    return "";
+                }, "width": "10%"},
+            { "data": "id", "width": "5%" },
+            { "data": "nome", "width": "60%" },
+            { "data": "ih", "width": "15%" },
+            { "data": "cpf", "width": "20%" },
+            {"render": function (data, type, full, meta) {
+                    return full.action;
+                }, "width": "10%"},
         ],
         columnDefs: [
-            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 0, className: "control"},
             { responsivePriority: 2, targets: 1 },
             { responsivePriority: 3, targets: 2 },
-            { responsivePriority: 4, targets: 3 },
+            { responsivePriority: 5, targets: 3 },
+            { responsivePriority: 6, targets: 4 },
+            { responsivePriority: 4, targets: 5 },
             {
-                "targets": [1],
+                "targets": [0, 1, 2, 3, 4, 5],
                 "orderable": false
             }
         ]

@@ -17,8 +17,9 @@
             <table id="tblExames" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="col-xs-6">Descrição</th>
-                        <th class="col-xs-1"></th>
+                        <th></th>
+                        <th>Descrição</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,37 +37,42 @@
 
 <script>
 var tblExames = $('#tblExames').DataTable({
-      'paging'      : true,
-      'lengthChange': true,
-      'searching'   : true,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false,
-      "order"       : [[ 0, "asc" ]],
-      "processing"  : true,
-      "serverSide"  : true,
-       "language": {
-            "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
-        },
-      "ajax":{
-              "url": "{!! route('admin.exames.listarexames') !!}",
-              "dataType": "json",
-              "type": "get"
-         },
-        "columns": [
-              { "data": "nome", "width": "40%" },
-              {"render": function (data, type, full, meta) {
+        'paging'      : true,
+        'lengthChange': true,
+        'searching'   : true,
+        'ordering'    : true,
+        'info'        : true,
+        'autoWidth'   : false,
+        "order"       : [[ 0, "asc" ]],
+        "responsive"  : true,
+        "processing"  : true,
+        "serverSide"  : true,
+        "language": {
+                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+            },
+        "ajax":{
+                "url": "{!! route('admin.exames.listarexames') !!}",
+                "dataType": "json",
+                "type": "get"
+            },
+            "columns": [
+                {"render": function (data, type, full, meta) {
+                            return "";
+                        }, "width": "10%"},
+                { "data": "nome", "width": "70%" },
+                {"render": function (data, type, full, meta) {
                         return full.action;
-                    }, "width": "10%"},
-        ],
-        columnDefs: [
-            { responsivePriority: 1, targets: 0 },
-            { responsivePriority: 2, targets: 1 },
-            {
-                "targets": [1],
-                "orderable": false
-            }
-        ]
+                    }, "width": "20%"},
+            ],
+            columnDefs: [
+                { responsivePriority: 1, targets: 0, className: "control"},
+                { responsivePriority: 2, targets: 1 },
+                { responsivePriority: 3, targets: 2 },
+                {
+                    "targets": [0, 1, 2],
+                    "orderable": false
+                }
+            ]
   });
 </script>
 

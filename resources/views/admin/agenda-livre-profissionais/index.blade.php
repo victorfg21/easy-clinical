@@ -17,9 +17,10 @@
             <table id="tblAgendasLivre" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="col-xs-7">Profissional</th>
-                        <th class="col-xs-2">Data Livre</th>
-                        <th class="col-xs-1">Editar</th>
+                        <th></th>
+                        <th>Profissional</th>
+                        <th>Data Livre</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,10 +41,11 @@ var tblAgendasLivre = $('#tblAgendasLivre').DataTable({
       'paging'      : true,
       'lengthChange': true,
       'searching'   : true,
-      'ordering'    : true,
+      'ordering'    : false,
       'info'        : true,
       'autoWidth'   : false,
-      "order"       : [[ 0, "asc" ]],
+      "order"       : [[ 1, "asc" ]],
+      "responsive"  : true,
       "processing"  : true,
       "serverSide"  : true,
        "language": {
@@ -55,20 +57,20 @@ var tblAgendasLivre = $('#tblAgendasLivre').DataTable({
               "type": "get"
          },
         "columns": [
-              { "data": "nome", "width": "70%" },
-              { "data": "data_livre", "width": "20%" },
-              {"render": function (data, type, full, meta) {
-                        return full.action;
-                    }, "width": "10%"},
+            {"render": function (data, type, full, meta) {
+                    return "";
+                }, "width": "10%"},
+            { "data": "nome", "width": "60%" },
+            { "data": "data_livre", "width": "20%" },
+            {"render": function (data, type, full, meta) {
+                    return full.action;
+                }, "width": "10%"},
         ],
         columnDefs: [
-            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 0, className: "control"},
             { responsivePriority: 2, targets: 1 },
             { responsivePriority: 3, targets: 2 },
-            {
-                "targets": [2],
-                "orderable": false
-            }
+            { responsivePriority: 4, targets: 3 }
         ]
   });
 </script>

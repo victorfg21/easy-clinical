@@ -54,14 +54,15 @@
             <table id="tblAgendamentos" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="col-xs-1">Cod.</th>
-                        <th class="col-xs-3">Profissional</th>
+                        <th></th>
+                        <th style="display:none;">Cod.</th>
+                        <th>Profissional</th>
                         <th style="display:none;">Paciente ID</th>
-                        <th class="col-xs-3">Paciente</th>
-                        <th class="col-xs-2">Data</th>
-                        <th class="col-xs-2">Horário</th>
-                        <th class="col-xs-3">Status</th>
-                        <th class="col-xs-2">Ações</th>
+                        <th>Paciente</th>
+                        <th>Data</th>
+                        <th>Horário</th>
+                        <th>Status</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,6 +85,7 @@
         'info'        : true,
         'autoWidth'   : false,
         "order"       : [[ 0, "asc" ]],
+        "responsive"  : true,
         "processing"  : true,
         "serverSide"  : true,
         "language": {
@@ -101,30 +103,34 @@
             },
         },
         "columns": [
-                { "data": "profissional_id", "className": "profissional_id", "width": "5%" },
-                { "data": "profissional_nome", "className": "profissional_nome", "width": "35%" },
-                { "data": "paciente_id", "className": "paciente_id", "width": "10%", "visible": false },
-                { "data": "paciente_nome", "className": "paciente_nome", "width": "35%" },
-                { "data": "data", "className": "data", "width": "10%" },
-                { "data": "hora", "className": "hora", "width": "10%" },
-                {"render": function (data, type, full, meta) {
-                        return full.status;
-                }, "width": "20%"},
-                {"render": function (data, type, full, meta) {
-                        return full.action;
-                }, "width": "20%"},
+            {"render": function (data, type, full, meta) {//0
+                        return "";
+                }, "width": "10%"},
+            { "data": "profissional_id", "className": "profissional_id", "width": "5%" },//1
+            { "data": "profissional_nome", "className": "profissional_nome", "width": "25%" },//2
+            { "data": "paciente_id", "className": "paciente_id", "width": "5%", "visible": false },//3
+            { "data": "paciente_nome", "className": "paciente_nome", "width": "25%" },//4
+            { "data": "data", "className": "data", "width": "10%" },//5
+            { "data": "hora", "className": "hora", "width": "10%" },//6
+            {"render": function (data, type, full, meta) {//7
+                    return full.status;
+            }, "width": "10%"},
+            {"render": function (data, type, full, meta) {//8
+                    return full.action;
+                }, "width": "10%"},
         ],
         columnDefs: [
-            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 0, className: "control"},
             { responsivePriority: 2, targets: 1 },
-            { responsivePriority: 4, targets: 2 },
-            { responsivePriority: 5, targets: 3 },
-            { responsivePriority: 6, targets: 4 },
-            { responsivePriority: 7, targets: 5 },
-            { responsivePriority: 3, targets: 6 },
-            { responsivePriority: 8, targets: 7 },
+            { responsivePriority: 3, targets: 2 },
+            { responsivePriority: 7, targets: 3 },
+            { responsivePriority: 8, targets: 4 },
+            { responsivePriority: 9, targets: 5 },
+            { responsivePriority: 4, targets: 6 },
+            { responsivePriority: 6, targets: 7 },
+            { responsivePriority: 5, targets: 8 },
             {
-                "targets": [7],
+                "targets": [1, 2, 3, 4, 5, 6, 7, 8],
                 "orderable": false
             }
         ]

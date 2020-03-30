@@ -17,10 +17,11 @@
             <table id="tblAgendas" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="col-xs-7">Profissional</th>
-                        <th class="col-xs-2">Início</th>
-                        <th class="col-xs-2">Fim</th>
-                        <th class="col-xs-1">Editar</th>
+                        <th></th>
+                        <th>Profissional</th>
+                        <th>Início</th>
+                        <th>Fim</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,10 +42,10 @@ var tblAgendas = $('#tblAgendas').DataTable({
       'paging'      : true,
       'lengthChange': true,
       'searching'   : true,
-      'ordering'    : true,
+      'ordering'    : false,
       'info'        : true,
       'autoWidth'   : false,
-      "order"       : [[ 0, "asc" ]],
+      "order"       : [[ 1, "asc" ]],
       "processing"  : true,
       "serverSide"  : true,
        "language": {
@@ -56,22 +57,22 @@ var tblAgendas = $('#tblAgendas').DataTable({
               "type": "get"
          },
         "columns": [
-              { "data": "nome", "width": "50%" },
-              { "data": "inicio_periodo", "width": "20%" },
-              { "data": "fim_periodo", "width": "20%" },
-              {"render": function (data, type, full, meta) {
-                        return full.action;
-                    }, "width": "10%"},
+            {"render": function (data, type, full, meta) {
+                    return "";
+                }, "width": "10%"},
+            { "data": "nome", "width": "40%" },
+            { "data": "inicio_periodo", "width": "20%" },
+            { "data": "fim_periodo", "width": "20%" },
+            {"render": function (data, type, full, meta) {
+                    return full.action;
+                }, "width": "10%"},
         ],
         columnDefs: [
-            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 0, className: "control"},
             { responsivePriority: 2, targets: 1 },
             { responsivePriority: 3, targets: 2 },
             { responsivePriority: 4, targets: 3 },
-            {
-                "targets": [3],
-                "orderable": false
-            }
+            { responsivePriority: 5, targets: 4 }
         ]
   });
 </script>
