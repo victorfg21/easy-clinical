@@ -3,26 +3,29 @@
 @section('title', 'eClinical')
 
 @section('content_header')
-<div class="col-md-12">
+
+@stop
+
+@section('content')
+
+<div class="col-md-4">
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Total Consultas x Profissionais</h3>
-
             <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
             </div>
         </div>
         <div class="box-body" style="">
             <div class="chart">
-                <canvas id="consultaChart" style="height: 200px; width: 500px;" width="547" height="254"></canvas>
+                <canvas id="consultaChart" style="height: 254px; width: 547px;" width="547" height="254"></canvas>
             </div>
         </div>
     </div>
 </div>
 
-<div class="col-md-12">
+<div class="col-md-4">
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Total Exames</h3>
@@ -35,7 +38,7 @@
         </div>
         <div class="box-body" style="">
             <div class="chart">
-                <canvas id="exameChart" style="height: 200; width: 500px;" width="547" height="254"></canvas>
+                <canvas id="exameChart" style="height: 254px; width: 547px;" width="547" height="254"></canvas>
             </div>
         </div>
     </div>
