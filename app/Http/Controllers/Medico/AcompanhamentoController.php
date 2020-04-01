@@ -241,13 +241,18 @@ class AcompanhamentoController extends Controller
 
             DB::commit();
 
-            route('medico.acompanhamento.printexame', $receita->id);
-
-            return 'Cadastrado com sucesso!';
+            return response()->json([
+                'sucesso' => true,
+                'id' => $receita->id
+            ]);
+            
         } catch (Exception $e) {
             DB::rollback();
 
-            return 'Ocorreu um erro ao cadastrar.';
+            return response()->json([
+                'sucesso' => false,
+                'id' => $receita->id
+            ]);
         }
     }
 

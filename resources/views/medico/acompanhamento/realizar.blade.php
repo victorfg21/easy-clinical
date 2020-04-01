@@ -217,7 +217,13 @@
                         data: form,
                         success: function (data) {
 
-                            if (data == "Cadastrado com sucesso!") {
+                            if (data.sucesso == true) {
+                                console.log(data.id);
+                                var url = "{{ route('medico.acompanhamento.printreceita', 'ID_RECEITA')}}";
+                                url = url.replace("ID_RECEITA", data.id);
+                                console.log(url);
+                                window.open(url, '_blank');
+
                                 Swal.fire({
                                     type: 'success',
                                     title: 'Consulta finalizada com sucesso',
@@ -245,6 +251,9 @@
                             showConfirmButton: false,
                             timer: 1500
                         })
+
+                        $('#stop').prop('disabled', false);
+                        Clock.resume();
                     });
                 }else if (
                     /* Read more about handling dismissals below */
