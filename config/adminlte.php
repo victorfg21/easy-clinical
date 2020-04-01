@@ -184,6 +184,11 @@ return [
                     'url'  => 'admin/pacientes',
                     'icon' => 'address-card'
                 ],
+                [
+                    'text' => 'Histórico Paciente',
+                    'url'  => 'admin/historico-paciente',
+                    'icon' => 'history'
+                ],
             ]
         ],
         [//Exame
