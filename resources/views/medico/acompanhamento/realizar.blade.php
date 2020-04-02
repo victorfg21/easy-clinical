@@ -218,11 +218,12 @@
                         success: function (data) {
 
                             if (data.sucesso == true) {
-                                console.log(data.id);
-                                var url = "{{ route('medico.acompanhamento.printreceita', 'ID_RECEITA')}}";
-                                url = url.replace("ID_RECEITA", data.id);
-                                console.log(url);
-                                window.open(url, '_blank');
+                                if(data.id != null)
+                                {
+                                    var url = "{{ route('medico.acompanhamento.printreceita', 'ID_RECEITA')}}";
+                                    url = url.replace("ID_RECEITA", data.id);
+                                    window.open(url, '_blank');
+                                }
 
                                 Swal.fire({
                                     type: 'success',

@@ -245,13 +245,13 @@ class AcompanhamentoController extends Controller
                 'sucesso' => true,
                 'id' => $receita->id
             ]);
-            
+
         } catch (Exception $e) {
             DB::rollback();
 
             return response()->json([
                 'sucesso' => false,
-                'id' => $receita->id
+                'id' => 0
             ]);
         }
     }
