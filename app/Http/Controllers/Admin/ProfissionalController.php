@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Especialidade;
 use App\AreaAtuacao;
 use Config;
+use Exception;
 
 class ProfissionalController extends Controller
 {

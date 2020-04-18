@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Medicamento;
 use App\Fabricante;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class MedicamentoController extends Controller
 {

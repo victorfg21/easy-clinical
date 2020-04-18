@@ -7,6 +7,7 @@ use App\Http\Requests\fabricanteRequest;
 use App\Http\Controllers\Controller;
 use App\Fabricante;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class FabricanteController extends Controller
 {

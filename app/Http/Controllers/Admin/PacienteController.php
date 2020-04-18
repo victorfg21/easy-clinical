@@ -10,6 +10,7 @@ use App\User;
 use App\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class PacienteController extends Controller
 {

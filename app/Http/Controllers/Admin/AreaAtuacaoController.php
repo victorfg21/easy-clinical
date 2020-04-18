@@ -7,6 +7,7 @@ use App\Http\Requests\AreaAtuacaoRequest;
 use App\Http\Controllers\Controller;
 use App\AreaAtuacao;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class AreaAtuacaoController extends Controller
 {

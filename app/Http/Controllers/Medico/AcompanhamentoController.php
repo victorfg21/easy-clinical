@@ -15,6 +15,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class AcompanhamentoController extends Controller
 {
@@ -212,38 +213,67 @@ class AcompanhamentoController extends Controller
             $registro->realizado = true;
             $registro->update();
 
-            $solicitacaoExame = new SolicitacaoExame();
-            $solicitacaoExame->observacao = $request->input('observacaoSolic');
-            $solicitacaoExame->consulta_id = $request->input('id');
-            $solicitacaoExame->save();
+            if ($request->input('observacaoSolic') != null) {
+                $solicitacaoExame = new SolicitacaoExame();
+                $solicitacaoExame->observacao = $request->input('observacaoSolic');
+                $solicitacaoExame->consulta_id = $request->input('id');
+                $solicitacaoExame->save();
 
-            $linhasSolicitacao = json_decode($request->input('exameLinha'));
-            foreach ($linhasSolicitacao as $linha) {
-                $dadosLinha = new SolicitacaoExameLinha();
-                $dadosLinha->exame_id = $linha->exame_id;
-                $dadosLinha->solicitacao_exame_id = $solicitacaoExame->id;
-                $dadosLinha->save();
+                $linhasSolicitacao = json_decode($request->input('exameLinha'));
+                if($linhasSolicitacao == null)
+                {
+                    return response()->json([
+                        'sucesso' => false,
+                        'id' => -1,
+                        'mensagem' => 'Nenhum exame solicitado!'
+                    ]);
+                }
+
+                foreach ($linhasSolicitacao as $linha) {
+                    $dadosLinha = new SolicitacaoExameLinha();
+                    $dadosLinha->exame_id = $linha->exame_id;
+                    $dadosLinha->solicitacao_exame_id = $solicitacaoExame->id;
+                    $dadosLinha->save();
+                }
             }
 
-            $receita = new Receita();
-            $receita->observacao = $request->input('observacaoReceita');
-            $receita->consulta_id = $request->input('id');
-            $receita->save();
+            if ($request->input('observacaoReceita') != null) {
+                $receita = new Receita();
+                $receita->observacao = $request->input('observacaoReceita');
+                $receita->consulta_id = $request->input('id');
+                $receita->save();
 
-            $linhasReceita = json_decode($request->input('receitaLinha'));
-            foreach ($linhasReceita as $linha) {
-                $dadosLinha = new ReceitaLinha();
-                $dadosLinha->medicamento_id = $linha->medicamento_id;
-                $dadosLinha->dosagem = $linha->dosagem;
-                $dadosLinha->receita_id = $receita->id;
-                $dadosLinha->save();
+                $linhasReceita = json_decode($request->input('receitaLinha'));
+                if($linhasSolicitacao == null)
+                {
+                    return response()->json([
+                        'sucesso' => false,
+                        'id' => -1,
+                        'mensagem' => 'Nenhuma prescrição realizada!'
+                    ]);
+                }
+
+                foreach ($linhasReceita as $linha) {
+                    $dadosLinha = new ReceitaLinha();
+                    $dadosLinha->medicamento_id = $linha->medicamento_id;
+                    $dadosLinha->dosagem = $linha->dosagem;
+                    $dadosLinha->receita_id = $receita->id;
+                    $dadosLinha->save();
+                }
             }
 
             DB::commit();
 
+            $idReceita = -1;
+            if(isset($receita))
+            {
+                $idReceita = $receita->id;
+            }
+
             return response()->json([
                 'sucesso' => true,
-                'id' => $receita->id
+                'id' => $idReceita,
+                'mensagem' => ''
             ]);
 
         } catch (Exception $e) {
@@ -251,7 +281,8 @@ class AcompanhamentoController extends Controller
 
             return response()->json([
                 'sucesso' => false,
-                'id' => 0
+                'id' => -1,
+                'mensagem' => $e->getMessage()
             ]);
         }
     }
@@ -266,8 +297,7 @@ class AcompanhamentoController extends Controller
             ->join('solicitacoes_exames_linha', 'solicitacoes_exames_linha.solicitacao_exame_id', 'solicitacoes_exames.id')
             ->select('solicitacoes_exames.*')
             ->where('consultas.paciente_id', '=', $id)
-            ->orWhere('solicitacoes_exames.realizado', '=', '0')
-            ->orWhereNull('solicitacoes_exames.realizado')
+            ->Where('solicitacoes_exames.realizado', '=', true)
             ->distinct()
             ->get()
         ;

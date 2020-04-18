@@ -30,7 +30,7 @@ $(document).ready(function() {
                         dataType: "json",
                         async: false,
                         success: function(data) {
-                            comboGrid += '<select for="exame_id" class="form-control js-example-responsive" name="exame_id" >';
+                            comboGrid += '<select for="exame_id" class="form-control js-example-responsive" name="exame_id" required>';
                             $.each(data, function(k, v) {
                                 comboGrid += '<option value="' + v.id + '">' + v.nome + '</option>';
                             });

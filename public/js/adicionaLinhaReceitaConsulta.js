@@ -30,7 +30,7 @@ $(document).ready(function() {
                         dataType: "json",
                         async: false,
                         success: function(data) {
-                            comboGrid += '<select for="medicamento_id" class="form-control js-example-responsive" name="medicamento_id" >';
+                            comboGrid += '<select for="medicamento_id" class="form-control js-example-responsive" name="medicamento_id" required>';
                             $.each(data, function(k, v) {
                                 comboGrid += '<option value="' + v.id + '">' + v.nome_fabrica + '</option>';
                             });
@@ -46,7 +46,7 @@ $(document).ready(function() {
                     break;
 
                 case 2:
-                    newCell.innerHTML = '<input for="dosagem" class="form-control" type="text" name="dosagem" value="" />';
+                    newCell.innerHTML = '<input for="dosagem" class="form-control" type="text" name="dosagem" value="" required/>';
                     break;
 
                 case 3:

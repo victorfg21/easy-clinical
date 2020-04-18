@@ -216,9 +216,8 @@
                         url: "{{ route('medico.acompanhamento.store') }}",
                         data: form,
                         success: function (data) {
-
                             if (data.sucesso == true) {
-                                if(data.id != null)
+                                if(data.id != null && data.id != -1)
                                 {
                                     var url = "{{ route('medico.acompanhamento.printreceita', 'ID_RECEITA')}}";
                                     url = url.replace("ID_RECEITA", data.id);
@@ -236,15 +235,19 @@
                                 })
                             }
                             else {
-                                $("#modalMensagens .modal-body").html(data);
-                                $("#modalMensagens .modal-title").html("Erros");
-                                $('#modalMensagens').modal('toggle');
-                                $('#modalMensagens').modal('show');
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'error',
+                                    title: "Erro ao finalizar consulta! \nVerifique se os campos foram preenchidos.",
+                                    showConfirmButton: false,
+                                    timer: 2500
+                                })
+
+                                $('#stop').prop('disabled', false);
+                                Clock.resumeErro();
                             }
                         }
                     }).fail(function (response){
-                        associate_errors(response['responseJSON']['errors'], $("#frmAcompanhamento"));
-
                         Swal.fire({
                             position: 'center',
                             type: 'error',
@@ -254,7 +257,7 @@
                         })
 
                         $('#stop').prop('disabled', false);
-                        Clock.resume();
+                        Clock.resumeErro();
                     });
                 }else if (
                     /* Read more about handling dismissals below */
@@ -281,6 +284,12 @@
                 showConfirmButton: false,
                 timer: 1500
             })
+            $('#start').prop('disabled', true);
+            $('#stop').prop('disabled', false);
+        },
+
+        resumeErro: function () {
+            if (!this.interval) this.start();
             $('#start').prop('disabled', true);
             $('#stop').prop('disabled', false);
         }

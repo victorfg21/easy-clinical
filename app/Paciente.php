@@ -19,10 +19,6 @@ class Paciente extends Model
         return $this->hasOne(\App\User::class, 'id', 'user_id');
     }
 
-    public function Foto(){
-        return $this->hasOne(\App\Foto::class, 'id', 'foto_id');
-    }
-
     //Listar os pacientes no DataTable da página Index
     public function ListarPacientes(Request $request)
     {

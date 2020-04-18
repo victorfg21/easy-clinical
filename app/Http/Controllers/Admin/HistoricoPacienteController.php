@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Paciente;
 use Illuminate\Http\Request;
+use Exception;
 
 class HistoricoPacienteController extends Controller
 {

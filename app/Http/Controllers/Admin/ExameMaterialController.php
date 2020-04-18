@@ -7,6 +7,7 @@ use App\Http\Requests\ExameMaterialRequest;
 use App\Http\Controllers\Controller;
 use App\ExameMaterial;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ExameMaterialController extends Controller
 {

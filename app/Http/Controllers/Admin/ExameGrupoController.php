@@ -7,6 +7,7 @@ use App\Http\Requests\ExameGrupoRequest;
 use App\Http\Controllers\Controller;
 use App\ExameGrupo;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ExameGrupoController extends Controller
 {

@@ -10,7 +10,7 @@ use App\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Config;
-use App\Http\Controllers\Admin\Exception;
+use Exception;
 
 class UsuarioController extends Controller
 {

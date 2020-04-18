@@ -9,6 +9,7 @@ use App\AgendaLivreProfissional;
 use App\Consulta;
 use App\Profissional;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class AgendaLivreProfissionalController extends Controller
 {

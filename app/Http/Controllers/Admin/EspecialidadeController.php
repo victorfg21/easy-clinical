@@ -7,6 +7,7 @@ use App\Http\Requests\EspecialidadeRequest;
 use App\Http\Controllers\Controller;
 use App\Especialidade;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class EspecialidadeController extends Controller
 {

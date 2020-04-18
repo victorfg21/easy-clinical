@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Agenda;
 use App\Profissional;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class AgendaController extends Controller
 {
@@ -97,7 +98,7 @@ class AgendaController extends Controller
     {
         if (!$req->user()->authorizeRoles('superadministrator'))
             abort(403, 'Você não possui autorização para realizar essa ação.');
-            
+
         $registro = Agenda::find($id);
         $profissional_list = Profissional::orderBy('nome')->get();
         return view('admin.agendas.edit', [

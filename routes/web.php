@@ -12,6 +12,8 @@
 */
 
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Route;
+
 
 Auth::routes();
 Broadcast::routes();
@@ -22,7 +24,6 @@ Route::get('/', function () {
 
 Route::get('home', ['as' => 'home', 'uses' => 'HomeController@index']);
 
-//Route::get('/tasks', 'TaskController@index');
 
 //Usuários
 Route::get('admin/usuarios', ['as' => 'admin.usuarios', 'uses' => 'Admin\UsuarioController@index']);

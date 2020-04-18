@@ -7,6 +7,7 @@ use App\Http\Requests\ExameMetodoRequest;
 use App\Http\Controllers\Controller;
 use App\ExameMetodo;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ExameMetodoController extends Controller
 {

@@ -9,6 +9,7 @@ use App\Profissional;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ResultadoExameController extends Controller
 {
@@ -87,7 +88,7 @@ class ResultadoExameController extends Controller
                 $dados->save();
 
                 $dados = SolicitacaoExame::find($id_solicitacao);
-                $dados->realizado = 1;
+                $dados->realizado = true;
                 $dados->update();
                 DB::commit();
             }
