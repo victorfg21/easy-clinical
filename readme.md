@@ -1,149 +1,83 @@
+
 # Easy Clinical
 
-O **Easy Clinical** é um sistema desenvolvido para facilitar a gestão de clínicas médicas, oferecendo funcionalidades para o gerenciamento de pacientes, agendamentos, prontuários e outros aspectos administrativos.
+Easy Clinical is a system developed to facilitate the management of medical clinics, offering features for patient management, appointments, medical records, and other administrative aspects.
 
-## Funcionalidades
+## Features
 
-- Cadastro e gerenciamento de pacientes
-- Agendamento de consultas
-- Gestão de prontuários eletrônicos
-- Relatórios e dashboards
-- Controle de usuários e permissões
+- Patient registration and management
+- Appointment scheduling
+- Electronic medical record management
+- Reports and dashboards
+- User and permission control
 
-## Tecnologias Utilizadas
+## Technologies Used
 
 - **Backend:** PHP (Laravel)
 - **Frontend:** Blade
-- **Banco de Dados:** Mysql
+- **Database:** MySQL
 - **ORM:** Eloquent
-- **Gerenciamento de Dependências:** Composer e npm
+- **Dependency Management:** Composer and npm
 
-## Estrutura do Projeto
+## Project Structure
 
 ```
 easy-clinical/
 ├── backend/
-│   ├── app/
-│   ├── bootstrap/
-│   ├── config/
-│   ├── database/
-│   ├── public/
-│   ├── resources/
-│   ├── routes/
-│   ├── storage/
-│   ├── tests/
-│   ├── artisan
-│   ├── composer.json
-│   ├── phpunit.xml
-│   └── server.php
 ├── frontend/
-│   ├── src/
-│   ├── package.json
-│   ├── tsconfig.json
 ├── .gitignore
 ├── LICENSE
 └── README.md
 ```
 
-## Pré-requisitos
+## Prerequisites
 
 - **Backend:**
   - PHP 8.x
-  - Composer instalado
-  - Banco de dados Mysql configurado
+  - Composer installed
+  - MySQL database configured
+
 - **Frontend:**
-  - Node.js instalado (versão recomendada: 16 ou superior)
-  - npm instalado
+  - Node.js (Recommended version: 16 or higher)
+  - npm installed
 
-## Como Executar
+## How to Run
 
-### Backend
-
-1. Clone o repositório:
+1. Clone the repository:
 
    ```bash
    git clone https://github.com/victorfg21/easy-clinical.git
    ```
 
-2. Acesse o diretório do backend:
-
-   ```bash
-   cd easy-clinical/backend
-   ```
-
-3. Instale as dependências:
+2. For the **Backend**, navigate to the 'backend' folder and run:
 
    ```bash
    composer install
    ```
 
-4. Configure o arquivo `.env` e gere a chave da aplicação:
+3. Configure the environment variables for the database connection in the `.env` file.
 
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
-
-5. Configure a conexão com o Mysql no arquivo `.env`.
-
-6. Execute as migrações do banco de dados:
+4. Run the migrations:
 
    ```bash
    php artisan migrate
    ```
 
-7. Inicie o servidor local:
+5. Start the server:
 
    ```bash
    php artisan serve
    ```
 
-### Frontend
-
-1. Acesse o diretório do frontend:
-
-   ```bash
-   cd easy-clinical/frontend
-   ```
-
-2. Instale as dependências:
+6. For the **Frontend**, navigate to the 'frontend' folder and run:
 
    ```bash
    npm install
-   ```
-
-3. Execute o aplicativo:
-
-   ```bash
    npm run dev
    ```
 
-4. Acesse no navegador:
+7. Access the system through the URL provided by the backend.
 
-   ```
-   http://localhost:8000
-   ```
+## License
 
-## Testes
-
-### Backend
-Para rodar os testes unitários:
-
-```bash
-   php artisan test
-```
-
-### Frontend
-Para rodar os testes unitários:
-
-```bash
-   npm run test
-```
-
-## Contribuição
-
-Contribuições são bem-vindas! Abra uma issue ou um pull request com suas sugestões.
-
-## Licença
-
-Este projeto está licenciado sob a Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
+MIT License
